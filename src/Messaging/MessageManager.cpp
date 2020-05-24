@@ -318,3 +318,4 @@ void MessageManager::OnRequest(Rpc::Connection* p_Connection, const RpcTransport
     if (s_FoundEntry->GetCallback())
         s_FoundEntry->GetCallback()(p_Connection, p_Message);
 }
+ 
