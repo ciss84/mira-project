@@ -208,8 +208,19 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 // SceShellCore patches - use free prefix instead fake
 #define ssc_fake_to_free_patch                             0x00EA96A7
 
+// SceShellCore patches - enable remote pkg installer
+#define ssc_enable_data_mount_patch                        0x00319A53
+
 // SceShellUI patches - debug patches
 #define ssu_sceSblRcMgrIsAllowDebugMenuForSettings_patch   0x0001BD90
 #define ssu_sceSblRcMgrIsStoreMode_patch                   0x0001C090
+
+// sceRegMgr
+#define kdlsym_addr_sceRegMgrGetInt                        0x004F9E50
+#define kdlsym_addr_sceRegMgrSetInt                        0x004F8D10
+#define kdlsym_addr_sceRegMgrGetBin                        0x004FA6D0
+#define kdlsym_addr_sceRegMgrSetBin                        0x004FA620
+#define kdlsym_addr_sceRegMgrGetStr                        0x004FA550
+#define kdlsym_addr_sceRegMgrSetStr                        0x004FA390
 
 #endif
