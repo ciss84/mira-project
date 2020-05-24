@@ -484,11 +484,9 @@ bool Loader::SetProtection(void * p_Address, Elf64_Xword p_Size, Elf64_Word p_Pr
 		printf("pmap_protect: %p %llx %x\n", p_Address, p_Size, p_Protection);
 
 		/*auto pmap_protect = (void(*)(pmap_t, vm_offset_t, vm_offset_t, vm_prot_t))kdlsym(pmap_protect);
-
 		// TODO: pmap_protect
 		uint64_t s_StartAddress = ((uint64_t)p_Address) & ~(uint64_t)(PAGE_SIZE - 1);
 		uint64_t s_EndAddress = ((uint64_t)p_Address + p_Size + PAGE_SIZE - 1) & ~(uint64_t)(PAGE_SIZE - 1);
-
 		WriteLog(LL_Debug, "pmap_protect: %p %llx %x", p_Address, p_Size, p_Protection);*/
 	}
 	else if (m_LoaderType == ElfLoaderType_t::UserProc ||
