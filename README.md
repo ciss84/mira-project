@@ -430,8 +430,7 @@ src/Utils/Kdlsym.hpp:49:52: error: ‘kdlsym_addr_printf’ undeclared (first us
  - PVS-Studio
  - flatbuffers.
  
-FLATBUFFERS. (description  
-A small library for adding C11 compatibility to older C compilers, but only a small highly useful subset such as static assertions, inline functions and alignment.
+(FLATBUFFERS = description : A small library for adding C11 compatibility to older C compilers, but only a small highly useful subset such as static assertions, inline functions and alignment.
 
 C++ is not a primary target, but the library has been updated to be more C++ friendly based on user feedback.
 
