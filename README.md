@@ -428,6 +428,7 @@ src/Utils/Kdlsym.hpp:49:52: error: ‘kdlsym_addr_printf’ undeclared (first us
  - Remote registry
  - Remote packages fix
  - PVS-Studio
+ - Spoof 7.50 (THX @Leeful74)
  - flatbuffers.
  
 (FLATBUFFERS = description : A small library for adding C11 compatibility to older C compilers, but only a small highly useful subset such as static assertions, inline functions and alignment.
