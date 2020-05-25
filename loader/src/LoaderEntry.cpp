@@ -228,7 +228,7 @@ extern "C" void* mira_entry(void* args)
 		char buf[64];
 		memset(buf, 0, sizeof(buf));
 
-		snprintf(buf, sizeof(buf), "elf: %p elfSize: %llx", buffer, currentSize);
+		snprintf(buf, sizeof(buf), "@Mugiwara Mira 5.05 Injected elf: %p elfSize: %llx", buffer, currentSize);
 		WriteNotificationLog(buf);
 
 		uint8_t isLaunchingKernel = true;
