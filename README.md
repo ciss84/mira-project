@@ -232,7 +232,7 @@ Mira provides a plugin framework that can run in kernel mode (userland is soon, 
 
 Want to contribute? Great! There is no set limit on contributors and people wanting to help out in any way!
 
-Join the OpenOrbis discord and have knowledge of C/C++ and FreeBSD or unix-like operating systems, web design and programming, rust-lang, content creator (youtube, twitch), or artist, or just want to find something to help out with like documentation, hosting, etc, kernel experience is a plus but not required by any means.
+Join the [OpenOrbis discord](https://discord.gg/GQr8ydn) and have knowledge of C/C++ and FreeBSD or unix-like operating systems, web design and programming, rust-lang, content creator (youtube, twitch), or artist, or just want to find something to help out with like documentation, hosting, etc, kernel experience is a plus but not required by any means.
 
 #### Building from source
 After following the instructions on cloning the repository and generating the protobuf files, you should be ready to build Mira from source. It was designed to be as easy as possible to build with the provided makefiles.
@@ -264,9 +264,9 @@ There is a list of available platforms that Mira can be configured with located 
 |`MIRA_PLATFORM_ORBIS_BSD_176`| (Unsupported) 1.76 |
 |`MIRA_PLATFORM_ORBIS_BSD_355`| (Unsupported) 3.55 |
 |`MIRA_PLATFORM_ORBIS_BSD_400`| (Unsupported) 4.00 |
-|`MIRA_PLATFORM_ORBIS_BSD_405`| (Supported) 4.05 |
+|`MIRA_PLATFORM_ORBIS_BSD_405`| (Unsupported) 4.05 |
 |`MIRA_PLATFORM_ORBIS_BSD_407`| (Unsupported) 4.07 |
-|`MIRA_PLATFORM_ORBIS_BSD_455`| (Supported) 4.55 |
+|`MIRA_PLATFORM_ORBIS_BSD_455`| (Unsupported) 4.55 |
 |`MIRA_PLATFORM_ORBIS_BSD_474`| (Unsupported) 4.74 |
 |`MIRA_PLATFORM_ORBIS_BSD_500`| (Unsupported) 5.00 |
 |`MIRA_PLATFORM_ORBIS_BSD_501`| (Unsupported) 5.01 |
