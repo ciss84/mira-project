@@ -381,9 +381,9 @@ And here is an example VSCode `c_cpp_properties.json`
 #### Firmware porting guide
 Lets say you are an eager developer, even a newbie that wants to try and contribute in some way or form to porting to a firmware that is not under active support. Here's the steps you would need to accomplish new builds *from scratch*. We will start by adding a non-existent firmware and work our way from that.
 
-**NOTE: This assumes you already have a kernel dump for your firmware, and things already labeled. If you need help with this step, you can ask in `#help` on the discord but you are pretty much on your own.***
+**NOTE: This assumes you already have a kernel dump for your firmware, and things already labeled. If you need help with this step, you can ask in `#help` on the [Discord](https://discord.gg/GQr8ydn) but you are pretty much on your own.***
 
-**WARNING: DO NOT SEND YOUR DUMPED KERNEL IN THE CHANNEL/DISCORD SERVER AS IT IS COPYRIGHTED MATERIALS AND YOU WILL BE WARNED/BANNED!!**
+**WARNING: DO NOT SEND YOUR DUMPED KERNEL IN THE CHANNEL/[DISCORD SERVER](https://discord.gg/GQr8ydn) AS IT IS COPYRIGHTED MATERIALS AND YOU WILL BE WARNED/BANNED!!**
 
 Lets assume our firmware is `8.88` found in the PlayStation 4 System Software menu.
 
