@@ -10,7 +10,7 @@
 void   fm_echo_request__init
                      (FmEchoRequest         *message)
 {
-  static const FmEchoRequest init_value = FM_ECHO_REQUEST__INIT;
+  static FmEchoRequest init_value = FM_ECHO_REQUEST__INIT;
   *message = init_value;
 }
 size_t fm_echo_request__get_packed_size
@@ -47,15 +47,13 @@ void   fm_echo_request__free_unpacked
                      (FmEchoRequest *message,
                       ProtobufCAllocator *allocator)
 {
-  if(!message)
-    return;
   assert(message->base.descriptor == &fm_echo_request__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   fm_open_request__init
                      (FmOpenRequest         *message)
 {
-  static const FmOpenRequest init_value = FM_OPEN_REQUEST__INIT;
+  static FmOpenRequest init_value = FM_OPEN_REQUEST__INIT;
   *message = init_value;
 }
 size_t fm_open_request__get_packed_size
@@ -92,15 +90,13 @@ void   fm_open_request__free_unpacked
                      (FmOpenRequest *message,
                       ProtobufCAllocator *allocator)
 {
-  if(!message)
-    return;
   assert(message->base.descriptor == &fm_open_request__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   fm_close_request__init
                      (FmCloseRequest         *message)
 {
-  static const FmCloseRequest init_value = FM_CLOSE_REQUEST__INIT;
+  static FmCloseRequest init_value = FM_CLOSE_REQUEST__INIT;
   *message = init_value;
 }
 size_t fm_close_request__get_packed_size
@@ -137,15 +133,13 @@ void   fm_close_request__free_unpacked
                      (FmCloseRequest *message,
                       ProtobufCAllocator *allocator)
 {
-  if(!message)
-    return;
   assert(message->base.descriptor == &fm_close_request__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   fm_seek_request__init
                      (FmSeekRequest         *message)
 {
-  static const FmSeekRequest init_value = FM_SEEK_REQUEST__INIT;
+  static FmSeekRequest init_value = FM_SEEK_REQUEST__INIT;
   *message = init_value;
 }
 size_t fm_seek_request__get_packed_size
@@ -182,15 +176,13 @@ void   fm_seek_request__free_unpacked
                      (FmSeekRequest *message,
                       ProtobufCAllocator *allocator)
 {
-  if(!message)
-    return;
   assert(message->base.descriptor == &fm_seek_request__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   fm_read_request__init
                      (FmReadRequest         *message)
 {
-  static const FmReadRequest init_value = FM_READ_REQUEST__INIT;
+  static FmReadRequest init_value = FM_READ_REQUEST__INIT;
   *message = init_value;
 }
 size_t fm_read_request__get_packed_size
@@ -227,15 +219,13 @@ void   fm_read_request__free_unpacked
                      (FmReadRequest *message,
                       ProtobufCAllocator *allocator)
 {
-  if(!message)
-    return;
   assert(message->base.descriptor == &fm_read_request__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   fm_read_response__init
                      (FmReadResponse         *message)
 {
-  static const FmReadResponse init_value = FM_READ_RESPONSE__INIT;
+  static FmReadResponse init_value = FM_READ_RESPONSE__INIT;
   *message = init_value;
 }
 size_t fm_read_response__get_packed_size
@@ -272,15 +262,13 @@ void   fm_read_response__free_unpacked
                      (FmReadResponse *message,
                       ProtobufCAllocator *allocator)
 {
-  if(!message)
-    return;
   assert(message->base.descriptor == &fm_read_response__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   fm_write_request__init
                      (FmWriteRequest         *message)
 {
-  static const FmWriteRequest init_value = FM_WRITE_REQUEST__INIT;
+  static FmWriteRequest init_value = FM_WRITE_REQUEST__INIT;
   *message = init_value;
 }
 size_t fm_write_request__get_packed_size
@@ -317,15 +305,13 @@ void   fm_write_request__free_unpacked
                      (FmWriteRequest *message,
                       ProtobufCAllocator *allocator)
 {
-  if(!message)
-    return;
   assert(message->base.descriptor == &fm_write_request__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   fm_dent__init
                      (FmDent         *message)
 {
-  static const FmDent init_value = FM_DENT__INIT;
+  static FmDent init_value = FM_DENT__INIT;
   *message = init_value;
 }
 size_t fm_dent__get_packed_size
@@ -362,15 +348,13 @@ void   fm_dent__free_unpacked
                      (FmDent *message,
                       ProtobufCAllocator *allocator)
 {
-  if(!message)
-    return;
   assert(message->base.descriptor == &fm_dent__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   fm_get_dents_request__init
                      (FmGetDentsRequest         *message)
 {
-  static const FmGetDentsRequest init_value = FM_GET_DENTS_REQUEST__INIT;
+  static FmGetDentsRequest init_value = FM_GET_DENTS_REQUEST__INIT;
   *message = init_value;
 }
 size_t fm_get_dents_request__get_packed_size
@@ -407,15 +391,13 @@ void   fm_get_dents_request__free_unpacked
                      (FmGetDentsRequest *message,
                       ProtobufCAllocator *allocator)
 {
-  if(!message)
-    return;
   assert(message->base.descriptor == &fm_get_dents_request__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   fm_get_dents_response__init
                      (FmGetDentsResponse         *message)
 {
-  static const FmGetDentsResponse init_value = FM_GET_DENTS_RESPONSE__INIT;
+  static FmGetDentsResponse init_value = FM_GET_DENTS_RESPONSE__INIT;
   *message = init_value;
 }
 size_t fm_get_dents_response__get_packed_size
@@ -452,15 +434,13 @@ void   fm_get_dents_response__free_unpacked
                      (FmGetDentsResponse *message,
                       ProtobufCAllocator *allocator)
 {
-  if(!message)
-    return;
   assert(message->base.descriptor == &fm_get_dents_response__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   fm_timespec__init
                      (FmTimespec         *message)
 {
-  static const FmTimespec init_value = FM_TIMESPEC__INIT;
+  static FmTimespec init_value = FM_TIMESPEC__INIT;
   *message = init_value;
 }
 size_t fm_timespec__get_packed_size
@@ -497,15 +477,13 @@ void   fm_timespec__free_unpacked
                      (FmTimespec *message,
                       ProtobufCAllocator *allocator)
 {
-  if(!message)
-    return;
   assert(message->base.descriptor == &fm_timespec__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   fm_stat_request__init
                      (FmStatRequest         *message)
 {
-  static const FmStatRequest init_value = FM_STAT_REQUEST__INIT;
+  static FmStatRequest init_value = FM_STAT_REQUEST__INIT;
   *message = init_value;
 }
 size_t fm_stat_request__get_packed_size
@@ -542,15 +520,13 @@ void   fm_stat_request__free_unpacked
                      (FmStatRequest *message,
                       ProtobufCAllocator *allocator)
 {
-  if(!message)
-    return;
   assert(message->base.descriptor == &fm_stat_request__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   fm_stat_response__init
                      (FmStatResponse         *message)
 {
-  static const FmStatResponse init_value = FM_STAT_RESPONSE__INIT;
+  static FmStatResponse init_value = FM_STAT_RESPONSE__INIT;
   *message = init_value;
 }
 size_t fm_stat_response__get_packed_size
@@ -587,15 +563,13 @@ void   fm_stat_response__free_unpacked
                      (FmStatResponse *message,
                       ProtobufCAllocator *allocator)
 {
-  if(!message)
-    return;
   assert(message->base.descriptor == &fm_stat_response__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   fm_mkdir_request__init
                      (FmMkdirRequest         *message)
 {
-  static const FmMkdirRequest init_value = FM_MKDIR_REQUEST__INIT;
+  static FmMkdirRequest init_value = FM_MKDIR_REQUEST__INIT;
   *message = init_value;
 }
 size_t fm_mkdir_request__get_packed_size
@@ -632,15 +606,13 @@ void   fm_mkdir_request__free_unpacked
                      (FmMkdirRequest *message,
                       ProtobufCAllocator *allocator)
 {
-  if(!message)
-    return;
   assert(message->base.descriptor == &fm_mkdir_request__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   fm_rmdir_request__init
                      (FmRmdirRequest         *message)
 {
-  static const FmRmdirRequest init_value = FM_RMDIR_REQUEST__INIT;
+  static FmRmdirRequest init_value = FM_RMDIR_REQUEST__INIT;
   *message = init_value;
 }
 size_t fm_rmdir_request__get_packed_size
@@ -677,15 +649,13 @@ void   fm_rmdir_request__free_unpacked
                      (FmRmdirRequest *message,
                       ProtobufCAllocator *allocator)
 {
-  if(!message)
-    return;
   assert(message->base.descriptor == &fm_rmdir_request__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   fm_unlink_request__init
                      (FmUnlinkRequest         *message)
 {
-  static const FmUnlinkRequest init_value = FM_UNLINK_REQUEST__INIT;
+  static FmUnlinkRequest init_value = FM_UNLINK_REQUEST__INIT;
   *message = init_value;
 }
 size_t fm_unlink_request__get_packed_size
@@ -722,15 +692,13 @@ void   fm_unlink_request__free_unpacked
                      (FmUnlinkRequest *message,
                       ProtobufCAllocator *allocator)
 {
-  if(!message)
-    return;
   assert(message->base.descriptor == &fm_unlink_request__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   fm_decrypt_self_request__init
                      (FmDecryptSelfRequest         *message)
 {
-  static const FmDecryptSelfRequest init_value = FM_DECRYPT_SELF_REQUEST__INIT;
+  static FmDecryptSelfRequest init_value = FM_DECRYPT_SELF_REQUEST__INIT;
   *message = init_value;
 }
 size_t fm_decrypt_self_request__get_packed_size
@@ -767,15 +735,13 @@ void   fm_decrypt_self_request__free_unpacked
                      (FmDecryptSelfRequest *message,
                       ProtobufCAllocator *allocator)
 {
-  if(!message)
-    return;
   assert(message->base.descriptor == &fm_decrypt_self_request__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   fm_decrypt_self_response__init
                      (FmDecryptSelfResponse         *message)
 {
-  static const FmDecryptSelfResponse init_value = FM_DECRYPT_SELF_RESPONSE__INIT;
+  static FmDecryptSelfResponse init_value = FM_DECRYPT_SELF_RESPONSE__INIT;
   *message = init_value;
 }
 size_t fm_decrypt_self_response__get_packed_size
@@ -812,8 +778,6 @@ void   fm_decrypt_self_response__free_unpacked
                      (FmDecryptSelfResponse *message,
                       ProtobufCAllocator *allocator)
 {
-  if(!message)
-    return;
   assert(message->base.descriptor == &fm_decrypt_self_response__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
@@ -822,12 +786,12 @@ static const ProtobufCFieldDescriptor fm_echo_request__field_descriptors[1] =
   {
     "message",
     1,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(FmEchoRequest, message),
     NULL,
-    &protobuf_c_empty_string,
+    NULL,
     0,             /* flags */
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },
@@ -860,9 +824,9 @@ static const ProtobufCFieldDescriptor fm_open_request__field_descriptors[3] =
   {
     "flags",
     1,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT32,
-    0,   /* quantifier_offset */
+    offsetof(FmOpenRequest, has_flags),
     offsetof(FmOpenRequest, flags),
     NULL,
     NULL,
@@ -872,9 +836,9 @@ static const ProtobufCFieldDescriptor fm_open_request__field_descriptors[3] =
   {
     "mode",
     2,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT32,
-    0,   /* quantifier_offset */
+    offsetof(FmOpenRequest, has_mode),
     offsetof(FmOpenRequest, mode),
     NULL,
     NULL,
@@ -884,12 +848,12 @@ static const ProtobufCFieldDescriptor fm_open_request__field_descriptors[3] =
   {
     "path",
     3,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(FmOpenRequest, path),
     NULL,
-    &protobuf_c_empty_string,
+    NULL,
     0,             /* flags */
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },
@@ -924,9 +888,9 @@ static const ProtobufCFieldDescriptor fm_close_request__field_descriptors[1] =
   {
     "handle",
     1,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT32,
-    0,   /* quantifier_offset */
+    offsetof(FmCloseRequest, has_handle),
     offsetof(FmCloseRequest, handle),
     NULL,
     NULL,
@@ -962,9 +926,9 @@ static const ProtobufCFieldDescriptor fm_seek_request__field_descriptors[2] =
   {
     "handle",
     1,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT32,
-    0,   /* quantifier_offset */
+    offsetof(FmSeekRequest, has_handle),
     offsetof(FmSeekRequest, handle),
     NULL,
     NULL,
@@ -974,9 +938,9 @@ static const ProtobufCFieldDescriptor fm_seek_request__field_descriptors[2] =
   {
     "offset",
     2,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT64,
-    0,   /* quantifier_offset */
+    offsetof(FmSeekRequest, has_offset),
     offsetof(FmSeekRequest, offset),
     NULL,
     NULL,
@@ -1013,9 +977,9 @@ static const ProtobufCFieldDescriptor fm_read_request__field_descriptors[2] =
   {
     "handle",
     1,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT32,
-    0,   /* quantifier_offset */
+    offsetof(FmReadRequest, has_handle),
     offsetof(FmReadRequest, handle),
     NULL,
     NULL,
@@ -1025,9 +989,9 @@ static const ProtobufCFieldDescriptor fm_read_request__field_descriptors[2] =
   {
     "size",
     2,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_UINT64,
-    0,   /* quantifier_offset */
+    offsetof(FmReadRequest, has_size),
     offsetof(FmReadRequest, size),
     NULL,
     NULL,
@@ -1064,9 +1028,9 @@ static const ProtobufCFieldDescriptor fm_read_response__field_descriptors[1] =
   {
     "data",
     1,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_BYTES,
-    0,   /* quantifier_offset */
+    offsetof(FmReadResponse, has_data),
     offsetof(FmReadResponse, data),
     NULL,
     NULL,
@@ -1102,9 +1066,9 @@ static const ProtobufCFieldDescriptor fm_write_request__field_descriptors[2] =
   {
     "handle",
     1,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT32,
-    0,   /* quantifier_offset */
+    offsetof(FmWriteRequest, has_handle),
     offsetof(FmWriteRequest, handle),
     NULL,
     NULL,
@@ -1114,9 +1078,9 @@ static const ProtobufCFieldDescriptor fm_write_request__field_descriptors[2] =
   {
     "data",
     2,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_BYTES,
-    0,   /* quantifier_offset */
+    offsetof(FmWriteRequest, has_data),
     offsetof(FmWriteRequest, data),
     NULL,
     NULL,
@@ -1153,9 +1117,9 @@ static const ProtobufCFieldDescriptor fm_dent__field_descriptors[4] =
   {
     "fileno",
     1,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_UINT32,
-    0,   /* quantifier_offset */
+    offsetof(FmDent, has_fileno),
     offsetof(FmDent, fileno),
     NULL,
     NULL,
@@ -1165,9 +1129,9 @@ static const ProtobufCFieldDescriptor fm_dent__field_descriptors[4] =
   {
     "recLen",
     2,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_UINT32,
-    0,   /* quantifier_offset */
+    offsetof(FmDent, has_reclen),
     offsetof(FmDent, reclen),
     NULL,
     NULL,
@@ -1177,9 +1141,9 @@ static const ProtobufCFieldDescriptor fm_dent__field_descriptors[4] =
   {
     "type",
     3,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_UINT32,
-    0,   /* quantifier_offset */
+    offsetof(FmDent, has_type),
     offsetof(FmDent, type),
     NULL,
     NULL,
@@ -1189,12 +1153,12 @@ static const ProtobufCFieldDescriptor fm_dent__field_descriptors[4] =
   {
     "name",
     4,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(FmDent, name),
     NULL,
-    &protobuf_c_empty_string,
+    NULL,
     0,             /* flags */
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },
@@ -1230,12 +1194,12 @@ static const ProtobufCFieldDescriptor fm_get_dents_request__field_descriptors[1]
   {
     "path",
     1,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(FmGetDentsRequest, path),
     NULL,
-    &protobuf_c_empty_string,
+    NULL,
     0,             /* flags */
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },
@@ -1306,9 +1270,9 @@ static const ProtobufCFieldDescriptor fm_timespec__field_descriptors[2] =
   {
     "tv_sec",
     1,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT64,
-    0,   /* quantifier_offset */
+    offsetof(FmTimespec, has_tv_sec),
     offsetof(FmTimespec, tv_sec),
     NULL,
     NULL,
@@ -1318,9 +1282,9 @@ static const ProtobufCFieldDescriptor fm_timespec__field_descriptors[2] =
   {
     "tv_nsec",
     2,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT32,
-    0,   /* quantifier_offset */
+    offsetof(FmTimespec, has_tv_nsec),
     offsetof(FmTimespec, tv_nsec),
     NULL,
     NULL,
@@ -1357,9 +1321,9 @@ static const ProtobufCFieldDescriptor fm_stat_request__field_descriptors[2] =
   {
     "handle",
     1,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT32,
-    0,   /* quantifier_offset */
+    offsetof(FmStatRequest, has_handle),
     offsetof(FmStatRequest, handle),
     NULL,
     NULL,
@@ -1369,12 +1333,12 @@ static const ProtobufCFieldDescriptor fm_stat_request__field_descriptors[2] =
   {
     "path",
     2,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(FmStatRequest, path),
     NULL,
-    &protobuf_c_empty_string,
+    NULL,
     0,             /* flags */
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },
@@ -1408,9 +1372,9 @@ static const ProtobufCFieldDescriptor fm_stat_response__field_descriptors[17] =
   {
     "st_dev",
     1,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_UINT32,
-    0,   /* quantifier_offset */
+    offsetof(FmStatResponse, has_st_dev),
     offsetof(FmStatResponse, st_dev),
     NULL,
     NULL,
@@ -1420,9 +1384,9 @@ static const ProtobufCFieldDescriptor fm_stat_response__field_descriptors[17] =
   {
     "st_ino",
     2,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_UINT32,
-    0,   /* quantifier_offset */
+    offsetof(FmStatResponse, has_st_ino),
     offsetof(FmStatResponse, st_ino),
     NULL,
     NULL,
@@ -1432,9 +1396,9 @@ static const ProtobufCFieldDescriptor fm_stat_response__field_descriptors[17] =
   {
     "st_mode",
     3,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_UINT32,
-    0,   /* quantifier_offset */
+    offsetof(FmStatResponse, has_st_mode),
     offsetof(FmStatResponse, st_mode),
     NULL,
     NULL,
@@ -1444,9 +1408,9 @@ static const ProtobufCFieldDescriptor fm_stat_response__field_descriptors[17] =
   {
     "st_nlink",
     4,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_UINT32,
-    0,   /* quantifier_offset */
+    offsetof(FmStatResponse, has_st_nlink),
     offsetof(FmStatResponse, st_nlink),
     NULL,
     NULL,
@@ -1456,9 +1420,9 @@ static const ProtobufCFieldDescriptor fm_stat_response__field_descriptors[17] =
   {
     "st_uid",
     5,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_UINT32,
-    0,   /* quantifier_offset */
+    offsetof(FmStatResponse, has_st_uid),
     offsetof(FmStatResponse, st_uid),
     NULL,
     NULL,
@@ -1468,9 +1432,9 @@ static const ProtobufCFieldDescriptor fm_stat_response__field_descriptors[17] =
   {
     "st_gid",
     6,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_UINT32,
-    0,   /* quantifier_offset */
+    offsetof(FmStatResponse, has_st_gid),
     offsetof(FmStatResponse, st_gid),
     NULL,
     NULL,
@@ -1480,9 +1444,9 @@ static const ProtobufCFieldDescriptor fm_stat_response__field_descriptors[17] =
   {
     "st_rdev",
     7,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_UINT32,
-    0,   /* quantifier_offset */
+    offsetof(FmStatResponse, has_st_rdev),
     offsetof(FmStatResponse, st_rdev),
     NULL,
     NULL,
@@ -1492,7 +1456,7 @@ static const ProtobufCFieldDescriptor fm_stat_response__field_descriptors[17] =
   {
     "st_atim",
     8,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(FmStatResponse, st_atim),
@@ -1504,7 +1468,7 @@ static const ProtobufCFieldDescriptor fm_stat_response__field_descriptors[17] =
   {
     "st_mtim",
     9,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(FmStatResponse, st_mtim),
@@ -1516,7 +1480,7 @@ static const ProtobufCFieldDescriptor fm_stat_response__field_descriptors[17] =
   {
     "st_ctim",
     10,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(FmStatResponse, st_ctim),
@@ -1528,9 +1492,9 @@ static const ProtobufCFieldDescriptor fm_stat_response__field_descriptors[17] =
   {
     "st_size",
     11,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT64,
-    0,   /* quantifier_offset */
+    offsetof(FmStatResponse, has_st_size),
     offsetof(FmStatResponse, st_size),
     NULL,
     NULL,
@@ -1540,9 +1504,9 @@ static const ProtobufCFieldDescriptor fm_stat_response__field_descriptors[17] =
   {
     "st_blocks",
     12,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT64,
-    0,   /* quantifier_offset */
+    offsetof(FmStatResponse, has_st_blocks),
     offsetof(FmStatResponse, st_blocks),
     NULL,
     NULL,
@@ -1552,9 +1516,9 @@ static const ProtobufCFieldDescriptor fm_stat_response__field_descriptors[17] =
   {
     "st_blksize",
     13,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_UINT32,
-    0,   /* quantifier_offset */
+    offsetof(FmStatResponse, has_st_blksize),
     offsetof(FmStatResponse, st_blksize),
     NULL,
     NULL,
@@ -1564,9 +1528,9 @@ static const ProtobufCFieldDescriptor fm_stat_response__field_descriptors[17] =
   {
     "st_flags",
     14,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_UINT32,
-    0,   /* quantifier_offset */
+    offsetof(FmStatResponse, has_st_flags),
     offsetof(FmStatResponse, st_flags),
     NULL,
     NULL,
@@ -1576,9 +1540,9 @@ static const ProtobufCFieldDescriptor fm_stat_response__field_descriptors[17] =
   {
     "st_gen",
     15,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_UINT32,
-    0,   /* quantifier_offset */
+    offsetof(FmStatResponse, has_st_gen),
     offsetof(FmStatResponse, st_gen),
     NULL,
     NULL,
@@ -1588,9 +1552,9 @@ static const ProtobufCFieldDescriptor fm_stat_response__field_descriptors[17] =
   {
     "st_lspare",
     16,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT32,
-    0,   /* quantifier_offset */
+    offsetof(FmStatResponse, has_st_lspare),
     offsetof(FmStatResponse, st_lspare),
     NULL,
     NULL,
@@ -1600,7 +1564,7 @@ static const ProtobufCFieldDescriptor fm_stat_response__field_descriptors[17] =
   {
     "st_birthtim",
     17,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(FmStatResponse, st_birthtim),
@@ -1654,9 +1618,9 @@ static const ProtobufCFieldDescriptor fm_mkdir_request__field_descriptors[2] =
   {
     "mode",
     1,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT32,
-    0,   /* quantifier_offset */
+    offsetof(FmMkdirRequest, has_mode),
     offsetof(FmMkdirRequest, mode),
     NULL,
     NULL,
@@ -1666,12 +1630,12 @@ static const ProtobufCFieldDescriptor fm_mkdir_request__field_descriptors[2] =
   {
     "path",
     2,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(FmMkdirRequest, path),
     NULL,
-    &protobuf_c_empty_string,
+    NULL,
     0,             /* flags */
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },
@@ -1705,12 +1669,12 @@ static const ProtobufCFieldDescriptor fm_rmdir_request__field_descriptors[1] =
   {
     "path",
     1,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(FmRmdirRequest, path),
     NULL,
-    &protobuf_c_empty_string,
+    NULL,
     0,             /* flags */
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },
@@ -1743,12 +1707,12 @@ static const ProtobufCFieldDescriptor fm_unlink_request__field_descriptors[1] =
   {
     "path",
     1,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(FmUnlinkRequest, path),
     NULL,
-    &protobuf_c_empty_string,
+    NULL,
     0,             /* flags */
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },
@@ -1781,12 +1745,12 @@ static const ProtobufCFieldDescriptor fm_decrypt_self_request__field_descriptors
   {
     "path",
     1,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(FmDecryptSelfRequest, path),
     NULL,
-    &protobuf_c_empty_string,
+    NULL,
     0,             /* flags */
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },
@@ -1819,9 +1783,9 @@ static const ProtobufCFieldDescriptor fm_decrypt_self_response__field_descriptor
   {
     "data",
     1,
-    PROTOBUF_C_LABEL_NONE,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_BYTES,
-    0,   /* quantifier_offset */
+    offsetof(FmDecryptSelfResponse, has_data),
     offsetof(FmDecryptSelfResponse, data),
     NULL,
     NULL,
