@@ -22,15 +22,15 @@ It works differently to the custom firmware experience on Playstation 3, where C
   - Remote GDB
   - System-level FUSE implementation (Experimental, WIP)
   - Load sprx modules + IAT + Function Hooking (Thanks theorywrong)
-  - Debug setitng fix
-  - Web browser activation
-  - FakeDEX support (not sure full) 
+  - Web browser activation 
+  - Debug setitngs fix
   - Remote packages fix
   - PVS-Studio
   - Spoof 7.50 PSVR (THX @Leeful74)
   - flatbuffers
   - Remote registry (not sure full)
-
+  - FakeDEX support (not sure full)
+  
 You can also:
   - Mount and decrypt local gamesaves (Thanks ChendoChap) (WIP)
   - Transfer files to and from the harddrive
