@@ -23,7 +23,7 @@ It works differently to the custom firmware experience on Playstation 3, where C
   - System-level FUSE implementation (Experimental, WIP)
   - Load sprx modules + IAT + Function Hooking (Thanks theorywrong)
   - Web browser activation 
-  - Debug setitngs fix
+  - Debug settings fix
   - Remote packages fix
   - PVS-Studio
   - Spoof 7.50 PSVR (THX @Leeful74)
