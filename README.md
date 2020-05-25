@@ -22,6 +22,13 @@ It works differently to the custom firmware experience on Playstation 3, where C
   - Remote GDB
   - System-level FUSE implementation (Experimental, WIP)
   - Load sprx modules + IAT + Function Hooking (Thanks theorywrong)
+  - Web browser activation
+  - FakeDEX support (not sure full) 
+  - Remote packages fix
+  - PVS-Studio
+  - Spoof 7.50 (THX @Leeful74)
+  - flatbuffers
+  - Remote registry (not sure full)
 
 You can also:
   - Mount and decrypt local gamesaves (Thanks ChendoChap) (WIP)
@@ -422,14 +429,9 @@ src/Utils/Kdlsym.hpp:49:52: error: ‘kdlsym_addr_printf’ undeclared (first us
  - Web browser activation
  - Fake Online (spoof for LAN usage)
  - Game dumping and decryption
- - FakeDEX support
  - Linux loader
  - Embedded builds into loader
- - Remote registry
- - Remote packages fix
- - PVS-Studio
- - Spoof 7.50 (THX @Leeful74)
- - flatbuffers.
+
  
 (FLATBUFFERS = description : A small library for adding C11 compatibility to older C compilers, but only a small highly useful subset such as static assertions, inline functions and alignment.
 
