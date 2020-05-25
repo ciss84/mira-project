@@ -22,6 +22,7 @@ It works differently to the custom firmware experience on Playstation 3, where C
   - Remote GDB
   - System-level FUSE implementation (Experimental, WIP)
   - Load sprx modules + IAT + Function Hooking (Thanks theorywrong)
+  - Debug setitng fix
   - Web browser activation
   - FakeDEX support (not sure full) 
   - Remote packages fix
