@@ -1368,4 +1368,3 @@ bool Debugger2::PacketRequiresAcknowledgement(char p_Request)
     WriteLog(LL_Warn, "not implemented");
     return false;
 }
-

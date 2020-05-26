@@ -1,3 +1,4 @@
+  
 // This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
 
@@ -59,7 +60,6 @@ void Debugger2::OnAttach(Messaging::Rpc::Connection* p_Connection, const RpcTran
     WriteLog(LL_Debug, "attached to: (%d).", s_Debugger->m_AttachedPid);
 
     /*DbgThreadFull s_ThreadFull = DBG_THREAD_FULL__INIT;
-
     if (!s_Debugger->GetThreadFullInfo(curthread, &s_ThreadFull))
     {
         WriteLog(LL_Error, "get thread full info failed.");

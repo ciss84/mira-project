@@ -3,7 +3,7 @@
 
 #include "Debugger2.hpp"
 
-using namespace Mira::Plugins;;
+using namespace Mira::Plugins;
 
 void Debugger2::EscapePacket(char* p_PacketData, uint32_t p_Size)
 {
