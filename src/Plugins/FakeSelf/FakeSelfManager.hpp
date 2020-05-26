@@ -1,7 +1,7 @@
 /*
     Implemented from: https://github.com/xvortex/ps4-hen-vtx
     Ported by: kiwidog (@kd_tech_)
-
+    
     Bugfixes: SiSTRo (https://github.com/SiSTR0), SocraticBliss (https://github.com/SocraticBliss)
 */
 
