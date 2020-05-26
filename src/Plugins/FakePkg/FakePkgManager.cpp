@@ -1,7 +1,9 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
+
 /*
     Implemented from: https://github.com/xvortex/ps4-hen-vtx
     Ported by: kiwidog (@kd_tech_)
-
     Bugfixes: SiSTRo (https://github.com/SiSTR0), SocraticBliss (https://github.com/SocraticBliss)
 */
 
@@ -194,7 +196,6 @@ bool FakePkgManager::ShellCorePatch()
         WriteLog(LL_Error, "could not attach to shellcore");
         return false;
     }
-
     int32_t s_Status = 0;
     s_Ret = kwait4_t(s_Process->p_pid, &s_Status, WUNTRACED, nullptr, s_MainThread);
     WriteLog(LL_Debug, "wait4 returned (%d)", s_Ret);*/
@@ -277,8 +278,6 @@ bool FakePkgManager::ShellCorePatch()
         WriteLog(LL_Error, "ssc_enable_data_mount_patch");
         return false;
     }
-
-    
     /*Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_1_1_OFFSET), xor__eax_eax, sizeof(xor__eax_eax));
     Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_1_2_OFFSET), xor__eax_eax, sizeof(xor__eax_eax));
     Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_1_3_OFFSET), xor__eax_eax, sizeof(xor__eax_eax));
@@ -685,7 +684,6 @@ err:
 
     /*
     auto sceSblPfsSetKeys = (int(*)(uint32_t* p_Ekh, uint32_t* p_Skh, uint8_t* p_Eekpfs, Ekc* p_Eekc, unsigned int p_PubkeyVer, unsigned int p_KeyVer, PfsHeader* p_Header, size_t p_HeaderSize, unsigned int p_Type, unsigned int p_Finalized, unsigned int p_IsDisc))kdlsym(sceSblPfsSetKeys);
-
     // Call original function, if it succeeds it's not fake signed
     int s_Ret = sceSblPfsSetKeys(p_Ekh, p_Skh, p_EekPfs, p_Eekc, p_PubKeyVersion, p_KeyVersion, p_Header, p_HeaderSize, p_Type, p_Finalized, p_IsDisc);
     int s_OriginalRet = s_Ret;
@@ -709,7 +707,6 @@ err:
         .ptr = s_Ekpfs,
         .size = EKPFS_SIZE
     };
-
     RsaKey s_Key;
     memset(&s_Key, 0, sizeof(s_Key));
     s_Key.p = (uint8_t*)g_ypkg_p;
@@ -717,19 +714,15 @@ err:
     s_Key.dmp1 = (uint8_t*)g_ypkg_dmp1;
     s_Key.dmq1 = (uint8_t*)g_ypkg_dmq1;
     s_Key.iqmp = (uint8_t*)g_ypkg_iqmp;
-
     auto s_Thread = __curthread();
     auto RsaesPkcs1v15Dec2048CRT = (int (*)(RsaBuffer* out, RsaBuffer* in, RsaKey* key))kdlsym(RsaesPkcs1v15Dec2048CRT);
     auto fpu_kern_enter = (int(*)(struct thread *td, struct fpu_kern_ctx *ctx, u_int flags))kdlsym(fpu_kern_enter);
     auto fpu_kern_leave = (int (*)(struct thread *td, struct fpu_kern_ctx *ctx))kdlsym(fpu_kern_leave);
     auto sbl_pfs_sx = (struct sx*)kdlsym(sbl_pfs_sx);
-
     auto fpu_ctx = (fpu_kern_ctx*)kdlsym(fpu_kern_ctx);
-
     fpu_kern_enter(s_Thread, fpu_ctx, 0);
     s_Ret = RsaesPkcs1v15Dec2048CRT(&s_OutData, &s_InData, &s_Key);
     fpu_kern_leave(s_Thread, fpu_ctx);
-
     if (s_Ret)
     {
         WriteLog(LL_Error, "RsaesPkcs1v15Dec2048CRT returned (%x).", s_Ret);
@@ -738,58 +731,43 @@ err:
     
     auto _sx_xlock = (int (*)(struct sx *sx, int opts))kdlsym(_sx_xlock);
     auto _sx_xunlock = (int (*)(struct sx *sx))kdlsym(_sx_xunlock);
-
     //auto _sx_xlock_hard = (int(*)(struct sx *sx, uintptr_t tid, int opts, const char *file, int line))kdlsym(_sx_xlock);
     //auto _sx_xunlock_hard = (int(*)(struct sx *sx, uintptr_t tid, const char *file, int line))kdlsym(_sx_xunlock);
     auto AesCbcCfb128Encrypt = (int (*)(uint8_t* out, const uint8_t* in, size_t data_size, const uint8_t* key, int key_size, uint8_t* iv))kdlsym(AesCbcCfb128Encrypt);
-
     _sx_xlock(sbl_pfs_sx, 0);
-
     SblKeyDesc s_EncKeyDesc;
     memset(&s_EncKeyDesc, 0, sizeof(s_EncKeyDesc));
-
     s_EncKeyDesc.Pfs.obfuscatedKeyId = PFS_FAKE_OBF_KEY_ID;
     s_EncKeyDesc.Pfs.keySize = sizeof(s_EncKeyDesc.Pfs.escrowedKey);
-
     GenPfsEncKey(s_Ekpfs, p_Header->cryptSeed, s_EncKeyDesc.Pfs.escrowedKey);
-
     uint8_t s_Iv[16];
     memset(&s_Iv, 0, sizeof(s_Iv));
-
     fpu_kern_enter(s_Thread, fpu_ctx, 0);
     s_Ret = AesCbcCfb128Encrypt(s_EncKeyDesc.Pfs.escrowedKey, s_EncKeyDesc.Pfs.escrowedKey, sizeof(s_EncKeyDesc.Pfs.escrowedKey), g_FakeKeySeed, sizeof(g_FakeKeySeed) * 8, s_Iv);
     fpu_kern_leave(s_Thread, fpu_ctx);
-
     if (s_Ret)
     {
         WriteLog(LL_Error, "AesCbcCfb128Encrypt returned (%x)", s_Ret);
         _sx_xunlock(sbl_pfs_sx);
         return s_OriginalRet;
     }
-
     SblKeyDesc s_SignKeyDesc;
     memset(&s_SignKeyDesc, 0, sizeof(s_SignKeyDesc));
-
     s_SignKeyDesc.Pfs.obfuscatedKeyId = PFS_FAKE_OBF_KEY_ID;
     s_SignKeyDesc.Pfs.keySize = sizeof(s_SignKeyDesc.Pfs.escrowedKey);
-
     GenPfsSignKey(s_Ekpfs, p_Header->cryptSeed, s_SignKeyDesc.Pfs.escrowedKey);
     memset(&s_Iv, 0, sizeof(s_Iv));
-
     fpu_kern_enter(s_Thread, fpu_ctx, 0);
     s_Ret = AesCbcCfb128Encrypt(s_SignKeyDesc.Pfs.escrowedKey, s_SignKeyDesc.Pfs.escrowedKey, sizeof(s_SignKeyDesc.Pfs.escrowedKey), g_FakeKeySeed, sizeof(g_FakeKeySeed) * 8, s_Iv);
     fpu_kern_leave(s_Thread, fpu_ctx);
-
     if (s_Ret)
     {
         WriteLog(LL_Error, "AesCbcCfb128Encrypt returned (%x).", s_Ret);
         _sx_xunlock(sbl_pfs_sx);
         return s_OriginalRet;
     }
-
     auto sceSblKeymgrSetKeyForPfs = (int (*)(SblKeyDesc* key, unsigned int* handle))kdlsym(sceSblKeymgrSetKeyForPfs);
     auto sceSblKeymgrClearKey = (int (*)(uint32_t kh))kdlsym(sceSblKeymgrClearKey);
-
     s_Ret = sceSblKeymgrSetKeyForPfs(&s_EncKeyDesc, p_Ekh);
     if (s_Ret)
     {
@@ -799,7 +777,6 @@ err:
         _sx_xunlock(sbl_pfs_sx);
         return s_OriginalRet;
     }
-
     s_Ret = sceSblKeymgrSetKeyForPfs(&s_SignKeyDesc, p_Skh);
     if (s_Ret)
     {
@@ -809,7 +786,6 @@ err:
         _sx_xunlock(sbl_pfs_sx);
         return s_OriginalRet;
     }
-
     _sx_xunlock(sbl_pfs_sx);
     return 0;*/
 }
@@ -967,3 +943,6 @@ done:
     /* XXX: no need to call SX unlock because we'll jump to original code which expects SX is already locked */
     return ret;
 }
+
+    
+    
