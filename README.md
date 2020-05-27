@@ -26,7 +26,7 @@ It works differently to the custom firmware experience on Playstation 3, where C
   - Debug settings fix
   - Remote packages fix
   - PVS-Studio
-  - Spoof 7.50 PSVR (THX @Leeful74)
+  - Spoof 7.51 PSVR (THX @Leeful74)
   - flatbuffers
   - Remote registry (not sure full)
   - FakeDEX support (not sure full)
