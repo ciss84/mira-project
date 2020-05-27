@@ -28,9 +28,10 @@ It works differently to the custom firmware experience on Playstation 3, where C
   - PVS-Studio
   - Spoof 7.51 PSVR (THX @Leeful74)
   - enable debug trophies on retail
+  - FakeDEX support
   - flatbuffers
   - Remote registry (not sure full)
-  - FakeDEX support (not sure full)
+
   
 You can also:
   - Mount and decrypt local gamesaves (Thanks ChendoChap) (WIP)
