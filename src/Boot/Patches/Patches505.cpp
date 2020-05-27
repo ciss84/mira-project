@@ -234,8 +234,8 @@ void Mira::Boot::Patches::install_prerunPatches_505()
   // Firmware spoof 7.50
   kmem = (uint8_t *)&gKernelBase[0x014A63F0];
   kmem[0] = 0x00;
-  kmem[1] = 0x80;
-  kmem[2] = 0x50;
+  kmem[1] = 0x00;
+  kmem[2] = 0x51;
   kmem[3] = 0x07;
   
 #endif
