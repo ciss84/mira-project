@@ -409,6 +409,7 @@ int FakeSelfManager::SceSblAuthMgrGetSelfAuthInfoFake(SelfContext* p_Context, Se
     SelfHeader* s_Header = p_Context->header;
     auto s_Data = reinterpret_cast<const char*>(p_Context->header);
     auto s_FakeInfo = reinterpret_cast<const SelfFakeAuthInfo*>(s_Data + s_Header->headerSize + s_Header->metaSize - 0x100);
+    
     if (s_FakeInfo->size == sizeof(s_FakeInfo->info))
     {
         memcpy(p_Info, &s_FakeInfo->info, sizeof(*p_Info));
