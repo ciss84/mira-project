@@ -216,7 +216,7 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define ssu_sceSblRcMgrIsStoreMode_patch                   0x0001C090
 
 // enable debug trophies on retail
-#define ssu_enable_debug_trophies_patch                    0x006ABE39
+#define ssc_enable_debug_trophies_patch                    0x006ABE39
 
 // sceRegMgr
 #define kdlsym_addr_sceRegMgrGetInt                        0x004F9E50
