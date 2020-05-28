@@ -226,6 +226,12 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 // enable debug trophies on retail
 #define ssc_enable_debug_trophies_patch                    0x006ABE39
 
+// enable support with 7.xx external hdd
+ #define ssc_enable_support_external_hdd                   0x00593C7D
+
+// make pkgs installer working with external hdd           
+#define ssc_make_pkgs_installer_working_with_external_hdd  0x009312A1
+
 // sceRegMgr
 #define kdlsym_addr_sceRegMgrGetInt                        0x004F9E50
 #define kdlsym_addr_sceRegMgrSetInt                        0x004F8D10
