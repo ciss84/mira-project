@@ -19,11 +19,11 @@ debugtrophies::~debugtrophies()
 
 bool debugtrophies::OnLoad()
 {
-	auto dtrophyGetInt = (uint32_t(*)(uint32_t p_Id, int32_t* p_OutValue))kdlsym(dtrophyGetInt);
+	auto scedtrophyGetInt = (uint32_t(*)(uint32_t p_Id, int32_t* p_OutValue))kdlsym(scedtrophyGetInt);
 
 	int32_t rtv;
 	
-	auto s_Ret = dtrophyGetInt(0x31C0, &rtv);
+	auto s_Ret = scedtrophyGetInt(0x31C0, &rtv);
 
 	if (s_Ret != 0)
 	{
@@ -35,7 +35,7 @@ bool debugtrophies::OnLoad()
 	}
 		WriteLog(LL_Warn, "activating debug trophies");
 	
-	  s_Ret = dtrophyGetInt(0x31C0, 0);
+	  s_Ret = scedtrophyGetInt(0x31C0, 0);
     if (s_Ret < 0)
       {
         WriteLog(LL_Error, "ssc_enable_debug_trophies");
