@@ -1,4 +1,3 @@
-  
 // This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
 
@@ -171,7 +170,7 @@ void Mira::Boot::Patches::install_prerunPatches_505()
 	
 	// flatz allow mangled symbol in dynlib_do_dlsym
 	kmem = (uint8_t *)&gKernelBase[0x002AFB47];
-        kmem[0] = 0x90;
+  kmem[0] = 0x90;
 	kmem[1] = 0x90;
 	kmem[2] = 0x90;
 	kmem[3] = 0x90;
