@@ -300,6 +300,13 @@ bool FakePkgManager::ShellCorePatch()
         return false;
     }
     
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_dynlib_dlsym_in_all_processes), 8, (void*)"x8B\x48\x90\x00\x00\x01\xC1\xE9", nullptr, true);
+    if (s_Ret < 0)
+    {
+        WriteLog(LL_Error, "ssc_dynlib_dlsym_in_all_processes");
+        return false;
+    }
+    
     /*Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_1_1_OFFSET), xor__eax_eax, sizeof(xor__eax_eax));
     Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_1_2_OFFSET), xor__eax_eax, sizeof(xor__eax_eax));
     Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_1_3_OFFSET), xor__eax_eax, sizeof(xor__eax_eax));
