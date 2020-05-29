@@ -225,6 +225,9 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 // enable support with 7.xx external hdd
 #define ssc_enable_support_external_hdd_patch              0x00593C7D
 
+// enable debug trophies on retail
+#define ssc_enable_debug_trophies_patch                    0x006ABE39
+
 // SceShellUI patches - debug patches
 #define ssu_sceSblRcMgrIsAllowDebugMenuForSettings_patch   0x0001BD90
 #define ssu_sceSblRcMgrIsStoreMode_patch                   0x0001C090
@@ -236,8 +239,5 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define kdlsym_addr_sceRegMgrSetBin                        0x004FA620
 #define kdlsym_addr_sceRegMgrGetStr                        0x004FA550
 #define kdlsym_addr_sceRegMgrSetStr                        0x004FA390
-
-// scedebugtrophies
-#define kdlsym_addr_scedtrophyGetInt                       0x006ABE39
 
 #endif
