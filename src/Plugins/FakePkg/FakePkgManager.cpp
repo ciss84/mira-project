@@ -278,22 +278,15 @@ bool FakePkgManager::ShellCorePatch()
         WriteLog(LL_Error, "ssc_enable_data_mount_patch");
         return false;
     }
-    
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_enable_debug_trophies_patch), 5, (void*)"\x31\xC0\x90\x90\x90", nullptr, true);
-    if (s_Ret < 0)
-      {
-        WriteLog(LL_Error, "ssc_enable_debug_trophies_patch ");
-        return false;
-    }
 
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_make_pkgs_installer_working_with_external_hdd), 1, (void*) "\0", nullptr, true);
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_make_pkgs_installer_working_with_external_hdd), 1, (void*)"\0", nullptr, true);
     if (s_Ret < 0)
       {
         WriteLog(LL_Error, "ssc_make_pkgs_installer_working_with_external_hdd ");
         return false;
     }
     
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_enable_support_external_hdd), 1, (void*) "\xEB", nullptr, true);
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_enable_support_external_hdd), 1, (void*)"\xEB", nullptr, true);
     if (s_Ret < 0)
       {
         WriteLog(LL_Error, "ssc_enable_support_external_hdd");
