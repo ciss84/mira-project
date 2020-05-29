@@ -12,7 +12,6 @@
 #include <Plugins/EmuRegistry/EmuRegistryPlugin.hpp>
 #include <Plugins/Substitute/Substitute.hpp>
 #include <Plugins/BrowserActivator/BrowserActivator.hpp>
-#include <Plugins/debugtrophies/debugtrophies.hpp>
 #include <Plugins/SyscallGuard/SyscallGuardPlugin.hpp>
 
 // Utility functions
@@ -36,7 +35,6 @@ PluginManager::PluginManager() :
     m_EmuRegistry(nullptr),
     m_Substitute(nullptr),
     m_BrowserActivator(nullptr),
-    m_debugtrophies(nullptr),
     m_SyscallGuard(nullptr)
 {
     // Hushes error: private field 'm_FileManager' is not used [-Werror,-Wunused-private-field]
@@ -150,15 +148,6 @@ bool PluginManager::OnLoad()
             s_Success = false;
             break;
         }
-        
-        // Initialize debugtrophies
-        m_debugtrophies = new Mira::Plugins::debugtrophies();
-        if (m_debugtrophies == nullptr)
-        {
-            WriteLog(LL_Error, "could not allocate debug trophies activator.");
-            s_Success = false;
-            break;
-        }
 
     } while (false);
 
@@ -202,12 +191,6 @@ bool PluginManager::OnLoad()
     {
         if (!m_BrowserActivator->OnLoad())
             WriteLog(LL_Error, "could not load browser activator.");
-    }
-    
-    if (m_debugtrophies)
-    {
-        if (!m_debugtrophies->OnLoad())
-            WriteLog(LL_Error, "could not load debug trophies activator.");
     }
 
     return s_Success;
@@ -354,18 +337,6 @@ bool PluginManager::OnUnload()
         delete m_BrowserActivator;
         m_BrowserActivator = nullptr;
     }
-    
-    // Delete debugtrophies
-    if (m_debugtrophies)
-    {
-        WriteLog(LL_Debug, "unloading debug trophies activator");
-        if (!m_debugtrophies->OnUnload())
-            WriteLog(LL_Error, "debug trophies activator could not unload");
-
-        // Free debugtrophies
-        delete m_debugtrophies;
-        m_debugtrophies = nullptr;
-    }
 
     // Delete the debugger
     // NOTE: Don't unload before the debugger for catch error if something wrong
@@ -453,13 +424,6 @@ bool PluginManager::OnSuspend()
         if (!m_BrowserActivator->OnSuspend())
             WriteLog(LL_Error, "browser activator suspend failed");
     }
-    
-    // Suspend debugtrophies (does nothing)
-    if (m_debugtrophies)
-    {
-        if (!m_debugtrophies->OnSuspend())
-            WriteLog(LL_Error, "debug trophies suspend failed");
-    }
 
     // Nota: Don't suspend before the debugger for catch error if something when wrong
     if (m_Debugger)
@@ -519,13 +483,6 @@ bool PluginManager::OnResume()
     {
         if (!m_BrowserActivator->OnResume())
             WriteLog(LL_Error, "browser activator resume failed");
-    }
-    
-    WriteLog(LL_Debug, "resuming debug trophies");
-    if (m_debugtrophies)
-    {
-        if (!m_debugtrophies->OnResume())
-            WriteLog(LL_Error, "debug trophies resume failed");
     }
 
     // Iterate through all of the plugins

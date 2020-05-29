@@ -272,6 +272,13 @@ bool FakePkgManager::ShellCorePatch()
         return false;
     }
     
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_enable_debug_trophies_patch), 5, (void*)"\x31\xC0\x90\x90\x90", nullptr, true);
+    if (s_Ret < 0)
+      {
+        WriteLog(LL_Error, "ssc_enable_debug_trophies_patch ");
+        return false;
+    }
+    
     s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_remote_pkg_patch), 5, (void*)"\x31\xC0\xFF\xC0\x90", nullptr, true);
     if (s_Ret < 0)
     {

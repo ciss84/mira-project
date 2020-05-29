@@ -35,7 +35,6 @@ namespace Mira
             Mira::Utils::IModule* m_EmuRegistry;
             Mira::Utils::IModule* m_Substitute;
             Mira::Utils::IModule* m_BrowserActivator;
-            Mira::Utils::IModule* m_debugtrophies;
             Mira::Utils::IModule* m_SyscallGuard;
 
         public:
@@ -44,7 +43,6 @@ namespace Mira
             Mira::Utils::IModule* GetEmulatedRegistry() { return m_EmuRegistry; }
             Mira::Utils::IModule* GetSubstitute() { return m_Substitute; }
             Mira::Utils::IModule* GetBrowserActivator() { return m_BrowserActivator; }
-            Mira::Utils::IModule* Getdebugtrophies() { return m_debugtrophies; }
             Mira::Utils::IModule* GetSyscallGuard() { return m_SyscallGuard; }
         };
     }
