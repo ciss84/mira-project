@@ -228,9 +228,6 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 // enable debug trophies on retail
 #define ssc_enable_debug_trophies_patch                    0x006ABE39
 
-// dynlib_dlsym_in_all_processes
-#define ssc_dynlib_dlsym_in_all_processes                  0x00237F3A
-
 // SceShellUI patches - debug patches
 #define ssu_sceSblRcMgrIsAllowDebugMenuForSettings_patch   0x0001BD90
 #define ssu_sceSblRcMgrIsStoreMode_patch                   0x0001C090
