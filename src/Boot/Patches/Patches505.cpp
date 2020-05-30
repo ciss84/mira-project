@@ -177,6 +177,17 @@ void Mira::Boot::Patches::install_prerunPatches_505()
 	kmem[4] = 0x90;
 	kmem[5] = 0x90;
 	
+		// allow sys_dynlib_dlsym in all processes
+	kmem = (uint8_t *)&gKernelBase[0x00237F3A];
+	kmem[0] = 0xE9;
+	kmem[1] = 0xC1;
+	kmem[2] = 0x01;
+	kmem[3] = 0x00;
+	kmem[4] = 0x00;
+	kmem[5] = 0x90;
+	kmem[6] = 0x48;
+	kmem[7] = 0x8B;
+	
 	// Enable mount for unprivileged user
 	kmem = (uint8_t *)&gKernelBase[0x001DEBFE];
 	kmem[0] = 0x90;
@@ -219,8 +230,8 @@ void Mira::Boot::Patches::install_prerunPatches_505()
 	kmem[0] = 0x90;
 	kmem[1] = 0x90;
 	
-  // Firmware spoof 7.51
-  kmem = (uint8_t *)&gKernelBase[0x014A63F0];
+  // Firmware spoof sdk reverse 7.51
+  kmem = (uint8_t *)&gKernelBase[0x0019EBC9];
   kmem[0] = 0x01;
   kmem[1] = 0x00;
   kmem[2] = 0x51;
