@@ -14,7 +14,7 @@ void OptionsBlock::SetDefaults()
     FakeSelfEnabled = true;
     FakePkgEnabled = true;
 
-    DebuggerBreakOnAttach = false;
+    DebuggerBreakOnAttach = true;
     AslrEnabled = true;
     FuseEnabled = false;
 
