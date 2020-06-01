@@ -13,6 +13,10 @@
 #define ssc_nidf_libSceDipsw_patchB                        0x0
 #define ssc_nidf_libSceDipsw_patchC                        0x0
 #define ssc_nidf_libSceDipsw_patchD                        0x0
+#define ssc_sceKernelIsGenuineCEX_patchE                   0x0
+
+// SceShellCore patches - call RemotePackages
+#define ssc_sceKernelIsGenuineCEX_B_patchA                 0x0
 
 // SceShellCore patches - use free prefix instead fake
 #define ssc_fake_to_free_patch                             0x0

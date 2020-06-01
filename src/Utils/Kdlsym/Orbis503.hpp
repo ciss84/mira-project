@@ -203,6 +203,10 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define ssc_sceKernelIsGenuineCEX_patchB                   0x0079980B
 #define ssc_sceKernelIsGenuineCEX_patchC                   0x007E5A13
 #define ssc_sceKernelIsGenuineCEX_patchD                   0x0094715B
+#define ssc_sceKernelIsGenuineCEX_patchE                   0x0
+
+// SceShellCore patches - call RemotePackages
+#define ssc_sceKernelIsGenuineCEX_B_patchA                 0x0
 
 // SceShellCore patches - call nidf_libSceDipsw
 #define ssc_nidf_libSceDipsw_patchA                        0x0016D087
