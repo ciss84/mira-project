@@ -188,7 +188,7 @@ bool FakePkgManager::ShellCorePatch()
     s_Entries = nullptr;
 
     uint8_t xor__eax_eax[5] = { 0x31, 0xC0, 0x90, 0x90, 0x90 };
-    uint8_t xor__eax_eax2[5] = { 0x31, 0xC0, 0xFF, 0xC0, 0x90 };
+    uint8_t xor__ebx_ebx[5] = { 0x31, 0xC0, 0xFF, 0xC0, 0x90 };
     
     /*
     s_Ret = kptrace_t(PT_ATTACH, s_Process->p_pid, 0, 0, s_MainThread);
@@ -236,10 +236,10 @@ bool FakePkgManager::ShellCorePatch()
         return false;
     }
     
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_sceKernelIsGenuineCEX_patchF), sizeof(xor__eax_eax2), xor__eax_eax2, nullptr, true);
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_sceKernelIsGenuineCEX_B_patchA), sizeof(xor__ebx_ebx), xor__ebx_ebx, nullptr, true);
     if (s_Ret < 0)
     {
-        WriteLog(LL_Error, "ssc_sceKernelIsGenuineCEX_patchF");
+        WriteLog(LL_Error, "ssc_sceKernelIsGenuineCEX_B_patchA");
         return false;
     }
     
