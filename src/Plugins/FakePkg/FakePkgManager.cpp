@@ -188,7 +188,6 @@ bool FakePkgManager::ShellCorePatch()
     s_Entries = nullptr;
 
     uint8_t xor__eax_eax[5] = { 0x31, 0xC0, 0x90, 0x90, 0x90 };
-    
     uint8_t xor__eax_eax2[5] = { 0x31, 0xC0, 0xFF, 0xC0, 0x90 };
     
     /*
