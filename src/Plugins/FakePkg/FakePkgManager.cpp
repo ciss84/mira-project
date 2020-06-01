@@ -188,7 +188,9 @@ bool FakePkgManager::ShellCorePatch()
     s_Entries = nullptr;
 
     uint8_t xor__eax_eax[5] = { 0x31, 0xC0, 0x90, 0x90, 0x90 };
-
+    
+    uint8_t xor__eax_eax2[5] = { 0x31, 0xC0, 0xFF, 0xC0, 0x90 };
+    
     /*
     s_Ret = kptrace_t(PT_ATTACH, s_Process->p_pid, 0, 0, s_MainThread);
     if (s_Ret < 0)
@@ -225,6 +227,20 @@ bool FakePkgManager::ShellCorePatch()
     if (s_Ret < 0)
     {
         WriteLog(LL_Error, "ssc_sceKernelIsGenuineCEX_patchD");
+        return false;
+    }
+    
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_sceKernelIsGenuineCEX_patchE), sizeof(xor__eax_eax), xor__eax_eax, nullptr, true);
+    if (s_Ret < 0)
+    {
+        WriteLog(LL_Error, "ssc_sceKernelIsGenuineCEX_patchE");
+        return false;
+    }
+    
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_sceKernelIsGenuineCEX_patchF), sizeof(xor__eax_eax2), xor__eax_eax2, nullptr, true);
+    if (s_Ret < 0)
+    {
+        WriteLog(LL_Error, "ssc_sceKernelIsGenuineCEX_patchF");
         return false;
     }
     
@@ -269,34 +285,6 @@ bool FakePkgManager::ShellCorePatch()
     if (s_Ret < 0)
     {
         WriteLog(LL_Error, "ssc_fake_to_free_patch");
-        return false;
-    }
-    
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_enable_debug_trophies_patch), 5, (void*)"\x31\xC0\x90\x90\x90", nullptr, true);
-    if (s_Ret < 0)
-      {
-        WriteLog(LL_Error, "ssc_enable_debug_trophies_patch ");
-        return false;
-    }
-    
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_remote_pkg_patch), 5, (void*)"\x31\xC0\xFF\xC0\x90", nullptr, true);
-    if (s_Ret < 0)
-    {
-        WriteLog(LL_Error, "ssc_remote_pkg_patch");
-        return false;
-    }
-
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_make_pkgs_installer_working_with_external_hdd_patch), 1, (void*)"\0", nullptr, true);
-    if (s_Ret < 0)
-      {
-        WriteLog(LL_Error, "ssc_make_pkgs_installer_working_with_external_hdd_patch ");
-        return false;
-    }
-    
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_enable_support_external_hdd_patch), 1, (void*)"\xEB", nullptr, true);
-    if (s_Ret < 0)
-      {
-        WriteLog(LL_Error, "ssc_enable_support_external_hdd_patch");
         return false;
     }
     
