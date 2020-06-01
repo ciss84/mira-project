@@ -25,10 +25,10 @@ It works differently to the custom firmware experience on Playstation 3, where C
   - Load sprx modules + IAT + Function Hooking (Thanks theorywrong)
   - Web browser activation 
   - Debug settings fix
-  - Remote packages fix
+  - Remote packages fix (5.05)
   - PVS-Studio
   - Spoof 7.51 PSVR (THX @Leeful74)
-  - enable debug trophies on retail
+  - enable debug trophies on retail (5.01 / 5.05)
   - FakeDEX support
   - flatbuffers
   - Remote registry (not sure full)
