@@ -275,13 +275,13 @@ There is a list of available platforms that Mira can be configured with located 
 |`MIRA_PLATFORM_ORBIS_BSD_176`| (Unsupported) 1.76 |
 |`MIRA_PLATFORM_ORBIS_BSD_355`| (Unsupported) 3.55 |
 |`MIRA_PLATFORM_ORBIS_BSD_400`| (Unsupported) 4.00 |
-|`MIRA_PLATFORM_ORBIS_BSD_405`| (Unsupported) 4.05 |
+|`MIRA_PLATFORM_ORBIS_BSD_405`| (Supported) 4.05 |
 |`MIRA_PLATFORM_ORBIS_BSD_407`| (Unsupported) 4.07 |
-|`MIRA_PLATFORM_ORBIS_BSD_455`| (Unsupported) 4.55 |
-|`MIRA_PLATFORM_ORBIS_BSD_474`| (Unsupported) 4.74 |
+|`MIRA_PLATFORM_ORBIS_BSD_455`| (Supported) 4.55 |
+|`MIRA_PLATFORM_ORBIS_BSD_474`| (Supported) 4.74 |
 |`MIRA_PLATFORM_ORBIS_BSD_500`| (Unsupported) 5.00 |
-|`MIRA_PLATFORM_ORBIS_BSD_501`| (Unsupported) 5.01 |
-|`MIRA_PLATFORM_ORBIS_BSD_503`| (Unsupported) 5.03 |
+|`MIRA_PLATFORM_ORBIS_BSD_501`| (Supported) 5.01 |
+|`MIRA_PLATFORM_ORBIS_BSD_503`| (Supported) 5.03 |
 |`MIRA_PLATFORM_ORBIS_BSD_505`| (Supported) 5.05 |
 |`MIRA_PLATFORM_ORBIS_BSD_550`| (No Support) 5.50 |
 |`MIRA_PLATFORM_ORBIS_BSD_553`| (No Support) 5.53 |
