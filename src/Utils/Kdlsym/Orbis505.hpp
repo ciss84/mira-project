@@ -204,6 +204,8 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define ssc_sceKernelIsGenuineCEX_patchB                   0x0079980B
 #define ssc_sceKernelIsGenuineCEX_patchC                   0x007E5A13
 #define ssc_sceKernelIsGenuineCEX_patchD                   0x0094715B
+#define ssc_sceKernelIsGenuineCEX_patchE                   0x006ABE39
+#define ssc_sceKernelIsGenuineCEX_patchF                   0x00319A53
 
 // SceShellCore patches - call nidf_libSceDipsw
 #define ssc_nidf_libSceDipsw_patchA                        0x0016D087
@@ -216,17 +218,11 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 // SceShellCore patches - use free prefix instead fake
 #define ssc_fake_to_free_patch                             0x00EA96A7
 
-// Sceremotepkg
-#define ssc_remote_pkg_patch                               0x00319A53
-
 // make pkgs installer working with external hdd
 #define ssc_make_pkgs_installer_working_with_external_hdd_patch  0x009312A1
 
 // enable support with 7.xx external hdd
-#define ssc_enable_support_external_hdd_patch              0x00593C7D
-
-// enable debug trophies on retail
-#define ssc_enable_debug_trophies_patch                    0x006ABE39
+#define ssc_enable_support_external_hdd_patch              0x00593C7D               
 
 // SceShellUI patches - debug patches
 #define ssu_sceSblRcMgrIsAllowDebugMenuForSettings_patch   0x0001BD90
