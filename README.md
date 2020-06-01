@@ -8,9 +8,8 @@ It works differently to the custom firmware experience on Playstation 3, where C
 | Firmware Version | Passing |
 | ------ | ------ |
 |4.05|[![Build Status](https://ci.appveyor.com/api/projects/status/github/OpenOrbis/mira-project)](https://ci.appveyor.com/api/projects/status/github/OpenOrbis/mira-project)|
-|4.55|[![Build Status](https://ci.appveyor.com/api/projects/status/github/OpenOrbis/mira-project)](https://ci.appveyor.com/api/projects/status/github/OpenOrbis/mira-project)|
-|4.74|[![Build Status](https://ci.appveyor.com/api/projects/status/github/OpenOrbis/mira-project)](https://ci.appveyor.com/api/projects/status/github/OpenOrbis/mira-project)|
-|5.01|[![Build Status](https://ci.appveyor.com/api/projects/status/github/OpenOrbis/mira-project)](https://ci.appveyor.com/api/projects/status/github/OpenOrbis/mira-project)|
+|4.55|![](https://github.com/OpenOrbis/mira-project/workflows/Orbis501/badge.svg)
+|4.74|![](https://github.com/OpenOrbis/mira-project/workflows/Orbis501/badge.svg)
 |5.01|![](https://github.com/OpenOrbis/mira-project/workflows/Orbis501/badge.svg)
 |5.05|![](https://github.com/OpenOrbis/mira-project/workflows/Orbis505/badge.svg)
 
