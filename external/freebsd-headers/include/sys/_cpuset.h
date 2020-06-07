@@ -1,3 +1,8 @@
+﻿/* SIE CONFIDENTIAL
+ * PlayStation(R)4 Programmer Tool Runtime Library Release 05.508.001
+ * Copyright (C) 2015 Sony Interactive Entertainment Inc.
+ * All Rights Reserved.
+ */
 /*-
  * Copyright (c) 2008,	Jeffrey Roberson <jeff@freebsd.org>
  * All rights reserved.
@@ -26,11 +31,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: release/9.0.0/sys/sys/_cpuset.h 222813 2011-06-07 08:46:13Z attilio $
+ * $FreeBSD$
  */
 
 #ifndef _SYS__CPUSET_H_
 #define	_SYS__CPUSET_H_
+
+#include <sys/param.h>
 
 #ifdef _KERNEL
 #define	CPU_SETSIZE	MAXCPU

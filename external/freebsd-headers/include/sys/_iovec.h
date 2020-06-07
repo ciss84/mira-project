@@ -1,3 +1,8 @@
+﻿/* SIE CONFIDENTIAL
+ * PlayStation(R)4 Programmer Tool Runtime Library Release 05.508.001
+ * Copyright (C) 2015 Sony Interactive Entertainment Inc.
+ * All Rights Reserved.
+ */
 /*-
  * Copyright (c) 1982, 1986, 1993, 1994
  *	The Regents of the University of California.  All rights reserved.
@@ -27,18 +32,14 @@
  * SUCH DAMAGE.
  *
  *	@(#)uio.h	8.5 (Berkeley) 2/22/94
- * $FreeBSD: release/9.0.0/sys/sys/_iovec.h 139825 2005-01-07 02:29:27Z imp $
+ * $FreeBSD$
  */
 
 #ifndef _SYS__IOVEC_H_
 #define	_SYS__IOVEC_H_
 
 #include <sys/_types.h>
-
-#ifndef _SIZE_T_DECLARED
-typedef	__size_t	size_t;
-#define	_SIZE_T_DECLARED
-#endif
+#include <sys/_types/_size_t.h>
 
 struct iovec {
 	void	*iov_base;	/* Base address. */

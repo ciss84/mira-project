@@ -1,4 +1,4 @@
-/*-
+﻿/*-
  * Copyright (c) 2002 David E. O'Brien.  All rights reserved.
  * Copyright (c) 1992, 1993
  *	The Regents of the University of California.  All rights reserved.
@@ -36,7 +36,7 @@
  * SUCH DAMAGE.
  *
  *	@(#)param.h	8.1 (Berkeley) 6/10/93
- * $FreeBSD: release/9.0.0/sys/amd64/include/param.h 224217 2011-07-19 13:00:30Z attilio $
+ * $FreeBSD$
  */
 
 
@@ -89,25 +89,28 @@
 #define	CACHE_LINE_SIZE		(1 << CACHE_LINE_SHIFT)
 
 /* Size of the level 1 page table units */
-#define NPTEPG		(PAGE_SIZE/(sizeof (pt_entry_t)))
+#define NPTEPG		(PHYS_PAGE_SIZE/(sizeof (pt_entry_t)))
 #define	NPTEPGSHIFT	9		/* LOG2(NPTEPG) */
+#define PHYS_PAGE_SHIFT	12		/* LOG2(PHYS_PAGE_SIZE) */
+#define PHYS_PAGE_SIZE	(1<<PHYS_PAGE_SHIFT)
+#define PHYS_PAGE_MASK	(PHYS_PAGE_SIZE-1)
 #define PAGE_SHIFT	14		/* LOG2(PAGE_SIZE) */
 #define PAGE_SIZE	(1<<PAGE_SHIFT)	/* bytes/page */
 #define PAGE_MASK	(PAGE_SIZE-1)
 /* Size of the level 2 page directory units */
-#define	NPDEPG		(PAGE_SIZE/(sizeof (pd_entry_t)))
+#define	NPDEPG		(PHYS_PAGE_SIZE/(sizeof (pd_entry_t)))
 #define	NPDEPGSHIFT	9		/* LOG2(NPDEPG) */
 #define	PDRSHIFT	21              /* LOG2(NBPDR) */
 #define	NBPDR		(1<<PDRSHIFT)   /* bytes/page dir */
 #define	PDRMASK		(NBPDR-1)
 /* Size of the level 3 page directory pointer table units */
-#define	NPDPEPG		(PAGE_SIZE/(sizeof (pdp_entry_t)))
+#define	NPDPEPG		(PHYS_PAGE_SIZE/(sizeof (pdp_entry_t)))
 #define	NPDPEPGSHIFT	9		/* LOG2(NPDPEPG) */
 #define	PDPSHIFT	30		/* LOG2(NBPDP) */
 #define	NBPDP		(1<<PDPSHIFT)	/* bytes/page dir ptr table */
 #define	PDPMASK		(NBPDP-1)
 /* Size of the level 4 page-map level-4 table units */
-#define	NPML4EPG	(PAGE_SIZE/(sizeof (pml4_entry_t)))
+#define	NPML4EPG	(PHYS_PAGE_SIZE/(sizeof (pml4_entry_t)))
 #define	NPML4EPGSHIFT	9		/* LOG2(NPML4EPG) */
 #define	PML4SHIFT	39		/* LOG2(NBPML4) */
 #define	NBPML4		(1UL<<PML4SHIFT)/* bytes/page map lev4 table */
@@ -115,10 +118,12 @@
 
 #define	MAXPAGESIZES	3	/* maximum number of supported page sizes */
 
-#define IOPAGES	2		/* pages of i/o permission bitmap */
+/* pages of i/o permission bitmap */
+#define IOPAGES	(round_page(2 * PHYS_PAGE_SIZE) / PAGE_SIZE)
 
+/* pages of kstack (with pcb) */
 #ifndef	KSTACK_PAGES
-#define	KSTACK_PAGES	4	/* pages of kstack (with pcb) */
+#define	KSTACK_PAGES	atop(PHYS_PAGE_SIZE * 4)
 #endif
 #define	KSTACK_GUARD_PAGES 1	/* pages of kstack guard; 0 disables */
 
@@ -135,6 +140,9 @@
  */
 #define	round_page(x)	((((unsigned long)(x)) + PAGE_MASK) & ~(PAGE_MASK))
 #define	trunc_page(x)	((unsigned long)(x) & ~(PAGE_MASK))
+#define	round_phys_page(x) ((((unsigned long)(x)) + PHYS_PAGE_MASK) \
+                            & ~(PHYS_PAGE_MASK))
+#define	trunc_phys_page(x) ((unsigned long)(x) & ~(PHYS_PAGE_MASK))
 #define trunc_2mpage(x)	((unsigned long)(x) & ~PDRMASK)
 #define round_2mpage(x)	((((unsigned long)(x)) + PDRMASK) & ~PDRMASK)
 #define trunc_1gpage(x)	((unsigned long)(x) & ~PDPMASK)

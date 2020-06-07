@@ -1,3 +1,8 @@
+﻿/* SIE CONFIDENTIAL
+ * PlayStation(R)4 Programmer Tool Runtime Library Release 05.508.001
+ * Copyright (C) 2015 Sony Interactive Entertainment Inc.
+ * All Rights Reserved.
+ */
 /*-
  * Copyright (c) 2002 Mike Barcroft <mike@FreeBSD.org>
  * Copyright (c) 1990, 1993
@@ -33,15 +38,13 @@
  *
  *	From: @(#)ansi.h	8.2 (Berkeley) 1/4/94
  *	From: @(#)types.h	8.3 (Berkeley) 1/5/94
- * $FreeBSD: release/9.0.0/sys/amd64/include/_types.h 222813 2011-06-07 08:46:13Z attilio $
+ * $FreeBSD$
  */
 
 #ifndef _MACHINE__TYPES_H_
 #define	_MACHINE__TYPES_H_
 
-#ifndef _SYS_CDEFS_H_
-#error this file needs sys/cdefs.h as a prerequisite
-#endif
+#include <sys/cdefs.h>
 
 #define __NO_STRICT_ALIGNMENT
 
@@ -54,8 +57,8 @@ typedef	short			__int16_t;
 typedef	unsigned short		__uint16_t;
 typedef	int			__int32_t;
 typedef	unsigned int		__uint32_t;
-typedef	long long			__int64_t;
-typedef	unsigned long long		__uint64_t;
+typedef	long			__int64_t;
+typedef	unsigned long		__uint64_t;
 
 /*
  * Standard type definitions.
@@ -106,11 +109,6 @@ typedef	__uint64_t	__vm_size_t;
 typedef	__builtin_va_list	__va_list;	/* internally known to gcc */
 #elif defined(lint)
 typedef	char *			__va_list;	/* pretend */
-#endif
-#if defined(__GNUC_VA_LIST_COMPATIBILITY) && !defined(__GNUC_VA_LIST) \
-    && !defined(__NO_GNUC_VA_LIST)
-#define __GNUC_VA_LIST
-typedef __va_list		__gnuc_va_list;	/* compatibility w/GNU headers*/
 #endif
 
 #endif /* !_MACHINE__TYPES_H_ */

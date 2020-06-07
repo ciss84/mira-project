@@ -200,42 +200,54 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define kdlsym_addr_mountpfs__sceSblPfsSetKeys_hookB                          0x006AAD04
 
 // SceShellCore patches - call sceKernelIsGenuineCEX
-#define ssc_sceKernelIsGenuineCEX_patchA                   0x0016D05B
-#define ssc_sceKernelIsGenuineCEX_patchB                   0x0079980B
-#define ssc_sceKernelIsGenuineCEX_patchC                   0x007E5A13
-#define ssc_sceKernelIsGenuineCEX_patchD                   0x0094715B
-#define ssc_sceKernelIsGenuineCEX_patchE                   0x006ABE39
+#define ssc_sceKernelIsGenuineCEX_patchA                    0x0016D05B
+#define ssc_sceKernelIsGenuineCEX_patchB                    0x0079980B
+#define ssc_sceKernelIsGenuineCEX_patchC                    0x007E5A13
+#define ssc_sceKernelIsGenuineCEX_patchD                    0x0094715B
+#define ssc_sceKernelIsGenuineCEX_patchE                    0x006ABE39
 
 // SceShellCore patches - call RemotePackages
-#define ssc_sceKernelIsGenuineCEX_B_patchA                 0x00319A53
+#define ssc_sceKernelIsGenuineCEX_patchF                    0x00319A53
+
+// enable savedata mounting
+#define ssc_sceKernelIsGenuineCEX_patchG                    0x00D42843
+#define ssc_sceKernelIsGenuineCEX_patchH                    0x007E4DC0
+#define ssc_sceKernelIsGenuineCEX_patchI                    0x00068BA0
+#define ssc_sceKernelIsGenuineCEX_patchJ                    0x0006A349
+#define ssc_sceKernelIsGenuineCEX_patchK                    0x000686AE
+#define ssc_sceKernelIsGenuineCEX_patchL                    0x00067FCA
+#define ssc_sceKernelIsGenuineCEX_patchM                    0x00067798
+#define ssc_sceKernelIsGenuineCEX_patchN                    0x000679D5
+#define ssc_sceKernelIsGenuineCEX_patchO                    0x000C54F0
 
 // SceShellCore patches - call nidf_libSceDipsw
-#define ssc_nidf_libSceDipsw_patchA                        0x0016D087
-#define ssc_nidf_libSceDipsw_patchB                        0x0023747B
-#define ssc_nidf_libSceDipsw_patchC                        0x00799837
-#define ssc_nidf_libSceDipsw_patchD                        0x00947187
+#define ssc_nidf_libSceDipsw_patchA                         0x0016D087
+#define ssc_nidf_libSceDipsw_patchB                         0x0023747B
+#define ssc_nidf_libSceDipsw_patchC                         0x00799837
+#define ssc_nidf_libSceDipsw_patchD                         0x00947187
 
-#define ssc_enable_fakepkg_patch                           0x003E0602
+#define ssc_enable_fakepkg_patch                            0x003E0602
 
 // SceShellCore patches - use free prefix instead fake
-#define ssc_fake_to_free_patch                             0x00EA96A7
+#define ssc_fake_to_free_patch                              0x00EA96A7
 
 // make pkgs installer working with external hdd
-#define ssc_make_pkgs_installer_working_with_external_hdd_patch  0x009312A1
+#define ssc_make_pkgs_installer_working_with_external_hdd   0x009312A1
 
 // enable support with 7.xx external hdd
-#define ssc_enable_support_external_hdd_patch              0x00593C7D               
+#define ssc_enable_support_external_hdd                     0x00593C7D               
 
 // SceShellUI patches - debug patches
-#define ssu_sceSblRcMgrIsAllowDebugMenuForSettings_patch   0x0001BD90
-#define ssu_sceSblRcMgrIsStoreMode_patch                   0x0001C090
+#define ssu_sceSblRcMgrIsAllowDebugMenuForSettings_patch    0x0001BD90
+#define ssu_sceSblRcMgrIsStoreMode_patch                    0x0001C090
 
 // sceRegMgr
-#define kdlsym_addr_sceRegMgrGetInt                        0x004F9E50
-#define kdlsym_addr_sceRegMgrSetInt                        0x004F8D10
-#define kdlsym_addr_sceRegMgrGetBin                        0x004FA6D0
-#define kdlsym_addr_sceRegMgrSetBin                        0x004FA620
-#define kdlsym_addr_sceRegMgrGetStr                        0x004FA550
-#define kdlsym_addr_sceRegMgrSetStr                        0x004FA390
+#define kdlsym_addr_sceRegMgrGetIntA                        0x01792540
+#define kdlsym_addr_sceRegMgrGetInt                         0x004F9E50
+#define kdlsym_addr_sceRegMgrSetInt                         0x004F8D10
+#define kdlsym_addr_sceRegMgrGetBin                         0x004FA6D0
+#define kdlsym_addr_sceRegMgrSetBin                         0x004FA620
+#define kdlsym_addr_sceRegMgrGetStr                         0x004FA550
+#define kdlsym_addr_sceRegMgrSetStr                         0x004FA390
 
 #endif

@@ -1,3 +1,8 @@
+﻿/* SIE CONFIDENTIAL
+ * PlayStation(R)4 Programmer Tool Runtime Library Release 05.508.001
+ * Copyright (C) 2015 Sony Interactive Entertainment Inc.
+ * All Rights Reserved.
+ */
 /*-
  * Copyright (c) 1989, 1993
  *	The Regents of the University of California.  All rights reserved.
@@ -27,13 +32,14 @@
  * SUCH DAMAGE.
  *
  *	@(#)unistd.h	8.2 (Berkeley) 1/7/94
- * $FreeBSD: release/9.0.0/sys/sys/unistd.h 224987 2011-08-18 22:51:30Z jonathan $
+ * $FreeBSD$
  */
 
 #ifndef _SYS_UNISTD_H_
 #define	_SYS_UNISTD_H_
 
 #include <sys/cdefs.h>
+#include <sys/_defines/_seek.h>
 
 /*
  * POSIX options and option groups we unconditionally do or don't
@@ -103,11 +109,6 @@
 #define	R_OK		0x04	/* test for read permission */
 
 /* whence values for lseek(2) */
-#ifndef SEEK_SET
-#define	SEEK_SET	0	/* set file offset to offset */
-#define	SEEK_CUR	1	/* set file offset to current plus offset */
-#define	SEEK_END	2	/* set file offset to EOF plus offset */
-#endif
 #if __BSD_VISIBLE
 #define	SEEK_DATA	3	/* set file offset to next data past offset */
 #define	SEEK_HOLE	4	/* set file offset to next hole past offset */

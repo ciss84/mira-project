@@ -1,3 +1,8 @@
+﻿/* SIE CONFIDENTIAL
+ * PlayStation(R)4 Programmer Tool Runtime Library Release 05.508.001
+ * Copyright (C) 2015 Sony Interactive Entertainment Inc.
+ * All Rights Reserved.
+ */
 /*-
  * Copyright (c) 1982, 1986, 1993, 1994
  *	The Regents of the University of California.  All rights reserved.
@@ -27,7 +32,7 @@
  * SUCH DAMAGE.
  *
  *	@(#)uio.h	8.5 (Berkeley) 2/22/94
- * $FreeBSD: release/9.0.0/sys/sys/uio.h 223889 2011-07-09 15:21:10Z kib $
+ * $FreeBSD$
  */
 
 #ifndef _SYS_UIO_H_
@@ -36,16 +41,8 @@
 #include <sys/cdefs.h>
 #include <sys/_types.h>
 #include <sys/_iovec.h>
-
-#ifndef _SSIZE_T_DECLARED
-typedef	__ssize_t	ssize_t;
-#define	_SSIZE_T_DECLARED
-#endif
-
-#ifndef _OFF_T_DECLARED
-typedef	__off_t	off_t;
-#define	_OFF_T_DECLARED
-#endif
+#include <sys/_types/_ssize_t.h>
+#include <sys/_types/_off_t.h>
 
 #if __BSD_VISIBLE
 enum	uio_rw { UIO_READ, UIO_WRITE };
