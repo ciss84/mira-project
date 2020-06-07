@@ -359,10 +359,10 @@ bool FakePkgManager::ShellCorePatch()
         return false;
     }
     
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + kdlsym_addr_sceRegMgrGetIntA), 1, (void*)  "\1", nullptr, true);
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + kdlsym_addr_sceRegMgrGetInt), 1, (void*)  "\1", nullptr, true);
     if (s_Ret < 0)
       {
-        WriteLog(LL_Error, "kdlsym_addr_sceRegMgrGetIntA");
+        WriteLog(LL_Error, "kdlsym_addr_sceRegMgrGetInt");
         return false;
     }
     

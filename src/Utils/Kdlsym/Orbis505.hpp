@@ -218,7 +218,6 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define ssc_sceKernelIsGenuineCEX_patchL                    0x00067FCA
 #define ssc_sceKernelIsGenuineCEX_patchM                    0x00067798
 #define ssc_sceKernelIsGenuineCEX_patchN                    0x000679D5
-#define ssc_sceKernelIsGenuineCEX_patchO                    0x000C54F0
 
 // SceShellCore patches - call nidf_libSceDipsw
 #define ssc_nidf_libSceDipsw_patchA                         0x0016D087
@@ -242,7 +241,6 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define ssu_sceSblRcMgrIsStoreMode_patch                    0x0001C090
 
 // sceRegMgr
-#define kdlsym_addr_sceRegMgrGetIntA                        0x01792540
 #define kdlsym_addr_sceRegMgrGetInt                         0x004F9E50
 #define kdlsym_addr_sceRegMgrSetInt                         0x004F8D10
 #define kdlsym_addr_sceRegMgrGetBin                         0x004FA6D0
