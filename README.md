@@ -1,4 +1,4 @@
-# Mira Project - PlayStation 4 Homebrew Tools
+# Mira Project - PlayStation 4 Homebrew Tools mod Mugiwara
 
 The Mira Project is a set of tools that grants you more power and control over your jailbroken Playstation 4. It is the result of all the hard work by the OpenOrbis team.
 
