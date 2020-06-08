@@ -12,25 +12,43 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 
 #define kdlsym_addr__mtx_lock_flags                        0x00401CD0 //	FFFFFFFF82696190
 #define kdlsym_addr__mtx_lock_sleep                        0x00401D70 //	FFFFFFFF82696230
+#define kdlsym_addr__mtx_lock_spin_flags                   0x0
 #define kdlsym_addr__mtx_unlock_flags                      0x00401FA0 //	FFFFFFFF82696460
 #define kdlsym_addr__mtx_unlock_sleep                      0x004020A0 //	FFFFFFFF82696560
+#define kdlsym_addr__mtx_unlock_spin_flags                 0x0
 #define kdlsym_addr__sceSblAuthMgrGetSelfInfo              0x0063CD40 //	FFFFFFFF8285CC70
+#define kdlsym_addr__sceSblAuthMgrSmStart                  0x0
+#define kdlsym_addr__sx_init_flags                         0x0
 #define kdlsym_addr__sx_slock                              0x000F5C30 //	FFFFFFFF822424E0
 #define kdlsym_addr__sx_sunlock                            0x000F5F10 //	FFFFFFFF822427C0
 #define kdlsym_addr__sx_xlock                              0x000F5E10 //	FFFFFFFF822426C0
 #define kdlsym_addr__sx_xunlock                            0x000F5FD0 //	FFFFFFFF82242880
+#define kdlsym_addr__thread_lock_flags                     0x0
 #define kdlsym_addr__vm_map_lock_read                      0x0019F140 //	FFFFFFFF8264C990
 #define kdlsym_addr__vm_map_unlock_read                    0x0019F190 //	FFFFFFFF8264C9E0
 #define kdlsym_addr_AesCbcCfb128Decrypt                    0x003A2E00 //	FFFFFFFF825C01A0
 #define kdlsym_addr_AesCbcCfb128Encrypt                    0x003A2BD0 //	FFFFFFFF825BFF70
 #define kdlsym_addr_allproc                                0x02382FF8 //	FFFFFFFF844BBE80
 #define kdlsym_addr_allproc_lock                           0x02382F98 //	FFFFFFFF844BBE20
+#define kdlsym_addr_avcontrol_sleep                        0x0
+#define kdlsym_addr_cloneuio                               0x0
+#define kdlsym_addr_console_cdev                           0x0
+#define kdlsym_addr_console_write                          0x0
+#define kdlsym_addr_contigfree                             0x0
+#define kdlsym_addr_contigmalloc                           0x0
 #define kdlsym_addr_copyin                                 0x001EA710 
 #define kdlsym_addr_copyinstr                              0x001EAB40 //	FFFFFFFF825C18A0
+#define kdlsym_addr_copyout                                0x0
 #define kdlsym_addr_critical_enter                         0x0028E7A0 //	FFFFFFFF824A9CF0
 #define kdlsym_addr_critical_exit                          0x0028E7B0 //	FFFFFFFF824A9D00
+#define kdlsym_addr_deci_tty_write                         0x0
+#define kdlsym_addr_destroy_dev                            0x0
 #define kdlsym_addr_dmem_start_app_process                 0x002469F0 //	FFFFFFFF8227CC90
-#define kdlsym_addr_eventhandler_register                  0x001EC400 //	FFFFFFFF82602AD0
+#define kdlsym_addr_dynlib_do_dlsym                        0x0
+#define kdlsym_addr_dynlib_find_obj_by_handle              0x0
+#define kdlsym_addr_eventhandler_deregister                0x0
+#define kdlsym_addr_eventhandler_find_list                 0x0
+#define kdlsym_addr_eventhandler_register                  0x001EC400 //  FFFFFFFF82602AD0
 #define kdlsym_addr_exec_new_vmspace                       0x0038AD10 //	FFFFFFFF8231AA80
 #define kdlsym_addr_faultin                                0x00006DD0 //	FFFFFFFF825E0060
 #define kdlsym_addr_fget_unlocked                          0x000C34B0 //	FFFFFFFF825E0060
@@ -38,31 +56,47 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define kdlsym_addr_fpu_kern_enter                         0x001BFF90 //	FFFFFFFF8256B330
 #define kdlsym_addr_fpu_kern_leave                         0x001C0090 //	FFFFFFFF8256B420
 #define kdlsym_addr_free                                   0x0010E460 //	FFFFFFFF8220D9A0
+#define kdlsym_addr_gdt                                    0x0
 #define kdlsym_addr_gpu_va_page_list                       0x0271E208 //	FFFFFFFF8486AC68
 #define kdlsym_addr_icc_nvs_read                           0x00395830 //	FFFFFFFF826640A0
 #define kdlsym_addr_kern_close                             0x000C0EC0 //	FFFFFFFF82449050
+#define kdlsym_addr_kern_ioctl                             0x0
 #define kdlsym_addr_kern_mkdirat                           0x00340BD0 //	FFFFFFFF826A3730
 #define kdlsym_addr_kern_open                              0x0033B9B0 //	FFFFFFFF8269E5E0
 #define kdlsym_addr_kern_openat                            0x0033BA10 //	FFFFFFFF8269E640
 #define kdlsym_addr_kern_readv                             0x00153248
 #define kdlsym_addr_kern_reboot                            0x0010D390 //	FFFFFFFF824069A0
 #define kdlsym_addr_kern_sysents                           0x0107C610
+#define kdlsym_addr_kern_thr_create                        0x0
 #define kdlsym_addr_kernel_map                             0x01AC60E0
+#define kdlsym_addr_kernel_mount                           0x0
+#define kdlsym_addr_killproc                               0x0
 #define kdlsym_addr_kmem_alloc                             0x000FCC80 //	FFFFFFFF82450380
 #define kdlsym_addr_kmem_free                              0x000FCE50 //	FFFFFFFF82450550
 #define kdlsym_addr_kproc_create                           0x00137DF0 //	FFFFFFFF8228A0A0
+#define kdlsym_addr_kproc_exit                             0x0
 #define kdlsym_addr_kthread_add                            0x00138360 //	FFFFFFFF8228A600
 #define kdlsym_addr_kthread_exit                           0x00138640 //	FFFFFFFF8228A8F0
+#define kdlsym_addr_M_IOV                                  0x0
+#define kdlsym_addr_M_LINKER                               0x0
 #define kdlsym_addr_M_MOUNT                                0x019BF300 //	FFFFFFFF83C90CA0
 #define kdlsym_addr_M_TEMP                                 0x014B4110 //	FFFFFFFF83740EB0
+#define kdlsym_addr_make_dev_p                             0x0
 #define kdlsym_addr_malloc                                 0x0010E250 //	FFFFFFFF8220D7A0
 #define kdlsym_addr_memcmp                                 0x00050AC0 //	FFFFFFFF82407A90
 #define kdlsym_addr_memcpy                                 0x001EA530 //	FFFFFFFF825C1200
+#define kdlsym_addr_memmove                                0x0
 #define kdlsym_addr_memset                                 0x003205C0	
 #define kdlsym_addr_mini_syscore_self_binary               0x014C9D48	
+#define kdlsym_addr_mount_arg                              0x0
+#define kdlsym_addr_mount_argb                             0x0
+#define kdlsym_addr_mount_argf                             0x0
+#define kdlsym_addr_mtx_destroy                            0x0
 #define kdlsym_addr_mtx_init                               0x00402780 //	FFFFFFFF82696C30
 #define kdlsym_addr_mtx_lock_sleep                         0x00401D70 //	FFFFFFFF82696230
 #define kdlsym_addr_mtx_unlock_sleep                       0x004020A0 //	FFFFFFFF82696560
+#define kdlsym_addr_name_to_nids                           0x0
+#define kdlsym_addr_pause                                  0x0
 #define kdlsym_addr_pfind                                  0x004034E0 //	FFFFFFFF8253D8E0
 #define kdlsym_addr_pmap_activate                          0x002EAFD0 //	FFFFFFFF8225A280
 #define kdlsym_addr_printf                                 0x00436040 //	FFFFFFFF82322ED0
@@ -74,7 +108,13 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define kdlsym_addr_rootvnode                              0x022C1A70 //	FFFFFFFF84500320
 #define kdlsym_addr_RsaesPkcs1v15Dec2048CRT                0x001FD7D0 //	?? can't backtrace to it on 650
 #define kdlsym_addr_sbl_eap_internal_partition_key         0x02790C90 //	FFFFFFFF848DCCD0
+#define kdlsym_addr_sbl_keymgr_buf_gva                     0x0
+#define kdlsym_addr_sbl_keymgr_buf_va                      0x0
+#define kdlsym_addr_sbl_keymgr_key_rbtree                  0x0
+#define kdlsym_addr_sbl_keymgr_key_slots                   0x0
 #define kdlsym_addr_sbl_pfs_sx                             0x0271E5D8 //	FFFFFFFF84879040
+#define kdlsym_addr_sbl_drv_msg_mtx                        0x0
+#define kdlsym_addr_sceSblACMgrGetPathId                   0x0
 #define kdlsym_addr_sceSblAuthMgrIsLoadable2               0x0063C4F0 //	FFFFFFFF8285C400
 #define kdlsym_addr_sceSblAuthMgrSmStart                   0x006418E0 //	FFFFFFFF8285D0F0
 #define kdlsym_addr_sceSblAuthMgrSmVerifyHeader            0x00642B40 //	FFFFFFFF8285EC50
@@ -83,17 +123,22 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define kdlsym_addr_sceSblGetEAPInternalPartitionKey       0x006256E0 //	FFFFFFFF8283F190
 #define kdlsym_addr_sceSblKeymgrClearKey                   0x0062DB10 //	FFFFFFFF828497C0
 #define kdlsym_addr_sceSblKeymgrSetKeyForPfs               0x0062D780 //	FFFFFFFF82849440
+#define kdlsym_addr_sceSblKeymgrSetKeyStorage              0x0
 #define kdlsym_addr_sceSblKeymgrSmCallfunc                 0x0062E2A0 //	FFFFFFFF82849010
 #define kdlsym_addr_sceSblPfsSetKeys                       0x0061EFA0 //	FFFFFFFF82841160
+#define kdlsym_addr_sceSblRngGetRandomNumber               0x0
 #define kdlsym_addr_sceSblServiceMailbox                   0x00632540 //	FFFFFFFF8284C860
 #define kdlsym_addr_sceSblACMgrGetPathId                   0x0
 #define kdlsym_addr_self_orbis_sysvec                      0x019BBCD0
 #define kdlsym_addr_Sha256Hmac                             0x002D55B0 //	FFFFFFFF825357C0
 #define kdlsym_addr_snprintf                               0x00436350 //	FFFFFFFF823231E0
+#define kdlsym_addr_spinlock_exit                          0x0
+#define kdlsym_addr_sprintf                                0x0
 #define kdlsym_addr_sscanf                                 0x00175900 //	FFFFFFFF82443460
 #define kdlsym_addr_strcmp                                 0x001D0FD0 //	FFFFFFFF82541460
 #define kdlsym_addr_strdup                                 0x001C1C30 //	FFFFFFFF82450110
 #define kdlsym_addr_strlen                                 0x003B71A0 //	FFFFFFFF82443030
+#define kdlsym_addr_strncmp                                0x0
 #define kdlsym_addr_strstr                                 0x0017DFB0 //	FFFFFFFF82681440
 #define kdlsym_addr_sys_accept                             0x0031A170 //	FFFFFFFF823C6190
 #define kdlsym_addr_sys_bind                               0x00319820 //	FFFFFFFF823C5820
@@ -126,13 +171,20 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define kdlsym_addr_sys_write                              0x00152FC0 //	FFFFFFFF8259B860
 #define kdlsym_addr_trap_fatal                             0x00171580 //	FFFFFFFF824ECF30	? code is diff in trap
 #define kdlsym_addr_utilUSleep                             0x00658C30 //	FFFFFFFF82899BF0
+#define kdlsym_addr_vm_fault_disable_pagefaults            0x0
+#define kdlsym_addr_vm_fault_enable_pagefaults             0x0
 #define kdlsym_addr_vm_map_lookup_entry                    0x0019F760 //	FFFFFFFF8264CF80
 #define kdlsym_addr_vmspace_acquire_ref                    0x0019EF90 //	FFFFFFFF8264C7E0
 #define kdlsym_addr_vmspace_alloc                          0x0019EB20 //	FFFFFFFF8264C360
 #define kdlsym_addr_vmspace_free                           0x0019EDC0 //	FFFFFFFF8264C610
+#define kdlsym_addr_vn_fullpath                            0x0
 #define kdlsym_addr_vsnprintf                              0x004363F0 //	FFFFFFFF82323280
-#define kdlsym_addr_Xfast_syscall                          0x000001C0 //	FFFFFFFF822001C0	lol 
 #define kdlsym_addr_wakeup                                 0x003FB940 //	FFFFFFFF82429CF0
+#define kdlsym_addr_Xfast_syscall                          0x000001C0 //	FFFFFFFF822001C0	lol 
+
+
+// Kernel Hooks
+#define kdlsym_addr_printf_hook                            0x0
 
 // FakeSelf hooks
 #define kdlsym_addr_sceSblAuthMgrIsLoadable__sceSblACMgrGetPathId_hook        0x0
@@ -150,23 +202,54 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define kdlsym_addr_mountpfs__sceSblPfsSetKeys_hookA                          0x0
 #define kdlsym_addr_mountpfs__sceSblPfsSetKeys_hookB                          0x0
 
-// sceshellcore patches
 // SceShellCore patches - call sceKernelIsGenuineCEX
-#define ssc_sceKernelIsGenuineCEX_patchA                   0x0
-#define ssc_sceKernelIsGenuineCEX_patchB                   0x0
-#define ssc_sceKernelIsGenuineCEX_patchC                   0x0
-#define ssc_sceKernelIsGenuineCEX_patchD                   0x0
-#define ssc_sceKernelIsGenuineCEX_patchE                   0x0
+#define ssc_sceKernelIsGenuineCEX_patchA                    0x0
+#define ssc_sceKernelIsGenuineCEX_patchB                    0x0
+#define ssc_sceKernelIsGenuineCEX_patchC                    0x0
+#define ssc_sceKernelIsGenuineCEX_patchD                    0x0
+#define ssc_sceKernelIsGenuineCEX_patchE                    0x0
 
 // SceShellCore patches - call RemotePackages
-#define ssc_sceKernelIsGenuineCEX_B_patchA                 0x0
+#define ssc_sceKernelIsGenuineCEX_patchF                    0x0
+
+// enable savedata mounting
+#define ssc_sceKernelIsGenuineCEX_patchG                    0x0
+#define ssc_sceKernelIsGenuineCEX_patchH                    0x0
+#define ssc_sceKernelIsGenuineCEX_patchI                    0x0
+#define ssc_sceKernelIsGenuineCEX_patchJ                    0x0
+#define ssc_sceKernelIsGenuineCEX_patchK                    0x0
+#define ssc_sceKernelIsGenuineCEX_patchL                    0x0
+#define ssc_sceKernelIsGenuineCEX_patchM                    0x0
+#define ssc_sceKernelIsGenuineCEX_patchN                    0x0
+#define ssc_sceKernelIsGenuineCEX_patchO                    0x0
 
 // SceShellCore patches - call nidf_libSceDipsw
-#define ssc_nidf_libSceDipsw_patchA                        0x0
-#define ssc_nidf_libSceDipsw_patchB                        0x0
-#define ssc_nidf_libSceDipsw_patchC                        0x0
-#define ssc_nidf_libSceDipsw_patchD                        0x0
+#define ssc_nidf_libSceDipsw_patchA                         0x0
+#define ssc_nidf_libSceDipsw_patchB                         0x0
+#define ssc_nidf_libSceDipsw_patchC                         0x0
+#define ssc_nidf_libSceDipsw_patchD                         0x0
+
+#define ssc_enable_fakepkg_patch                            0x0
 
 // SceShellCore patches - use free prefix instead fake
-#define ssc_fake_to_free_patch                             0x0
+#define ssc_fake_to_free_patch                              0x0
+
+// make pkgs installer working with external hdd
+#define ssc_make_pkgs_installer_working_with_external_hdd   0x0
+
+// enable support with 7.xx external hdd
+#define ssc_enable_support_external_hdd                     0x0              
+
+// SceShellUI patches - debug patches
+#define ssu_sceSblRcMgrIsAllowDebugMenuForSettings_patch    0x0
+#define ssu_sceSblRcMgrIsStoreMode_patch                    0x0
+
+// sceRegMgr
+#define kdlsym_addr_sceRegMgrGetInt                         0x0
+#define kdlsym_addr_sceRegMgrSetInt                         0x0
+#define kdlsym_addr_sceRegMgrGetBin                         0x0
+#define kdlsym_addr_sceRegMgrSetBin                         0x0
+#define kdlsym_addr_sceRegMgrGetStr                         0x0
+#define kdlsym_addr_sceRegMgrSetStr                         0x0
+
 #endif
