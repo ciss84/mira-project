@@ -206,7 +206,18 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define ssc_sceKernelIsGenuineCEX_patchE                   0x0
 
 // SceShellCore patches - call RemotePackages
-#define ssc_sceKernelIsGenuineCEX_B_patchA                 0x0
+#define ssc_sceKernelIsGenuineCEX_patchF                    0x0
+
+// enable savedata mounting
+#define ssc_sceKernelIsGenuineCEX_patchG                    0x0
+#define ssc_sceKernelIsGenuineCEX_patchH                    0x0
+#define ssc_sceKernelIsGenuineCEX_patchI                    0x0
+#define ssc_sceKernelIsGenuineCEX_patchJ                    0x0
+#define ssc_sceKernelIsGenuineCEX_patchK                    0x0
+#define ssc_sceKernelIsGenuineCEX_patchL                    0x0
+#define ssc_sceKernelIsGenuineCEX_patchM                    0x0
+#define ssc_sceKernelIsGenuineCEX_patchN                    0x0
+#define ssc_sceKernelIsGenuineCEX_patchO                    0x0
 
 // SceShellCore patches - call nidf_libSceDipsw
 #define ssc_nidf_libSceDipsw_patchA                        0x0016D087
@@ -218,6 +229,12 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 
 // SceShellCore patches - use free prefix instead fake
 #define ssc_fake_to_free_patch                             0x00EA9667
+
+// make pkgs installer working with external hdd
+#define ssc_make_pkgs_installer_working_with_external_hdd   0x0
+
+// enable support with 7.xx external hdd
+#define ssc_enable_support_external_hdd                     0x0
 
 // SceShellUI patches - debug patches
 #define ssu_sceSblRcMgrIsAllowDebugMenuForSettings_patch   0x0001BD90
