@@ -20,67 +20,67 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define kdlsym_addr__sceSblAuthMgrSmStart                  0x0065CCBE
 #define kdlsym_addr__sx_init_flags                         0x0
 #define kdlsym_addr__sx_slock                              0x000F6150 
-#define kdlsym_addr__sx_sunlock                            0x000F78F0
-#define kdlsym_addr__sx_xlock                              0x000F5E10 //	FFFFFFFF822426C0
-#define kdlsym_addr__sx_xunlock                            0x000F5FD0 //	FFFFFFFF82242880
-#define kdlsym_addr__thread_lock_flags                     0x0
-#define kdlsym_addr__vm_map_lock_read                      0x0019F140 //	FFFFFFFF8264C990
-#define kdlsym_addr__vm_map_unlock_read                    0x0019F190 //	FFFFFFFF8264C9E0
-#define kdlsym_addr_AesCbcCfb128Decrypt                    0x003A2E00 //	FFFFFFFF825C01A0
-#define kdlsym_addr_AesCbcCfb128Encrypt                    0x003A2BD0 //	FFFFFFFF825BFF70
-#define kdlsym_addr_allproc                                0x02382FF8 //	FFFFFFFF844BBE80
-#define kdlsym_addr_allproc_lock                           0x02382F98 //	FFFFFFFF844BBE20
-#define kdlsym_addr_avcontrol_sleep                        0x0
-#define kdlsym_addr_cloneuio                               0x0
-#define kdlsym_addr_console_cdev                           0x0
-#define kdlsym_addr_console_write                          0x0
-#define kdlsym_addr_contigfree                             0x0
-#define kdlsym_addr_contigmalloc                           0x0
-#define kdlsym_addr_copyin                                 0x001EA710 
-#define kdlsym_addr_copyinstr                              0x001EAB40 //	FFFFFFFF825C18A0
-#define kdlsym_addr_copyout                                0x0
-#define kdlsym_addr_critical_enter                         0x0028E7A0 //	FFFFFFFF824A9CF0
-#define kdlsym_addr_critical_exit                          0x0028E7B0 //	FFFFFFFF824A9D00
+#define kdlsym_addr__sx_sunlock                            0x000F8AB0
+#define kdlsym_addr__sx_xlock                              0x000F7AD0
+#define kdlsym_addr__sx_xunlock                            0x000F8C90 
+#define kdlsym_addr__thread_lock_flags                     0x00402830
+#define kdlsym_addr__vm_map_lock_read                      0x00296D60
+#define kdlsym_addr__vm_map_unlock_read                    0x00296D87
+#define kdlsym_addr_AesCbcCfb128Decrypt                    0x003A3CC0
+#define kdlsym_addr_AesCbcCfb128Encrypt                    0x003A2CA0
+#define kdlsym_addr_allproc                                0x0
+#define kdlsym_addr_allproc_lock                           0x0
+#define kdlsym_addr_avcontrol_sleep                        0x006FF700
+#define kdlsym_addr_cloneuio                               0x002A8390
+#define kdlsym_addr_console_cdev                           0x022C0CD8
+#define kdlsym_addr_console_write                          0x000ECB60
+#define kdlsym_addr_contigfree                             0x000F2700
+#define kdlsym_addr_contigmalloc                           0x000F0F70
+#define kdlsym_addr_copyin                                 0x001EA7B0 
+#define kdlsym_addr_copyinstr                              0x001EA900
+#define kdlsym_addr_copyout                                0x001EA060
+#define kdlsym_addr_critical_enter                         0x0028FB19
+#define kdlsym_addr_critical_exit                          0x0028FB38
 #define kdlsym_addr_deci_tty_write                         0x0
 #define kdlsym_addr_destroy_dev                            0x0
-#define kdlsym_addr_dmem_start_app_process                 0x002469F0 //	FFFFFFFF8227CC90
+#define kdlsym_addr_dmem_start_app_process                 0x0
 #define kdlsym_addr_dynlib_do_dlsym                        0x0
 #define kdlsym_addr_dynlib_find_obj_by_handle              0x0
 #define kdlsym_addr_eventhandler_deregister                0x0
 #define kdlsym_addr_eventhandler_find_list                 0x0
-#define kdlsym_addr_eventhandler_register                  0x001EC400 //  FFFFFFFF82602AD0
-#define kdlsym_addr_exec_new_vmspace                       0x0038AD10 //	FFFFFFFF8231AA80
-#define kdlsym_addr_faultin                                0x00006DD0 //	FFFFFFFF825E0060
-#define kdlsym_addr_fget_unlocked                          0x000C34B0 //	FFFFFFFF825E0060
-#define kdlsym_addr_fpu_kern_ctx                           0x0274C040
-#define kdlsym_addr_fpu_kern_enter                         0x001BFF90 //	FFFFFFFF8256B330
-#define kdlsym_addr_fpu_kern_leave                         0x001C0090 //	FFFFFFFF8256B420
-#define kdlsym_addr_free                                   0x0010E460 //	FFFFFFFF8220D9A0
+#define kdlsym_addr_eventhandler_register                  0x0
+#define kdlsym_addr_exec_new_vmspace                       0x0
+#define kdlsym_addr_faultin                                0x0
+#define kdlsym_addr_fget_unlocked                          0x0
+#define kdlsym_addr_fpu_kern_ctx                           0x0
+#define kdlsym_addr_fpu_kern_enter                         0x0
+#define kdlsym_addr_fpu_kern_leave                         0x0
+#define kdlsym_addr_free                                   0x0
 #define kdlsym_addr_gdt                                    0x0
-#define kdlsym_addr_gpu_va_page_list                       0x0271E208 //	FFFFFFFF8486AC68
-#define kdlsym_addr_icc_nvs_read                           0x00395830 //	FFFFFFFF826640A0
-#define kdlsym_addr_kern_close                             0x000C0EC0 //	FFFFFFFF82449050
+#define kdlsym_addr_gpu_va_page_list                       0x0
+#define kdlsym_addr_icc_nvs_read                           0x0
+#define kdlsym_addr_kern_close                             0x0
 #define kdlsym_addr_kern_ioctl                             0x0
-#define kdlsym_addr_kern_mkdirat                           0x00340BD0 //	FFFFFFFF826A3730
-#define kdlsym_addr_kern_open                              0x0033B9B0 //	FFFFFFFF8269E5E0
-#define kdlsym_addr_kern_openat                            0x0033BA10 //	FFFFFFFF8269E640
-#define kdlsym_addr_kern_readv                             0x00153248
-#define kdlsym_addr_kern_reboot                            0x0010D390 //	FFFFFFFF824069A0
-#define kdlsym_addr_kern_sysents                           0x0107C610
+#define kdlsym_addr_kern_mkdirat                           0x0
+#define kdlsym_addr_kern_open                              0x0
+#define kdlsym_addr_kern_openat                            0x0
+#define kdlsym_addr_kern_readv                             0x0
+#define kdlsym_addr_kern_reboot                            0x0
+#define kdlsym_addr_kern_sysents                           0x0
 #define kdlsym_addr_kern_thr_create                        0x0
-#define kdlsym_addr_kernel_map                             0x01AC60E0
+#define kdlsym_addr_kernel_map                             0x0
 #define kdlsym_addr_kernel_mount                           0x0
 #define kdlsym_addr_killproc                               0x0
-#define kdlsym_addr_kmem_alloc                             0x000FCC80 //	FFFFFFFF82450380
-#define kdlsym_addr_kmem_free                              0x000FCE50 //	FFFFFFFF82450550
-#define kdlsym_addr_kproc_create                           0x00137DF0 //	FFFFFFFF8228A0A0
+#define kdlsym_addr_kmem_alloc                             0x0
+#define kdlsym_addr_kmem_free                              0x0
+#define kdlsym_addr_kproc_create                           0x0
 #define kdlsym_addr_kproc_exit                             0x0
-#define kdlsym_addr_kthread_add                            0x00138360 //	FFFFFFFF8228A600
-#define kdlsym_addr_kthread_exit                           0x00138640 //	FFFFFFFF8228A8F0
+#define kdlsym_addr_kthread_add                            0x0
+#define kdlsym_addr_kthread_exit                           0x0
 #define kdlsym_addr_M_IOV                                  0x0
 #define kdlsym_addr_M_LINKER                               0x0
-#define kdlsym_addr_M_MOUNT                                0x019BF300 //	FFFFFFFF83C90CA0
-#define kdlsym_addr_M_TEMP                                 0x014B4110 //	FFFFFFFF83740EB0
+#define kdlsym_addr_M_MOUNT                                0x0
+#define kdlsym_addr_M_TEMP                                 0x0
 #define kdlsym_addr_make_dev_p                             0x0
 #define kdlsym_addr_malloc                                 0x0010E250 //	FFFFFFFF8220D7A0
 #define kdlsym_addr_memcmp                                 0x00050AC0 //	FFFFFFFF82407A90
