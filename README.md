@@ -14,7 +14,7 @@ It works differently to the custom firmware experience on Playstation 3, where C
 |5.03|![](https://github.com/ciss84/mira-project/workflows/Orbis503/badge.svg)|
 |5.05|![](https://github.com/ciss84/mira-project/workflows/Orbis505/badge.svg)|
 |6.20|![](https://github.com/ciss84/mira-project/workflows/Orbis620/badge.svg)|
-|6.50|![](https://github.com/ciss84/mira-project/workflows/Orbis650/badge.svg)| WIP
+|6.50|![](https://github.com/ciss84/mira-project/workflows/Orbis650/badge.svg) WIP|
 # New Features!
 
   - Homebrew Enabler (HEN)
