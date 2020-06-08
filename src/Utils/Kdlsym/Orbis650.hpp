@@ -10,17 +10,17 @@ The reason we do not hardcode offsets here, is due to the different platforms th
 for the platforms that do enable kernel ASLR (Address Space Layout Randomization?)
 */
 
-#define kdlsym_addr__mtx_lock_flags                        0x00401CD0 //	FFFFFFFF82696190
-#define kdlsym_addr__mtx_lock_sleep                        0x00401D70 //	FFFFFFFF82696230
-#define kdlsym_addr__mtx_lock_spin_flags                   0x0
-#define kdlsym_addr__mtx_unlock_flags                      0x00401FA0 //	FFFFFFFF82696460
-#define kdlsym_addr__mtx_unlock_sleep                      0x004020A0 //	FFFFFFFF82696560
-#define kdlsym_addr__mtx_unlock_spin_flags                 0x0
-#define kdlsym_addr__sceSblAuthMgrGetSelfInfo              0x0063CD40 //	FFFFFFFF8285CC70
-#define kdlsym_addr__sceSblAuthMgrSmStart                  0x0
+#define kdlsym_addr__mtx_lock_flags                        0x00401840
+#define kdlsym_addr__mtx_lock_sleep                        0x00401B30
+#define kdlsym_addr__mtx_lock_spin_flags                   0x00402380
+#define kdlsym_addr__mtx_unlock_flags                      0x00402830
+#define kdlsym_addr__mtx_unlock_sleep                      0x00402AD0
+#define kdlsym_addr__mtx_unlock_spin_flags                 0x00402B40 
+#define kdlsym_addr__sceSblAuthMgrGetSelfInfo              0x0065CC70
+#define kdlsym_addr__sceSblAuthMgrSmStart                  0x0065CCBE
 #define kdlsym_addr__sx_init_flags                         0x0
-#define kdlsym_addr__sx_slock                              0x000F5C30 //	FFFFFFFF822424E0
-#define kdlsym_addr__sx_sunlock                            0x000F5F10 //	FFFFFFFF822427C0
+#define kdlsym_addr__sx_slock                              0x000F6150 
+#define kdlsym_addr__sx_sunlock                            0x000F78F0
 #define kdlsym_addr__sx_xlock                              0x000F5E10 //	FFFFFFFF822426C0
 #define kdlsym_addr__sx_xunlock                            0x000F5FD0 //	FFFFFFFF82242880
 #define kdlsym_addr__thread_lock_flags                     0x0
