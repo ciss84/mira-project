@@ -42,7 +42,8 @@ You can also:
   - Implement your own userland trainers (hooks included!)
   - Dump your HDD encryption keys
   - A bunch of other stuff
-
+  
+### Release : https://github.com/ciss84/mira-project/releases/tag/v5
 ### Contributors
 
 This project would not be possible without these people (no paticluar order):
