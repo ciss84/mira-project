@@ -33,6 +33,9 @@ extern "C"
 #include <sys/fcntl.h>
 #include <sys/mman.h>
 #include <netinet/in.h>
+#include <netinet/ip6.h>
+#include <sys/ftps4.h>
+#include <sys/defines.h>
 
 #include <Boot/MiraLoader.hpp>
 
