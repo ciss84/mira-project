@@ -196,8 +196,8 @@ bool FakePkgManager::ShellCorePatch()
     uint8_t xor__egx_eax[6] = { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 };
     uint8_t xor__ehx_eax[2] = { 0x90, 0xE9 };
       
-    /*
-    s_Ret = kptrace_t(PT_ATTACH, s_Process->p_pid, 0, 0, s_MainThread);
+    
+    /*s_Ret = kptrace_t(PT_ATTACH, s_Process->p_pid, 0, 0, s_TextStart);
     if (s_Ret < 0)
     {
         WriteLog(LL_Error, "could not attach to shellcore");
