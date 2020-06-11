@@ -398,14 +398,14 @@ int Mira::Framework::OnIoctl(struct thread* p_Thread, struct ioctl_args* p_Uap)
 	switch (p_Uap->com)
 	{
 		case 0xFFFFFFFC01184401:
-                case 0XC01184401:
+    case 0XC01184401:
 		{
 			((int*)p_Uap->data)[0] = 1;
 			p_Thread->td_retval[0] = 0;
 			return 0;
 		}
 	}
-	
+
 	return ((int(*)(struct thread* td, void* uap))gIoctl)(p_Thread, p_Uap);
 }
 
