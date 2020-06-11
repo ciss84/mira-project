@@ -237,60 +237,7 @@ bool FakePkgManager::ShellCorePatch()
         WriteLog(LL_Error, "ssc_sceKernelIsGenuineCEX_patchE");
         return false;
     }
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_sceKernelIsGenuineCEX1_patchE), sizeof(xor__eax_eax), xor__eax_eax, nullptr, true);
-    if (s_Ret < 0)
-    {
-        WriteLog(LL_Error, "ssc_sceKernelIsGenuineCEX1_patchE");
-        return false;
-    }
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_sceKernelIsGenuineCEX2_patchE), sizeof(xor__eax_eax), xor__eax_eax, nullptr, true);
-    if (s_Ret < 0)
-    {
-        WriteLog(LL_Error, "ssc_sceKernelIsGenuineCEX2_patchE");
-        return false;
-    }
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_sceKernelIsGenuineCEX3_patchE), sizeof(xor__eax_eax), xor__eax_eax, nullptr, true);
-    if (s_Ret < 0)
-    {
-        WriteLog(LL_Error, "ssc_sceKernelIsGenuineCEX3_patchE");
-        return false;
-    }
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_sceKernelIsGenuineCEX4_patchE), sizeof(xor__eax_eax), xor__eax_eax, nullptr, true);
-    if (s_Ret < 0)
-    {
-        WriteLog(LL_Error, "ssc_sceKernelIsGenuineCEX4_patchE");
-        return false;
-    }
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_sceKernelIsGenuineCEX5_patchE), sizeof(xor__eax_eax), xor__eax_eax, nullptr, true);
-    if (s_Ret < 0)
-    {
-        WriteLog(LL_Error, "ssc_sceKernelIsGenuineCEX5_patchE");
-        return false;
-    }
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_sceKernelIsGenuineCEX6_patchE), sizeof(xor__eax_eax), xor__eax_eax, nullptr, true);
-    if (s_Ret < 0)
-    {
-        WriteLog(LL_Error, "ssc_sceKernelIsGenuineCEX6_patchE");
-        return false;
-    }
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_sceKernelIsGenuineCEX7_patchE), sizeof(xor__eax_eax), xor__eax_eax, nullptr, true);
-    if (s_Ret < 0)
-    {
-        WriteLog(LL_Error, "ssc_sceKernelIsGenuineCEX7_patchE");
-        return false;
-    }
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_sceKernelIsGenuineCEX8_patchE), sizeof(xor__eax_eax), xor__eax_eax, nullptr, true);
-    if (s_Ret < 0)
-    {
-        WriteLog(LL_Error, "ssc_sceKernelIsGenuineCEX8_patchE");
-        return false;
-    }
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_sceKernelIsGenuineCEX9_patchE), sizeof(xor__eax_eax), xor__eax_eax, nullptr, true);
-    if (s_Ret < 0)
-    {
-        WriteLog(LL_Error, "ssc_sceKernelIsGenuineCEX9_patchE");
-        return false;
-    }    
+    
     s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_sceKernelIsGenuineCEX_patchF), sizeof(xor__ebx_eax), xor__ebx_eax, nullptr, true);
     if (s_Ret < 0)
     {
