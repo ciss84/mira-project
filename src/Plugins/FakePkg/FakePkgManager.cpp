@@ -237,7 +237,60 @@ bool FakePkgManager::ShellCorePatch()
         WriteLog(LL_Error, "ssc_sceKernelIsGenuineCEX_patchE");
         return false;
     }
-    
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_sceKernelIsGenuineCEX1_patchE), sizeof(xor__eax_eax), xor__eax_eax, nullptr, true);
+    if (s_Ret < 0)
+    {
+        WriteLog(LL_Error, "ssc_sceKernelIsGenuineCEX1_patchE");
+        return false;
+    }
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_sceKernelIsGenuineCEX2_patchE), sizeof(xor__eax_eax), xor__eax_eax, nullptr, true);
+    if (s_Ret < 0)
+    {
+        WriteLog(LL_Error, "ssc_sceKernelIsGenuineCEX2_patchE");
+        return false;
+    }
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_sceKernelIsGenuineCEX3_patchE), sizeof(xor__eax_eax), xor__eax_eax, nullptr, true);
+    if (s_Ret < 0)
+    {
+        WriteLog(LL_Error, "ssc_sceKernelIsGenuineCEX3_patchE");
+        return false;
+    }
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_sceKernelIsGenuineCEX4_patchE), sizeof(xor__eax_eax), xor__eax_eax, nullptr, true);
+    if (s_Ret < 0)
+    {
+        WriteLog(LL_Error, "ssc_sceKernelIsGenuineCEX4_patchE");
+        return false;
+    }
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_sceKernelIsGenuineCEX5_patchE), sizeof(xor__eax_eax), xor__eax_eax, nullptr, true);
+    if (s_Ret < 0)
+    {
+        WriteLog(LL_Error, "ssc_sceKernelIsGenuineCEX5_patchE");
+        return false;
+    }
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_sceKernelIsGenuineCEX6_patchE), sizeof(xor__eax_eax), xor__eax_eax, nullptr, true);
+    if (s_Ret < 0)
+    {
+        WriteLog(LL_Error, "ssc_sceKernelIsGenuineCEX6_patchE");
+        return false;
+    }
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_sceKernelIsGenuineCEX7_patchE), sizeof(xor__eax_eax), xor__eax_eax, nullptr, true);
+    if (s_Ret < 0)
+    {
+        WriteLog(LL_Error, "ssc_sceKernelIsGenuineCEX7_patchE");
+        return false;
+    }
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_sceKernelIsGenuineCEX8_patchE), sizeof(xor__eax_eax), xor__eax_eax, nullptr, true);
+    if (s_Ret < 0)
+    {
+        WriteLog(LL_Error, "ssc_sceKernelIsGenuineCEX8_patchE");
+        return false;
+    }
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_sceKernelIsGenuineCEX9_patchE), sizeof(xor__eax_eax), xor__eax_eax, nullptr, true);
+    if (s_Ret < 0)
+    {
+        WriteLog(LL_Error, "ssc_sceKernelIsGenuineCEX9_patchE");
+        return false;
+    }    
     s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_sceKernelIsGenuineCEX_patchF), sizeof(xor__ebx_eax), xor__ebx_eax, nullptr, true);
     if (s_Ret < 0)
     {
@@ -365,6 +418,67 @@ bool FakePkgManager::ShellCorePatch()
         WriteLog(LL_Error, "kdlsym_addr_sceRegMgrGetInt");
         return false;
     }
+    
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process,     (void*)(s_TextStart + ssc_enable_testkit_patchA), 105,    (void*)"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", nullptr, true);
+	  if (s_Ret < 0)
+	    {
+		   WriteLog(LL_Error,     "ssc_enable_testkit_patchA");
+		   return false;
+	  }
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process,     (void*)(s_TextStart + ssc_enable_testkit_patchB),  9,    (void*)"\x00\x00\x00\x00\x00\x00\x00\x00\x00", nullptr, true);
+	  if (s_Ret < 0)
+	    {
+		   WriteLog(LL_Error,     "ssc_enable_testkit_patchB");
+		   return false;
+	  }
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process,    (void*)(s_TextStart + ssc_enable_testkit_patchC), 265,    (void*)"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", nullptr, true);            
+	  if (s_Ret < 0)
+	    {
+		   WriteLog(LL_Error,     "ssc_enable_testkit_patchC");
+		   return false;
+	  }
+	  s_Ret = Utilities::ProcessReadWriteMemory(s_Process,     (void*)(s_TextStart + ssc_enable_testkit_patchD), 484,    (void*)"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", nullptr, true);
+	  if (s_Ret < 0)
+	    {
+		   WriteLog(LL_Error,     "ssc_enable_testkit_patchD");
+		   return false;
+	  }
+	  s_Ret = Utilities::ProcessReadWriteMemory(s_Process,     (void*)(s_TextStart + ssc_enable_testkit_patchE), 50,    (void*)"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", nullptr, true);
+	  if (s_Ret < 0)
+	    {
+		   WriteLog(LL_Error,     "ssc_enable_testkit_patchE");
+		   return false;
+	  }
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process,     (void*)(s_TextStart + ssc_enable_testkit_patchF),  2,    (void*)"\x1C\xC8", nullptr, true);
+	  if (s_Ret < 0)
+	    {
+		   WriteLog(LL_Error,     "ssc_enable_testkit_patchF");
+		   return false;
+	  }
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process,     (void*)(s_TextStart + ssc_enable_testkit_patchG),  2,    (void*)"\xE4\xC7", nullptr, true);
+	  if (s_Ret < 0)
+	    {
+		   WriteLog(LL_Error,     "ssc_enable_testkit_patchG");
+		   return false;
+	  }
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process,     (void*)(s_TextStart + ssc_enable_testkit_patchH),  2,    (void*)"\xE4\xC7", nullptr, true);
+	  if (s_Ret < 0)
+	    {
+		   WriteLog(LL_Error,     "ssc_enable_testkit_patchH");
+		   return false;
+	  }
+	      s_Ret = Utilities::ProcessReadWriteMemory(s_Process,     (void*)(s_TextStart + ssc_enable_testkit_patchI),  2,    (void*)"\xE4\xC7", nullptr, true);
+	  if (s_Ret < 0)
+	    {
+		   WriteLog(LL_Error,     "ssc_enable_testkit_patchI");
+		   return false;
+	  }
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process,     (void*)(s_TextStart + ssc_enable_testkit_patchJ),  2,    (void*)"\xE4\xC7", nullptr, true);
+	  if (s_Ret < 0)
+	    {
+		   WriteLog(LL_Error,     "ssc_enable_testkit_patchJ");
+		   return false;
+	  }
     
     /*Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_1_1_OFFSET), xor__eax_eax, sizeof(xor__eax_eax));
     Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_1_2_OFFSET), xor__eax_eax, sizeof(xor__eax_eax));

@@ -205,6 +205,15 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define ssc_sceKernelIsGenuineCEX_patchC                    0x007E5A13
 #define ssc_sceKernelIsGenuineCEX_patchD                    0x0094715B
 #define ssc_sceKernelIsGenuineCEX_patchE                    0x006ABE39
+#define ssc_sceKernelIsGenuineCEX1_patchE                   0x006B8F86
+#define ssc_sceKernelIsGenuineCEX2_patchE                   0x006BA37C
+#define ssc_sceKernelIsGenuineCEX3_patchE                   0x006DCCC4
+#define ssc_sceKernelIsGenuineCEX4_patchE                   0x006E70E1
+#define ssc_sceKernelIsGenuineCEX5_patchE                   0x006EA2B4
+#define ssc_sceKernelIsGenuineCEX6_patchE                   0x006EB8D9
+#define ssc_sceKernelIsGenuineCEX7_patchE                   0x00706B84
+#define ssc_sceKernelIsGenuineCEX8_patchE                   0x007148AC
+#define ssc_sceKernelIsGenuineCEX9_patchE                   0x007151AC
 
 // SceShellCore patches - call RemotePackages
 #define ssc_sceKernelIsGenuineCEX_patchF                    0x00319A53
@@ -248,5 +257,17 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define kdlsym_addr_sceRegMgrSetBin                         0x004FA620
 #define kdlsym_addr_sceRegMgrGetStr                         0x004FA550
 #define kdlsym_addr_sceRegMgrSetStr                         0x004FA390
+
+// enable testkit mod
+#define ssc_enable_testkit_patchA                           0x069B7E8D
+#define ssc_enable_testkit_patchB                           0x069B7E82
+#define ssc_enable_testkit_patchC                           0x069B7EF7
+#define ssc_enable_testkit_patchD                           0x069B7C9E
+#define ssc_enable_testkit_patchE                           0x069B792C
+#define ssc_enable_testkit_patchF                           0x0000001A
+#define ssc_enable_testkit_patchG                           0x00000052
+#define ssc_enable_testkit_patchH                           0x0000005A
+#define ssc_enable_testkit_patchI                           0x0000008A
+#define ssc_enable_testkit_patchJ                           0x00000092
 
 #endif
