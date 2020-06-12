@@ -1,5 +1,8 @@
+//#include <stdint.h>
+//#include <string.h>
 #include "sys/defines.h"
-
+#include <Utils/Kernel.hpp>
+#include <Utils/Kdlsym.hpp>
 #ifdef DEBUG_SOCKET
 
 int sock;
