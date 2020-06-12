@@ -32,18 +32,20 @@ Debugger2::~Debugger2()
     m_OnProcessExitTag = nullptr;
 }
 
+#include <netinet/ip6.h>
+
 bool Debugger2::ReplaceExceptionHandler(uint32_t p_ExceptionNumber, void* p_Function, void** p_PreviousFunction)
 {
     if (p_Function == nullptr)
         return false;
-    
-    // void* s_Idt = nullptr;
 
-    // auto setidt = (void(*)(int idx, void* func, int typ, int dpl, int ist))kdlsym(setidt);
+    //void* s_Idt = nullptr;
 
-    // setidt(IDT_DF, nullptr, SDT_SYSIGT, SEL_KPL, 0);
+    //auto setidt = (void(*)(int idx, void* func, int typ, int dpl, int ist))kdlsym(setidt);
 
-    // sizeof(struct ip6_hdr);
+    //setidt(IDT_DF, nullptr, SDT_SYSIGT, SEL_KPL, 0);
+
+    //sizeof(struct ip6_hdr);
 
     return true;
 }
