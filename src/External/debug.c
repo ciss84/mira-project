@@ -1,5 +1,4 @@
 #include "sys/defines.h"
-#include <Utils/Kernel.hpp>
 
 #ifdef DEBUG_SOCKET
 
@@ -24,6 +23,15 @@ void initDebugSocket(void)
 void closeDebugSocket(void)
 {
 	sceNetSocketClose(sock);
+}
+
+void notify(void)
+{
+	char buffer[512];
+	sprintf(buffer, "%s\n\n\n\n\n\n\n", msg);
+	sceSysUtilSendSystemNotificationWithText(0x81, buffer);
+}
+  sceNetSocketClose(sock);
 }
 
 #endif
