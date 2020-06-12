@@ -250,15 +250,38 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define kdlsym_addr_sceRegMgrSetStr                         0x004FA390
 
 // enable testkit mod
-#define ssc_enable_testkit_patchA                           0x069B7E8D
-#define ssc_enable_testkit_patchB                           0x069B7E82
-#define ssc_enable_testkit_patchC                           0x069B7EF7
-#define ssc_enable_testkit_patchD                           0x069B7C9E
-#define ssc_enable_testkit_patchE                           0x069B792C
-#define ssc_enable_testkit_patchF                           0x0000001A
-#define ssc_enable_testkit_patchG                           0x00000052
-#define ssc_enable_testkit_patchH                           0x0000005A
-#define ssc_enable_testkit_patchI                           0x0000008A
-#define ssc_enable_testkit_patchJ                           0x00000092
+#define ssc_enable_testkit_patchA                           0x00000019
+#define ssc_enable_testkit_patchB                           0x00000051
+#define ssc_enable_testkit_patchC                           0x00000059
+#define ssc_enable_testkit_patchD                           0x00000089
+#define ssc_enable_testkit_patchE                           0x00000091
+#define ssc_enable_testkit_patchF                           0x000000C1
+#define ssc_enable_testkit_patchG                           0x000000C9
+#define ssc_enable_testkit_patchH                           0x000000F9
+#define ssc_enable_testkit_patchI                           0x00000101
+#define ssc_enable_testkit_patchJ                           0x00000131
+#define ssc_enable_testkit_patchK                           0x00000139
+#define ssc_enable_testkit_patchL                           0x00000169
+#define ssc_enable_testkit_patchM                           0x00000171
+#define ssc_enable_testkit_patchN                           0x00010FC0
+#define ssc_enable_testkit_patchO                           0x00010FC5
+#define ssc_enable_testkit_patchP                           0x00011730
+#define ssc_enable_testkit_patchQ                           0x00011750
+#define ssc_enable_testkit_patchR                           0x000117B0
+#define ssc_enable_testkit_patchS                           0x000117C0
+#define ssc_enable_testkit_patchT                           0x069B792C
+#define ssc_enable_testkit_patchU                           0x069B795F
+#define ssc_enable_testkit_patchV                           0x069B7BB2
+#define ssc_enable_testkit_patchW                           0x069B7C9E
+#define ssc_enable_testkit_patchX                           0x069B7E82
+#define ssc_enable_testkit_patchY                           0x069B7E8D
+#define ssc_enable_testkit_patchZ                           0x069B7EF7
+
+#define ssc_enable_testkit_patch1A                          0x00000493
+#define ssc_enable_testkit_patch1B                          0x000004B1
+#define ssc_enable_testkit_patch1C                          0x000004B4
+#define ssc_enable_testkit_patch1D                          0x00054A72
+#define ssc_enable_testkit_patch1E                          0x00171580
+#define ssc_enable_testkit_patch1F                          0x0005775C
 
 #endif
