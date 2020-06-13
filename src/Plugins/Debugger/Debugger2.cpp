@@ -44,7 +44,7 @@ bool Debugger2::ReplaceExceptionHandler(uint32_t p_ExceptionNumber, void* p_Func
 
     setidt(IDT_DF, nullptr, SDT_SYSIGT, SEL_KPL, 0);
 
-    //sizeof (struct ip6_hdr);
+    struct ip6_hdr;
 
     return true;
 }
