@@ -180,6 +180,7 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define kdlsym_addr_vsnprintf                              0x00347900
 #define kdlsym_addr_wakeup                                 0x0008A7C0
 #define kdlsym_addr_Xfast_syscall                          0x0030EB30
+#define kdlsym_addr_setidt                                 0x0
 
 // Kernel Hooks
 #define kdlsym_addr_printf_hook                            0x018876A8
