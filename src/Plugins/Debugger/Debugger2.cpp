@@ -3,6 +3,7 @@
 
 #include "Debugger2.hpp"
 #include <Utils/Kdlsym.hpp>
+#include <netinet/ip6.h>
 
 using namespace Mira::Plugins;
 
@@ -32,8 +33,6 @@ Debugger2::~Debugger2()
     m_OnProcessExitTag = nullptr;
 }
 
-#include <netinet/ip6.h>
-
 bool Debugger2::ReplaceExceptionHandler(uint32_t p_ExceptionNumber, void* p_Function, void** p_PreviousFunction)
 {
     if (p_Function == nullptr)
@@ -41,11 +40,11 @@ bool Debugger2::ReplaceExceptionHandler(uint32_t p_ExceptionNumber, void* p_Func
 
     //void* s_Idt = nullptr;
 
-    //auto setidt = (void(*)(int idx, void* func, int typ, int dpl, int ist))kdlsym(setidt);
+    auto setidt = (void(*)(int idx, void* func, int typ, int dpl, int ist))kdlsym(setidt);
 
-    //setidt(IDT_DF, nullptr, SDT_SYSIGT, SEL_KPL, 0);
+    setidt(IDT_DF, nullptr, SDT_SYSIGT, SEL_KPL, 0);
 
-    //sizeof(struct ip6_hdr);
+    //sizeof (struct ip6_hdr);
 
     return true;
 }

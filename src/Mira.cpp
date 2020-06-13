@@ -300,19 +300,19 @@ bool Mira::Framework::Initialize()
 	if (!InstallEventHandlers())
 		WriteLog(LL_Error, "could not register event handlers");
 
-	// Initialize the rpc server
-	WriteLog(LL_Debug, "Initializing rpc server");
+	// Initialize the rpc
+	WriteLog(LL_Debug, "Initializing rpc Server");
 	m_RpcServer = new Mira::Messaging::Rpc::Server();
 	if (m_RpcServer == nullptr)
 	{
-		WriteLog(LL_Error, "could not allocate rpc server.");
+		WriteLog(LL_Error, "could not allocate rpc Server.");
 		return false;
 	}
 
-	WriteLog(LL_Debug, "Loading rpc server");
+	WriteLog(LL_Debug, "Loading rpc Server");
 	if (!m_RpcServer->OnLoad())
 	{
-		WriteLog(LL_Error, "could not load rpc server.");
+		WriteLog(LL_Error, "could not load rpc Server.");
 		return false;
 	}
 
