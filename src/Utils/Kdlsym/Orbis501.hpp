@@ -231,6 +231,9 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 // SceShellCore patches - use free prefix instead fake
 #define ssc_fake_to_free_patch                             0x00EA7A47
 
+// flatz allow sys_dynlib_dlsym in all processes
+#define kdlsym_addr_sys_dynlib_dlsym_patch                  0x0
+
 // make pkgs installer working with external hdd
 #define ssc_make_pkgs_installer_working_with_external_hdd   0x0
 
