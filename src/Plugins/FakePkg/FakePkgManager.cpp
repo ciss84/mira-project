@@ -372,16 +372,6 @@ bool FakePkgManager::ShellCorePatch()
         WriteLog(LL_Error, "kdlsym_addr_sceRegMgrGetInt");
         return false;
     }
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + kdlsym_addr_full_debugA), 7, (void*)"\0", nullptr, true);
-      {
-        WriteLog(LL_Error, "kdlsym_addr_full_debugA");
-        return false;
-    }
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + kdlsym_addr_full_debugB), 7, (void*)"\0", nullptr, true);
-      {
-        WriteLog(LL_Error, "kdlsym_addr_full_debugB");
-        return false;
-    }
      
     /*Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_1_1_OFFSET), sizeof(xor__ehx_eax), xor__ehx_eax, nullptr, true);
     Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_1_2_OFFSET), sizeof(xor__ehx_eax), xor__ehx_eax, nullptr, true);
