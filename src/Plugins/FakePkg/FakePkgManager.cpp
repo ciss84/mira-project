@@ -373,15 +373,15 @@ bool FakePkgManager::ShellCorePatch()
         return false;
     }
      
-    /*Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_1_1_OFFSET), xor__eax_eax, sizeof(xor__eax_eax));
-    Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_1_2_OFFSET), xor__eax_eax, sizeof(xor__eax_eax));
-    Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_1_3_OFFSET), xor__eax_eax, sizeof(xor__eax_eax));
-    Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_1_4_OFFSET), xor__eax_eax, sizeof(xor__eax_eax));
-    Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_2_1_OFFSET), xor__eax_eax, sizeof(xor__eax_eax));
-    Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_2_2_OFFSET), xor__eax_eax, sizeof(xor__eax_eax));
-    Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_2_3_OFFSET), xor__eax_eax, sizeof(xor__eax_eax));
-    Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_2_4_OFFSET), xor__eax_eax, sizeof(xor__eax_eax));
-    Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_USE_FREE_PREFIX_INSTEAD_OF_FAKE_OFFSET), (void*)"free", 4);
+    /*Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_1_1_OFFSET), sizeof(xor__ehx_eax), xor__ehx_eax, nullptr, true);
+    Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_1_2_OFFSET), sizeof(xor__ehx_eax), xor__ehx_eax, nullptr, true);
+    Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_1_3_OFFSET), sizeof(xor__ehx_eax), xor__ehx_eax, nullptr, true);
+    Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_1_4_OFFSET), sizeof(xor__ehx_eax), xor__ehx_eax, nullptr, true);
+    Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_2_1_OFFSET), sizeof(xor__ehx_eax), xor__ehx_eax, nullptr, true);
+    Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_2_2_OFFSET), sizeof(xor__ehx_eax), xor__ehx_eax, nullptr, true);
+    Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_2_3_OFFSET), sizeof(xor__ehx_eax), xor__ehx_eax, nullptr, true);
+    Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_2_4_OFFSET), sizeof(xor__ehx_eax), xor__ehx_eax, nullptr, true);
+    Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_USE_FREE_PREFIX_INSTEAD_OF_FAKE_OFFSET), (void*)"free", 4, nullptr, true);
     if (kptrace_t(PT_DETACH, s_Process->p_pid, (caddr_t)SIGCONT, 0, s_MainThread) < 0)
     {
         WriteLog(LL_Error, "could not detach from shellcore");

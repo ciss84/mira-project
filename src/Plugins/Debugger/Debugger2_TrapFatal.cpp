@@ -68,7 +68,15 @@ void Debugger2::OnTrapFatal(struct trapframe* frame, vm_offset_t eva)
 
 	// Get the trap message based on the trap code
 	#define MAX_TRAP_MSG		33
-
+	
+	//Print extra information in case that Oni/Mira itself crashes
+	auto s_Framework = Mira::Framework::GetFramework();
+	if (s_Framework)
+			printf("mira messageManager: %p pluginManager: %p rpcServer: %p\n", s_Framework->GetMessageManager(), s_Framework->GetPluginManager(), s_Framework->GetRpcServer());
+		  printf("LastBranchFromOffsetFromKernelBase: %p\n", frame->tf_last_branch_from - (uint64_t)gKernelBase);
+		  printf("RipOffsetFromKernelBase: %p", frame->tf_rip - (uint64_t)gKernelBase);
+		  printf("OffsetFromMiraEntry: [tf_last_branch_from-mira_entry]:%p [mira_entry-tf_last_branch_from]:%p\n", frame->tf_last_branch_from - reinterpret_cast<uint64_t>(mira_entry), reinterpret_cast<uint64_t>(mira_entry) - frame->tf_last_branch_from);
+	
 	static const char *trap_msg[] = {
 		"",                               /*  0 unused */
 		"privileged instruction fault",   /*  1 T_PRIVINFLT */
@@ -189,9 +197,6 @@ void Debugger2::OnTrapFatal(struct trapframe* frame, vm_offset_t eva)
 
 	printf("## kernel base: %p\n", gKernelBase);
 
-	// Print mira specific info
-	auto s_Framework = Mira::Framework::GetFramework();
-
 	if(s_Framework)
 	{
 		auto s_InitParams = s_Framework->GetInitParams();
@@ -235,6 +240,7 @@ void Debugger2::OnTrapFatal(struct trapframe* frame, vm_offset_t eva)
 	printf("## backtrace: \n");
 
 	auto s_Saved = vm_fault_disable_pagefaults();
+	printf("call stack:\n");
   auto amdFrame = reinterpret_cast<struct amd64_frame*>(frame->tf_rbp);
 
 	if (amdFrame != nullptr)
