@@ -32,7 +32,6 @@ Debugger2::~Debugger2()
     m_OnProcessExitTag = nullptr;
 }
 
-//Mira::Framework::GetFramework()->GetMessageManager()->RegisterCallback(RPC_CATEGORY__FILE, FileManager_Echo, OnEcho);
 #include <netinet/ip6.h>
 
 bool Debugger2::ReplaceExceptionHandler(uint32_t p_ExceptionNumber, void* p_Function, void** p_PreviousFunction)

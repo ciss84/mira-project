@@ -67,6 +67,7 @@ static myWorkaround_t gWorkaround = nullptr;
 
 Mira::Framework* Mira::Framework::m_Instance = nullptr;
 Mira::Framework* Mira::Framework::GetFramework()
+
 {
 	if (m_Instance == nullptr)
 		m_Instance = new Mira::Framework();
