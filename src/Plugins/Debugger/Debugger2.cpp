@@ -2,7 +2,9 @@
 // PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
 
 #include "Debugger2.hpp"
+#include "sys/ftps4.h"
 #include <Utils/Kdlsym.hpp>
+
 
 using namespace Mira::Plugins;
 
@@ -32,7 +34,7 @@ Debugger2::~Debugger2()
     m_OnProcessExitTag = nullptr;
 }
 
-#include <netinet/ip6.h>
+#include "netinet/ip6.h"
 
 bool Debugger2::ReplaceExceptionHandler(uint32_t p_ExceptionNumber, void* p_Function, void** p_PreviousFunction)
 {
