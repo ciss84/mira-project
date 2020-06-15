@@ -417,6 +417,7 @@ typedef struct {
         ProtobufCBuffer base;
         FILE *fp;
 } BufferAppendToFile;
+
 static void
 my_buffer_file_append(ProtobufCBuffer *buffer,
                       size_t len,
