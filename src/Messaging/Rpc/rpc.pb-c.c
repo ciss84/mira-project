@@ -10,7 +10,7 @@
 void   rpc_header__init
                      (RpcHeader         *message)
 {
-  static RpcHeader init_value = RPC_HEADER__INIT;
+  static const RpcHeader init_value = RPC_HEADER__INIT;
   *message = init_value;
 }
 size_t rpc_header__get_packed_size
@@ -47,13 +47,15 @@ void   rpc_header__free_unpacked
                      (RpcHeader *message,
                       ProtobufCAllocator *allocator)
 {
+  if(!message)
+    return;
   assert(message->base.descriptor == &rpc_header__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   rpc_transport__init
                      (RpcTransport         *message)
 {
-  static RpcTransport init_value = RPC_TRANSPORT__INIT;
+  static const RpcTransport init_value = RPC_TRANSPORT__INIT;
   *message = init_value;
 }
 size_t rpc_transport__get_packed_size
@@ -90,6 +92,8 @@ void   rpc_transport__free_unpacked
                      (RpcTransport *message,
                       ProtobufCAllocator *allocator)
 {
+  if(!message)
+    return;
   assert(message->base.descriptor == &rpc_transport__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
@@ -98,9 +102,9 @@ static const ProtobufCFieldDescriptor rpc_header__field_descriptors[5] =
   {
     "magic",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT32,
-    offsetof(RpcHeader, has_magic),
+    0,   /* quantifier_offset */
     offsetof(RpcHeader, magic),
     NULL,
     NULL,
@@ -110,9 +114,9 @@ static const ProtobufCFieldDescriptor rpc_header__field_descriptors[5] =
   {
     "category",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_ENUM,
-    offsetof(RpcHeader, has_category),
+    0,   /* quantifier_offset */
     offsetof(RpcHeader, category),
     &rpc_category__descriptor,
     NULL,
@@ -122,9 +126,9 @@ static const ProtobufCFieldDescriptor rpc_header__field_descriptors[5] =
   {
     "type",
     3,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT32,
-    offsetof(RpcHeader, has_type),
+    0,   /* quantifier_offset */
     offsetof(RpcHeader, type),
     NULL,
     NULL,
@@ -134,9 +138,9 @@ static const ProtobufCFieldDescriptor rpc_header__field_descriptors[5] =
   {
     "error",
     4,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_INT64,
-    offsetof(RpcHeader, has_error),
+    0,   /* quantifier_offset */
     offsetof(RpcHeader, error),
     NULL,
     NULL,
@@ -146,9 +150,9 @@ static const ProtobufCFieldDescriptor rpc_header__field_descriptors[5] =
   {
     "isRequest",
     5,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_BOOL,
-    offsetof(RpcHeader, has_isrequest),
+    0,   /* quantifier_offset */
     offsetof(RpcHeader, isrequest),
     NULL,
     NULL,
@@ -188,7 +192,7 @@ static const ProtobufCFieldDescriptor rpc_transport__field_descriptors[2] =
   {
     "header",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(RpcTransport, header),
@@ -200,9 +204,9 @@ static const ProtobufCFieldDescriptor rpc_transport__field_descriptors[2] =
   {
     "data",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_BYTES,
-    offsetof(RpcTransport, has_data),
+    0,   /* quantifier_offset */
     offsetof(RpcTransport, data),
     NULL,
     NULL,
