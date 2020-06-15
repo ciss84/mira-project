@@ -25,12 +25,11 @@ It works differently to the custom firmware experience on Playstation 3, where C
   - System-level FUSE implementation (Experimental, WIP)
   - Load sprx modules + IAT + Function Hooking (Thanks theorywrong)
   - Web browser activation 
-  - Debug settings fix
+  - Debug settings fix 
   - Remote packages fix (5.05)
-  - PVS-Studio
-  - Spoof 7.51 PSVR (THX @Leeful74)
-  - enable debug trophies on retail (5.01 / 5.05)
-  - FakeDEX support
+  - PVS-Studio 
+  - Spoof 7.51 PSVR (THX @Leeful74) (5.05)
+  - enable debug trophies on retail (5.01,5.05)
   - flatbuffers
   - Remote registry (not sure full)
 
@@ -432,10 +431,10 @@ src/Utils/Kdlsym.hpp:49:52: error: ‘kdlsym_addr_printf’ undeclared (first us
 ### TODOs
 
  - Clean kernel rebooting support
- - Web browser activation
  - Fake Online (spoof for LAN usage)
  - Game dumping and decryption
  - Linux loader
+ - FakeDEX support
  - Embedded builds into loader
 
  
