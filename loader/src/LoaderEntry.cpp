@@ -69,8 +69,7 @@ size_t (*fwrite)(const void * ptr, size_t size, size_t count, FILE *stream ) = n
 int (*fseek)(FILE *stream, long int offset, int origin) = nullptr;
 long int(*ftell)(FILE *stream) = nullptr;
 int (*fclose)(FILE *stream) = nullptr;
-void *(*fuck_malloc)(size_t size) = nullptr;
-void (*fuck_free)(void *ptr) = nullptr;
+
 
 int(*snprintf)(char *str, size_t size, const char *format, ...) = nullptr;
 
@@ -335,7 +334,7 @@ extern "C" void* mira_entry(void* args)
 
 int hddfile = sceKernelOpen("/user/MiraLoader.elf", O_RDONLY, 0); 
 	
-if (strlen(usbpath()) == 0 || hddfile < 0)
+if (strlen(usbpath()) == 0 && hddfile < 0)
 {
 network:
 
@@ -413,7 +412,7 @@ if(filefd > 0)
 
 
 
-if (0 > filefd)
+if (0 < filefd)
 {
 
 	if (sceKernelOpen("/user/MiraLoader.elf", O_RDONLY, 0) > 0)
@@ -421,8 +420,8 @@ if (0 > filefd)
 		printf("HDD ELF already exists checking Hashs\n");
 		if (MD5_hash_compare(filebuffer) != SAME_HASH)
 		{
-
-                        printf("MD5_hash_compare Report different HASH copying\n");
+                        
+                        WriteNotificationLog("MD5_hash_compare Report different HASH copying\n");
 			if (copyFile(filebuffer) == 0)
 			{
 

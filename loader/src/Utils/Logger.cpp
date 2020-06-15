@@ -48,6 +48,6 @@ Logger::Logger() :
 
 Logger::~Logger()
 {
-  // auto mtx_destroy = (void(*)(struct mtx* mutex))kdlsym(mtx_destroy);
+	// auto mtx_destroy = (void(*)(struct mtx* mutex))kdlsym(mtx_destroy);
 	// mtx_destroy(&m_Mutex);
 }

@@ -9,6 +9,7 @@ syscall:
     syscall
     ret
 
+
 syscall1:
     mov rax,rdi
     mov rdi,rsi
