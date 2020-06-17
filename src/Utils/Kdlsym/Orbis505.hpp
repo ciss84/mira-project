@@ -210,6 +210,9 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 // SceShellCore patches - call RemotePackages
 #define ssc_sceKernelIsGenuineCEX_patchF                    0x00319A53
 
+// flatz allow sys_dynlib_dlsym in all processes 5.05
+#define kdlsym_addr_sys_dynlib_dlsym_patch                  0x00237F3A
+
 // enable savedata mounting
 #define ssc_sceKernelIsGenuineCEX_patchG                    0x00D42843
 #define ssc_sceKernelIsGenuineCEX_patchH                    0x007E4DC0
