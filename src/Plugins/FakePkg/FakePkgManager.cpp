@@ -289,13 +289,6 @@ bool FakePkgManager::ShellCorePatch()
         return false;
     }
     
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + kdlsym_addr_sys_dynlib_dlsym_patch), 8, (void*)"\x8B\x48\x90\x00\x00\x01\xC1\xE9", nullptr, true);
-    if (s_Ret < 0)
-      {
-        WriteLog(LL_Error, "kdlsym_addr_sys_dynlib_dlsym_patch");
-        return false;
-    }
-    
     s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_make_pkgs_installer_working_with_external_hdd), 1, (void*) "\0", nullptr, true);
     if (s_Ret < 0)
       {
