@@ -210,13 +210,6 @@ void Mira::Boot::Patches::install_prerunPatches_505()
   kmem[9] = 0x5A;
   kmem[10] = 0x73;
   
-  // Patch debug setting full
-	kmem = (uint8_t *)&gKernelBase[0x004D2A8B];
-	kmem[0] = 0x00;
-	kmem[1] = 0x00;
-	kmem[2] = 0x00;
-  kmem[3] = 0x00;
-  
   //  Patch debug setting errors TESTKIT
 	kmem = (uint8_t *)&gKernelBase[0x004F5E4A];
 	kmem[0] = 0x00;
