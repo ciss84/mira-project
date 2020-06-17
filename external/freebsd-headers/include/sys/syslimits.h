@@ -1,8 +1,3 @@
-﻿/* SIE CONFIDENTIAL
- * PlayStation(R)4 Programmer Tool Runtime Library Release 05.508.001
- * Copyright (C) 2015 Sony Interactive Entertainment Inc.
- * All Rights Reserved.
- */
 /*-
  * Copyright (c) 1988, 1993
  *	The Regents of the University of California.  All rights reserved.
@@ -32,16 +27,11 @@
  * SUCH DAMAGE.
  *
  *	@(#)syslimits.h	8.1 (Berkeley) 6/2/93
- * $FreeBSD$
+ * $FreeBSD: release/9.0.0/sys/sys/syslimits.h 194498 2009-06-19 17:10:35Z brooks $
  */
 
 #ifndef _SYS_SYSLIMITS_H_
 #define _SYS_SYSLIMITS_H_
-
-#include <sys/cdefs.h>
-
-/*
-This confuses modularize, so can we live without the warning?
 
 #if !defined(_KERNEL) && !defined(_LIMITS_H_) && !defined(_SYS_PARAM_H_)
 #ifndef _SYS_CDEFS_H_
@@ -51,7 +41,6 @@ This confuses modularize, so can we live without the warning?
 #warning "No user-serviceable parts inside."
 #endif
 #endif
-*/
 
 /*
  * Do not add any new variables here.  (See the comment at the end of

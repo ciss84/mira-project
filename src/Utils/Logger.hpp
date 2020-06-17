@@ -9,6 +9,7 @@ extern "C"
 	#include <sys/lock.h>
 	#include <sys/sx.h>
 }
+
 enum LogLevels
 {
 	LL_None,
@@ -62,7 +63,7 @@ namespace Mira
 
 			struct sx* GetMutex() { return &m_Mutex; }
 
-		  template<typename... Args>
+			template<typename... Args>
 			inline void WriteLog_Internal2(enum LogLevels p_LogLevel, const char* p_Function, int32_t p_Line, const char* p_Format, Args... p_Args)
 			{
 				// If the logger is set not to output anything, skip everything

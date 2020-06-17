@@ -1,8 +1,3 @@
-﻿/* SIE CONFIDENTIAL
- * PlayStation(R)4 Programmer Tool Runtime Library Release 05.508.001
- * Copyright (C) 2015 Sony Interactive Entertainment Inc.
- * All Rights Reserved.
- */
 /*-
  * Copyright (c) 1982, 1986, 1993
  *	The Regents of the University of California.  All rights reserved.
@@ -32,7 +27,7 @@
  * SUCH DAMAGE.
  *
  *	@(#)time.h	8.5 (Berkeley) 5/4/95
- * $FreeBSD$
+ * $FreeBSD: release/9.0.0/sys/sys/time.h 224732 2011-08-09 14:06:50Z jonathan $
  */
 
 #ifndef _SYS_TIME_H_
@@ -41,7 +36,6 @@
 #include <sys/_timeval.h>
 #include <sys/types.h>
 #include <sys/timespec.h>
-#include <sys/_defines/_clock.h>
 
 struct timezone {
 	int	tz_minuteswest;	/* minutes west of Greenwich */
@@ -143,7 +137,7 @@ timespec2bintime(const struct timespec *ts, struct bintime *bt)
 
 	bt->sec = ts->tv_sec;
 	/* 18446744073 = int(2^64 / 1000000000) */
-	bt->frac = (uint64_t)ts->tv_nsec * (uint64_t)18446744073LL; 
+	bt->frac = ts->tv_nsec * (uint64_t)18446744073LL; 
 }
 
 static __inline void
@@ -160,7 +154,7 @@ timeval2bintime(const struct timeval *tv, struct bintime *bt)
 
 	bt->sec = tv->tv_sec;
 	/* 18446744073709 = int(2^64 / 1000000) */
-	bt->frac = (uint64_t)tv->tv_usec * (uint64_t)18446744073709LL;
+	bt->frac = tv->tv_usec * (uint64_t)18446744073709LL;
 }
 #endif /* __BSD_VISIBLE */
 
@@ -257,6 +251,23 @@ struct clockinfo {
 	int	profhz;		/* profiling clock frequency */
 };
 
+/* These macros are also in time.h. */
+#ifndef CLOCK_REALTIME
+#define CLOCK_REALTIME	0
+#define CLOCK_VIRTUAL	1
+#define CLOCK_PROF	2
+#define CLOCK_MONOTONIC	4
+#define CLOCK_UPTIME	5		/* FreeBSD-specific. */
+#define CLOCK_UPTIME_PRECISE	7	/* FreeBSD-specific. */
+#define CLOCK_UPTIME_FAST	8	/* FreeBSD-specific. */
+#define CLOCK_REALTIME_PRECISE	9	/* FreeBSD-specific. */
+#define CLOCK_REALTIME_FAST	10	/* FreeBSD-specific. */
+#define CLOCK_MONOTONIC_PRECISE	11	/* FreeBSD-specific. */
+#define CLOCK_MONOTONIC_FAST	12	/* FreeBSD-specific. */
+#define CLOCK_SECOND	13		/* FreeBSD-specific. */
+#define CLOCK_THREAD_CPUTIME_ID	14
+#endif
+
 #ifndef TIMER_ABSTIME
 #define TIMER_RELTIME	0x0	/* relative timer */
 #define TIMER_ABSTIME	0x1	/* absolute timer */
@@ -274,7 +285,6 @@ extern time_t	time_second;
 extern time_t	time_uptime;
 extern struct bintime boottimebin;
 extern struct timeval boottime;
-extern struct timespec total_susptime;
 
 /*
  * Functions for looking at our clock: [get]{bin,nano,micro}[up]time()
@@ -322,15 +332,6 @@ int	ratecheck(struct timeval *, const struct timeval *);
 void	timevaladd(struct timeval *t1, const struct timeval *t2);
 void	timevalsub(struct timeval *t1, const struct timeval *t2);
 int	tvtohz(struct timeval *tv);
-
-/* Process time */
-struct proc;
-int     clock_get_proctime(pid_t pid, struct timespec *ats);
-struct thread;
-void    getproctime(struct proc *p, struct timespec *ats);
-uint64_t getproctimecounter(struct proc *p);
-void    getselfproctime(struct thread *td, struct timespec *ats);
-
 #else /* !_KERNEL */
 #include <time.h>
 
@@ -353,7 +354,6 @@ int	settimeofday(const struct timeval *, const struct timezone *);
 int	getitimer(int, struct itimerval *);
 int	gettimeofday(struct timeval *, struct timezone *);
 #endif
-
 
 __END_DECLS
 

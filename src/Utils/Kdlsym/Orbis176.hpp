@@ -55,6 +55,7 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define kdlsym_addr_kmem_alloc                             0x003AB260
 #define kdlsym_addr_kmem_free                              0x003AB410
 #define kdlsym_addr_kproc_create                           0x00217080
+#define kdlsym_addr_kproc_exit                             0x0
 #define kdlsym_addr_kthread_add                            0x00217700
 #define kdlsym_addr_kthread_exit                           0x002179A0
 #define kdlsym_addr_M_LINKER                               0x01038FE0
@@ -167,9 +168,32 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 // SceShellCore patches - use free prefix instead fake
 #define ssc_fake_to_free_patch                             0x0
 
+// flatz allow sys_dynlib_dlsym in all processes
+#define kdlsym_addr_sys_dynlib_dlsym_patch                  0x0
+
 // make pkgs installer working with external hdd
 #define ssc_make_pkgs_installer_working_with_external_hdd   0x0
 
 // enable support with 7.xx external hdd
 #define ssc_enable_support_external_hdd                     0x0
+
+// SceShellUI patches - debug patches
+#define ssu_sceSblRcMgrIsAllowDebugMenuForSettings_patch    0x0
+#define ssu_sceSblRcMgrIsStoreMode_patch                    0x0
+
+// sceRegMgr
+#define kdlsym_addr_sceRegMgrGetInt                         0x0
+#define kdlsym_addr_sceRegMgrSetInt                         0x0
+#define kdlsym_addr_sceRegMgrGetBin                         0x0
+#define kdlsym_addr_sceRegMgrSetBin                         0x0
+#define kdlsym_addr_sceRegMgrGetStr                         0x0
+#define kdlsym_addr_sceRegMgrSetStr                         0x0
+
+// Debug (Not needed to port)
+#define kdlsym_addr_g_obi_create                           0x0
+#define kdlsym_addr_g_obi_destroy                          0x0
+#define kdlsym_addr_g_obi_read                             0x0
+#define kdlsym_addr_g_part_ox_get_bank                     0x0
+#define kdlsym_addr_hexdump                                0x0
+
 #endif

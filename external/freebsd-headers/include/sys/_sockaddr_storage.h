@@ -1,8 +1,3 @@
-﻿/* SIE CONFIDENTIAL
- * PlayStation(R)4 Programmer Tool Runtime Library Release 05.508.001
- * Copyright (C) 2015 Sony Interactive Entertainment Inc.
- * All Rights Reserved.
- */
 /*-
  * Copyright (c) 1982, 1985, 1986, 1988, 1993, 1994
  *	The Regents of the University of California.  All rights reserved.
@@ -32,13 +27,11 @@
  * SUCH DAMAGE.
  *
  *	@(#)socket.h	8.4 (Berkeley) 2/21/94
- * $FreeBSD$
+ * $FreeBSD: release/9.0.0/sys/sys/_sockaddr_storage.h 196967 2009-09-08 10:39:38Z phk $
  */
 
 #ifndef _SYS__SOCKADDR_STORAGE_H_
 #define	_SYS__SOCKADDR_STORAGE_H_
-
-#include <sys/socket.h>
 
 /*
  * RFC 2553: protocol-independent placeholder for socket addresses

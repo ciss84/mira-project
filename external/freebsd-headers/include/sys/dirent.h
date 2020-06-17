@@ -1,4 +1,4 @@
-﻿/*-
+/*-
  * Copyright (c) 1989, 1993
  *	The Regents of the University of California.  All rights reserved.
  *
@@ -27,7 +27,7 @@
  * SUCH DAMAGE.
  *
  *	@(#)dirent.h	8.3 (Berkeley) 8/10/94
- * $FreeBSD$
+ * $FreeBSD: release/9.0.0/sys/sys/dirent.h 161347 2006-08-16 09:34:56Z maxim $
  */
 
 #ifndef	_SYS_DIRENT_H_

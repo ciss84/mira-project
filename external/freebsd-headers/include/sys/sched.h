@@ -1,9 +1,3 @@
-﻿ /* SIE CONFIDENTIAL
-  * PlayStation(R)4 Programmer Tool Runtime Library Release 05.508.001
-  * Copyright (C) 2015 Sony Interactive Entertainment Inc.
-  * All Rights Reserved.
-  */
-
 /*-
  * Copyright (c) 1996, 1997
  *      HD Associates, Inc.  All rights reserved.
@@ -62,7 +56,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD$
+ * $FreeBSD: release/9.0.0/sys/sys/sched.h 216791 2010-12-29 09:26:46Z davidxu $
  */
 
 #ifndef _SCHED_H_
@@ -97,15 +91,15 @@ void	sched_nice(struct proc *p, int nice);
  */
 void	sched_exit_thread(struct thread *td, struct thread *child);
 void	sched_fork_thread(struct thread *td, struct thread *child);
-void	sched_lend_prio(struct thread *td, u_short prio);
-void	sched_lend_user_prio(struct thread *td, u_short pri);
+void	sched_lend_prio(struct thread *td, u_char prio);
+void	sched_lend_user_prio(struct thread *td, u_char pri);
 fixpt_t	sched_pctcpu(struct thread *td);
-void	sched_prio(struct thread *td, u_short prio);
+void	sched_prio(struct thread *td, u_char prio);
 void	sched_sleep(struct thread *td, int prio);
 void	sched_switch(struct thread *td, struct thread *newtd, int flags);
 void	sched_throw(struct thread *td);
-void	sched_unlend_prio(struct thread *td, u_short prio);
-void	sched_user_prio(struct thread *td, u_short prio);
+void	sched_unlend_prio(struct thread *td, u_char prio);
+void	sched_user_prio(struct thread *td, u_char prio);
 void	sched_userret(struct thread *td);
 void	sched_wakeup(struct thread *td);
 void	sched_preempt(struct thread *td);
@@ -126,12 +120,11 @@ void	sched_idletd(void *);
  * hold a thread on a particular CPU.
  */
 void	sched_bind(struct thread *td, int cpu);
-void    sched_pin(void);
+static __inline void sched_pin(void);
 void	sched_unbind(struct thread *td);
-void    sched_unpin(void);
+static __inline void sched_unpin(void);
 int	sched_is_bound(struct thread *td);
 void	sched_affinity(struct thread *td);
-
 
 /*
  * These procedures tell the process data structure allocation code how
@@ -146,16 +139,17 @@ int	sched_sizeof_thread(void);
  */
 char	*sched_tdname(struct thread *td);
 
-/*
- * For PMC
- */
-int     sched_ipi_cpu(struct thread *td, int ipi);
+static __inline void
+sched_pin(void)
+{
+	curthread->td_pinned++;
+}
 
-void	sched_unboost(void);
-#include <sys/_cpuset.h>
-void    sched_changecpuset(struct thread *td, cpuset_t *mask);
-struct cpuset* sched_get_cpuset(struct thread *td);
-
+static __inline void
+sched_unpin(void)
+{
+	curthread->td_pinned--;
+}
 
 /* sched_add arguments (formerly setrunqueue) */
 #define	SRQ_BORING	0x0000		/* No special circumstances. */
@@ -219,7 +213,11 @@ struct sched_param {
 #ifndef _KERNEL
 #include <sys/cdefs.h>
 #include <sys/_types.h>
-#include <sys/_types/_pid_t.h>
+
+#ifndef _PID_T_DECLARED
+typedef __pid_t         pid_t;
+#define _PID_T_DECLARED
+#endif
 
 struct timespec;
 

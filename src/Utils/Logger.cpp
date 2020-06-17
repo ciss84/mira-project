@@ -4,7 +4,6 @@
 #include <Utils/Logger.hpp>
 #include <Utils/Kdlsym.hpp>
 #include <Utils/SysWrappers.hpp>
-
 #include <Mira.hpp>
 
 extern "C"
@@ -48,4 +47,4 @@ Logger::~Logger()
 {
 	// auto mtx_destroy = (void(*)(struct mtx* mutex))kdlsym(mtx_destroy);
 	// mtx_destroy(&m_Mutex);
-} 
+}

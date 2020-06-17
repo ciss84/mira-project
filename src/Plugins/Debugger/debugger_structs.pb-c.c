@@ -10,7 +10,7 @@
 void   dbg_gp_registers__init
                      (DbgGpRegisters         *message)
 {
-  static DbgGpRegisters init_value = DBG_GP_REGISTERS__INIT;
+  static const DbgGpRegisters init_value = DBG_GP_REGISTERS__INIT;
   *message = init_value;
 }
 size_t dbg_gp_registers__get_packed_size
@@ -47,13 +47,15 @@ void   dbg_gp_registers__free_unpacked
                      (DbgGpRegisters *message,
                       ProtobufCAllocator *allocator)
 {
+  if(!message)
+    return;
   assert(message->base.descriptor == &dbg_gp_registers__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   dbg_fp_registers__init
                      (DbgFpRegisters         *message)
 {
-  static DbgFpRegisters init_value = DBG_FP_REGISTERS__INIT;
+  static const DbgFpRegisters init_value = DBG_FP_REGISTERS__INIT;
   *message = init_value;
 }
 size_t dbg_fp_registers__get_packed_size
@@ -90,13 +92,15 @@ void   dbg_fp_registers__free_unpacked
                      (DbgFpRegisters *message,
                       ProtobufCAllocator *allocator)
 {
+  if(!message)
+    return;
   assert(message->base.descriptor == &dbg_fp_registers__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   dbg_db_registers__init
                      (DbgDbRegisters         *message)
 {
-  static DbgDbRegisters init_value = DBG_DB_REGISTERS__INIT;
+  static const DbgDbRegisters init_value = DBG_DB_REGISTERS__INIT;
   *message = init_value;
 }
 size_t dbg_db_registers__get_packed_size
@@ -133,13 +137,15 @@ void   dbg_db_registers__free_unpacked
                      (DbgDbRegisters *message,
                       ProtobufCAllocator *allocator)
 {
+  if(!message)
+    return;
   assert(message->base.descriptor == &dbg_db_registers__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   dbg_thread_limited__init
                      (DbgThreadLimited         *message)
 {
-  static DbgThreadLimited init_value = DBG_THREAD_LIMITED__INIT;
+  static const DbgThreadLimited init_value = DBG_THREAD_LIMITED__INIT;
   *message = init_value;
 }
 size_t dbg_thread_limited__get_packed_size
@@ -176,13 +182,15 @@ void   dbg_thread_limited__free_unpacked
                      (DbgThreadLimited *message,
                       ProtobufCAllocator *allocator)
 {
+  if(!message)
+    return;
   assert(message->base.descriptor == &dbg_thread_limited__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   dbg_thread_full__init
                      (DbgThreadFull         *message)
 {
-  static DbgThreadFull init_value = DBG_THREAD_FULL__INIT;
+  static const DbgThreadFull init_value = DBG_THREAD_FULL__INIT;
   *message = init_value;
 }
 size_t dbg_thread_full__get_packed_size
@@ -219,13 +227,15 @@ void   dbg_thread_full__free_unpacked
                      (DbgThreadFull *message,
                       ProtobufCAllocator *allocator)
 {
+  if(!message)
+    return;
   assert(message->base.descriptor == &dbg_thread_full__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   dbg_cred__init
                      (DbgCred         *message)
 {
-  static DbgCred init_value = DBG_CRED__INIT;
+  static const DbgCred init_value = DBG_CRED__INIT;
   *message = init_value;
 }
 size_t dbg_cred__get_packed_size
@@ -262,13 +272,15 @@ void   dbg_cred__free_unpacked
                      (DbgCred *message,
                       ProtobufCAllocator *allocator)
 {
+  if(!message)
+    return;
   assert(message->base.descriptor == &dbg_cred__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   dbg_file_desc__init
                      (DbgFileDesc         *message)
 {
-  static DbgFileDesc init_value = DBG_FILE_DESC__INIT;
+  static const DbgFileDesc init_value = DBG_FILE_DESC__INIT;
   *message = init_value;
 }
 size_t dbg_file_desc__get_packed_size
@@ -305,13 +317,15 @@ void   dbg_file_desc__free_unpacked
                      (DbgFileDesc *message,
                       ProtobufCAllocator *allocator)
 {
+  if(!message)
+    return;
   assert(message->base.descriptor == &dbg_file_desc__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   dbg_process_full__init
                      (DbgProcessFull         *message)
 {
-  static DbgProcessFull init_value = DBG_PROCESS_FULL__INIT;
+  static const DbgProcessFull init_value = DBG_PROCESS_FULL__INIT;
   *message = init_value;
 }
 size_t dbg_process_full__get_packed_size
@@ -348,13 +362,15 @@ void   dbg_process_full__free_unpacked
                      (DbgProcessFull *message,
                       ProtobufCAllocator *allocator)
 {
+  if(!message)
+    return;
   assert(message->base.descriptor == &dbg_process_full__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   dbg_vm_entry__init
                      (DbgVmEntry         *message)
 {
-  static DbgVmEntry init_value = DBG_VM_ENTRY__INIT;
+  static const DbgVmEntry init_value = DBG_VM_ENTRY__INIT;
   *message = init_value;
 }
 size_t dbg_vm_entry__get_packed_size
@@ -391,13 +407,15 @@ void   dbg_vm_entry__free_unpacked
                      (DbgVmEntry *message,
                       ProtobufCAllocator *allocator)
 {
+  if(!message)
+    return;
   assert(message->base.descriptor == &dbg_vm_entry__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   dbg_process_limited__init
                      (DbgProcessLimited         *message)
 {
-  static DbgProcessLimited init_value = DBG_PROCESS_LIMITED__INIT;
+  static const DbgProcessLimited init_value = DBG_PROCESS_LIMITED__INIT;
   *message = init_value;
 }
 size_t dbg_process_limited__get_packed_size
@@ -434,6 +452,8 @@ void   dbg_process_limited__free_unpacked
                      (DbgProcessLimited *message,
                       ProtobufCAllocator *allocator)
 {
+  if(!message)
+    return;
   assert(message->base.descriptor == &dbg_process_limited__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
@@ -442,9 +462,9 @@ static const ProtobufCFieldDescriptor dbg_gp_registers__field_descriptors[26] =
   {
     "r_r15",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgGpRegisters, has_r_r15),
+    0,   /* quantifier_offset */
     offsetof(DbgGpRegisters, r_r15),
     NULL,
     NULL,
@@ -454,9 +474,9 @@ static const ProtobufCFieldDescriptor dbg_gp_registers__field_descriptors[26] =
   {
     "r_r14",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgGpRegisters, has_r_r14),
+    0,   /* quantifier_offset */
     offsetof(DbgGpRegisters, r_r14),
     NULL,
     NULL,
@@ -466,9 +486,9 @@ static const ProtobufCFieldDescriptor dbg_gp_registers__field_descriptors[26] =
   {
     "r_r13",
     3,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgGpRegisters, has_r_r13),
+    0,   /* quantifier_offset */
     offsetof(DbgGpRegisters, r_r13),
     NULL,
     NULL,
@@ -478,9 +498,9 @@ static const ProtobufCFieldDescriptor dbg_gp_registers__field_descriptors[26] =
   {
     "r_r12",
     4,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgGpRegisters, has_r_r12),
+    0,   /* quantifier_offset */
     offsetof(DbgGpRegisters, r_r12),
     NULL,
     NULL,
@@ -490,9 +510,9 @@ static const ProtobufCFieldDescriptor dbg_gp_registers__field_descriptors[26] =
   {
     "r_r11",
     5,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgGpRegisters, has_r_r11),
+    0,   /* quantifier_offset */
     offsetof(DbgGpRegisters, r_r11),
     NULL,
     NULL,
@@ -502,9 +522,9 @@ static const ProtobufCFieldDescriptor dbg_gp_registers__field_descriptors[26] =
   {
     "r_r10",
     6,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgGpRegisters, has_r_r10),
+    0,   /* quantifier_offset */
     offsetof(DbgGpRegisters, r_r10),
     NULL,
     NULL,
@@ -514,9 +534,9 @@ static const ProtobufCFieldDescriptor dbg_gp_registers__field_descriptors[26] =
   {
     "r_r9",
     7,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgGpRegisters, has_r_r9),
+    0,   /* quantifier_offset */
     offsetof(DbgGpRegisters, r_r9),
     NULL,
     NULL,
@@ -526,9 +546,9 @@ static const ProtobufCFieldDescriptor dbg_gp_registers__field_descriptors[26] =
   {
     "r_r8",
     8,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgGpRegisters, has_r_r8),
+    0,   /* quantifier_offset */
     offsetof(DbgGpRegisters, r_r8),
     NULL,
     NULL,
@@ -538,9 +558,9 @@ static const ProtobufCFieldDescriptor dbg_gp_registers__field_descriptors[26] =
   {
     "r_rdi",
     9,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgGpRegisters, has_r_rdi),
+    0,   /* quantifier_offset */
     offsetof(DbgGpRegisters, r_rdi),
     NULL,
     NULL,
@@ -550,9 +570,9 @@ static const ProtobufCFieldDescriptor dbg_gp_registers__field_descriptors[26] =
   {
     "r_rsi",
     10,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgGpRegisters, has_r_rsi),
+    0,   /* quantifier_offset */
     offsetof(DbgGpRegisters, r_rsi),
     NULL,
     NULL,
@@ -562,9 +582,9 @@ static const ProtobufCFieldDescriptor dbg_gp_registers__field_descriptors[26] =
   {
     "r_rbp",
     11,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgGpRegisters, has_r_rbp),
+    0,   /* quantifier_offset */
     offsetof(DbgGpRegisters, r_rbp),
     NULL,
     NULL,
@@ -574,9 +594,9 @@ static const ProtobufCFieldDescriptor dbg_gp_registers__field_descriptors[26] =
   {
     "r_rbx",
     12,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgGpRegisters, has_r_rbx),
+    0,   /* quantifier_offset */
     offsetof(DbgGpRegisters, r_rbx),
     NULL,
     NULL,
@@ -586,9 +606,9 @@ static const ProtobufCFieldDescriptor dbg_gp_registers__field_descriptors[26] =
   {
     "r_rdx",
     13,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgGpRegisters, has_r_rdx),
+    0,   /* quantifier_offset */
     offsetof(DbgGpRegisters, r_rdx),
     NULL,
     NULL,
@@ -598,9 +618,9 @@ static const ProtobufCFieldDescriptor dbg_gp_registers__field_descriptors[26] =
   {
     "r_rcx",
     14,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgGpRegisters, has_r_rcx),
+    0,   /* quantifier_offset */
     offsetof(DbgGpRegisters, r_rcx),
     NULL,
     NULL,
@@ -610,9 +630,9 @@ static const ProtobufCFieldDescriptor dbg_gp_registers__field_descriptors[26] =
   {
     "r_rax",
     15,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgGpRegisters, has_r_rax),
+    0,   /* quantifier_offset */
     offsetof(DbgGpRegisters, r_rax),
     NULL,
     NULL,
@@ -622,9 +642,9 @@ static const ProtobufCFieldDescriptor dbg_gp_registers__field_descriptors[26] =
   {
     "r_trapno",
     16,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT32,
-    offsetof(DbgGpRegisters, has_r_trapno),
+    0,   /* quantifier_offset */
     offsetof(DbgGpRegisters, r_trapno),
     NULL,
     NULL,
@@ -634,9 +654,9 @@ static const ProtobufCFieldDescriptor dbg_gp_registers__field_descriptors[26] =
   {
     "r_fs",
     17,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT32,
-    offsetof(DbgGpRegisters, has_r_fs),
+    0,   /* quantifier_offset */
     offsetof(DbgGpRegisters, r_fs),
     NULL,
     NULL,
@@ -646,9 +666,9 @@ static const ProtobufCFieldDescriptor dbg_gp_registers__field_descriptors[26] =
   {
     "r_gs",
     18,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT32,
-    offsetof(DbgGpRegisters, has_r_gs),
+    0,   /* quantifier_offset */
     offsetof(DbgGpRegisters, r_gs),
     NULL,
     NULL,
@@ -658,9 +678,9 @@ static const ProtobufCFieldDescriptor dbg_gp_registers__field_descriptors[26] =
   {
     "r_err",
     19,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT32,
-    offsetof(DbgGpRegisters, has_r_err),
+    0,   /* quantifier_offset */
     offsetof(DbgGpRegisters, r_err),
     NULL,
     NULL,
@@ -670,9 +690,9 @@ static const ProtobufCFieldDescriptor dbg_gp_registers__field_descriptors[26] =
   {
     "r_es",
     20,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT32,
-    offsetof(DbgGpRegisters, has_r_es),
+    0,   /* quantifier_offset */
     offsetof(DbgGpRegisters, r_es),
     NULL,
     NULL,
@@ -682,9 +702,9 @@ static const ProtobufCFieldDescriptor dbg_gp_registers__field_descriptors[26] =
   {
     "r_ds",
     21,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT32,
-    offsetof(DbgGpRegisters, has_r_ds),
+    0,   /* quantifier_offset */
     offsetof(DbgGpRegisters, r_ds),
     NULL,
     NULL,
@@ -694,9 +714,9 @@ static const ProtobufCFieldDescriptor dbg_gp_registers__field_descriptors[26] =
   {
     "r_rip",
     22,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgGpRegisters, has_r_rip),
+    0,   /* quantifier_offset */
     offsetof(DbgGpRegisters, r_rip),
     NULL,
     NULL,
@@ -706,9 +726,9 @@ static const ProtobufCFieldDescriptor dbg_gp_registers__field_descriptors[26] =
   {
     "r_cs",
     23,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgGpRegisters, has_r_cs),
+    0,   /* quantifier_offset */
     offsetof(DbgGpRegisters, r_cs),
     NULL,
     NULL,
@@ -718,9 +738,9 @@ static const ProtobufCFieldDescriptor dbg_gp_registers__field_descriptors[26] =
   {
     "r_rflags",
     24,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgGpRegisters, has_r_rflags),
+    0,   /* quantifier_offset */
     offsetof(DbgGpRegisters, r_rflags),
     NULL,
     NULL,
@@ -730,9 +750,9 @@ static const ProtobufCFieldDescriptor dbg_gp_registers__field_descriptors[26] =
   {
     "r_rsp",
     25,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgGpRegisters, has_r_rsp),
+    0,   /* quantifier_offset */
     offsetof(DbgGpRegisters, r_rsp),
     NULL,
     NULL,
@@ -742,9 +762,9 @@ static const ProtobufCFieldDescriptor dbg_gp_registers__field_descriptors[26] =
   {
     "r_ss",
     26,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgGpRegisters, has_r_ss),
+    0,   /* quantifier_offset */
     offsetof(DbgGpRegisters, r_ss),
     NULL,
     NULL,
@@ -805,9 +825,9 @@ static const ProtobufCFieldDescriptor dbg_fp_registers__field_descriptors[1] =
   {
     "data",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_BYTES,
-    offsetof(DbgFpRegisters, has_data),
+    0,   /* quantifier_offset */
     offsetof(DbgFpRegisters, data),
     NULL,
     NULL,
@@ -881,9 +901,9 @@ static const ProtobufCFieldDescriptor dbg_thread_limited__field_descriptors[7] =
   {
     "proc",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgThreadLimited, has_proc),
+    0,   /* quantifier_offset */
     offsetof(DbgThreadLimited, proc),
     NULL,
     NULL,
@@ -893,9 +913,9 @@ static const ProtobufCFieldDescriptor dbg_thread_limited__field_descriptors[7] =
   {
     "threadId",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_INT32,
-    offsetof(DbgThreadLimited, has_threadid),
+    0,   /* quantifier_offset */
     offsetof(DbgThreadLimited, threadid),
     NULL,
     NULL,
@@ -905,21 +925,21 @@ static const ProtobufCFieldDescriptor dbg_thread_limited__field_descriptors[7] =
   {
     "name",
     3,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(DbgThreadLimited, name),
     NULL,
-    NULL,
+    &protobuf_c_empty_string,
     0,             /* flags */
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },
   {
     "retval",
     4,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_INT64,
-    offsetof(DbgThreadLimited, has_retval),
+    0,   /* quantifier_offset */
     offsetof(DbgThreadLimited, retval),
     NULL,
     NULL,
@@ -929,9 +949,9 @@ static const ProtobufCFieldDescriptor dbg_thread_limited__field_descriptors[7] =
   {
     "kernelStack",
     5,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgThreadLimited, has_kernelstack),
+    0,   /* quantifier_offset */
     offsetof(DbgThreadLimited, kernelstack),
     NULL,
     NULL,
@@ -941,9 +961,9 @@ static const ProtobufCFieldDescriptor dbg_thread_limited__field_descriptors[7] =
   {
     "kernelStackPages",
     6,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_INT32,
-    offsetof(DbgThreadLimited, has_kernelstackpages),
+    0,   /* quantifier_offset */
     offsetof(DbgThreadLimited, kernelstackpages),
     NULL,
     NULL,
@@ -953,9 +973,9 @@ static const ProtobufCFieldDescriptor dbg_thread_limited__field_descriptors[7] =
   {
     "err_no",
     7,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_INT32,
-    offsetof(DbgThreadLimited, has_err_no),
+    0,   /* quantifier_offset */
     offsetof(DbgThreadLimited, err_no),
     NULL,
     NULL,
@@ -997,9 +1017,9 @@ static const ProtobufCFieldDescriptor dbg_thread_full__field_descriptors[10] =
   {
     "proc",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgThreadFull, has_proc),
+    0,   /* quantifier_offset */
     offsetof(DbgThreadFull, proc),
     NULL,
     NULL,
@@ -1009,9 +1029,9 @@ static const ProtobufCFieldDescriptor dbg_thread_full__field_descriptors[10] =
   {
     "threadId",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_INT32,
-    offsetof(DbgThreadFull, has_threadid),
+    0,   /* quantifier_offset */
     offsetof(DbgThreadFull, threadid),
     NULL,
     NULL,
@@ -1021,21 +1041,21 @@ static const ProtobufCFieldDescriptor dbg_thread_full__field_descriptors[10] =
   {
     "name",
     3,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(DbgThreadFull, name),
     NULL,
-    NULL,
+    &protobuf_c_empty_string,
     0,             /* flags */
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },
   {
     "retval",
     4,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_INT64,
-    offsetof(DbgThreadFull, has_retval),
+    0,   /* quantifier_offset */
     offsetof(DbgThreadFull, retval),
     NULL,
     NULL,
@@ -1045,9 +1065,9 @@ static const ProtobufCFieldDescriptor dbg_thread_full__field_descriptors[10] =
   {
     "kernelStack",
     5,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgThreadFull, has_kernelstack),
+    0,   /* quantifier_offset */
     offsetof(DbgThreadFull, kernelstack),
     NULL,
     NULL,
@@ -1057,9 +1077,9 @@ static const ProtobufCFieldDescriptor dbg_thread_full__field_descriptors[10] =
   {
     "kernelStackPages",
     6,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_INT32,
-    offsetof(DbgThreadFull, has_kernelstackpages),
+    0,   /* quantifier_offset */
     offsetof(DbgThreadFull, kernelstackpages),
     NULL,
     NULL,
@@ -1069,9 +1089,9 @@ static const ProtobufCFieldDescriptor dbg_thread_full__field_descriptors[10] =
   {
     "err_no",
     7,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_INT32,
-    offsetof(DbgThreadFull, has_err_no),
+    0,   /* quantifier_offset */
     offsetof(DbgThreadFull, err_no),
     NULL,
     NULL,
@@ -1081,7 +1101,7 @@ static const ProtobufCFieldDescriptor dbg_thread_full__field_descriptors[10] =
   {
     "gpRegisters",
     8,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(DbgThreadFull, gpregisters),
@@ -1093,7 +1113,7 @@ static const ProtobufCFieldDescriptor dbg_thread_full__field_descriptors[10] =
   {
     "fpRegisters",
     9,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(DbgThreadFull, fpregisters),
@@ -1105,7 +1125,7 @@ static const ProtobufCFieldDescriptor dbg_thread_full__field_descriptors[10] =
   {
     "dbRegisters",
     10,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(DbgThreadFull, dbregisters),
@@ -1152,9 +1172,9 @@ static const ProtobufCFieldDescriptor dbg_cred__field_descriptors[10] =
   {
     "effectiveUserId",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT32,
-    offsetof(DbgCred, has_effectiveuserid),
+    0,   /* quantifier_offset */
     offsetof(DbgCred, effectiveuserid),
     NULL,
     NULL,
@@ -1164,9 +1184,9 @@ static const ProtobufCFieldDescriptor dbg_cred__field_descriptors[10] =
   {
     "realUserId",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT32,
-    offsetof(DbgCred, has_realuserid),
+    0,   /* quantifier_offset */
     offsetof(DbgCred, realuserid),
     NULL,
     NULL,
@@ -1176,9 +1196,9 @@ static const ProtobufCFieldDescriptor dbg_cred__field_descriptors[10] =
   {
     "savedUserId",
     3,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT32,
-    offsetof(DbgCred, has_saveduserid),
+    0,   /* quantifier_offset */
     offsetof(DbgCred, saveduserid),
     NULL,
     NULL,
@@ -1188,9 +1208,9 @@ static const ProtobufCFieldDescriptor dbg_cred__field_descriptors[10] =
   {
     "numGroups",
     4,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_INT32,
-    offsetof(DbgCred, has_numgroups),
+    0,   /* quantifier_offset */
     offsetof(DbgCred, numgroups),
     NULL,
     NULL,
@@ -1200,9 +1220,9 @@ static const ProtobufCFieldDescriptor dbg_cred__field_descriptors[10] =
   {
     "realGroupId",
     5,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT32,
-    offsetof(DbgCred, has_realgroupid),
+    0,   /* quantifier_offset */
     offsetof(DbgCred, realgroupid),
     NULL,
     NULL,
@@ -1212,9 +1232,9 @@ static const ProtobufCFieldDescriptor dbg_cred__field_descriptors[10] =
   {
     "savedGroupId",
     6,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT32,
-    offsetof(DbgCred, has_savedgroupid),
+    0,   /* quantifier_offset */
     offsetof(DbgCred, savedgroupid),
     NULL,
     NULL,
@@ -1224,9 +1244,9 @@ static const ProtobufCFieldDescriptor dbg_cred__field_descriptors[10] =
   {
     "prison",
     7,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgCred, has_prison),
+    0,   /* quantifier_offset */
     offsetof(DbgCred, prison),
     NULL,
     NULL,
@@ -1236,9 +1256,9 @@ static const ProtobufCFieldDescriptor dbg_cred__field_descriptors[10] =
   {
     "sceAuthId",
     8,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgCred, has_sceauthid),
+    0,   /* quantifier_offset */
     offsetof(DbgCred, sceauthid),
     NULL,
     NULL,
@@ -1337,9 +1357,9 @@ static const ProtobufCFieldDescriptor dbg_process_full__field_descriptors[21] =
   {
     "unused",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT32,
-    offsetof(DbgProcessFull, has_unused),
+    0,   /* quantifier_offset */
     offsetof(DbgProcessFull, unused),
     NULL,
     NULL,
@@ -1349,9 +1369,9 @@ static const ProtobufCFieldDescriptor dbg_process_full__field_descriptors[21] =
   {
     "processId",
     3,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_INT32,
-    offsetof(DbgProcessFull, has_processid),
+    0,   /* quantifier_offset */
     offsetof(DbgProcessFull, processid),
     NULL,
     NULL,
@@ -1361,9 +1381,9 @@ static const ProtobufCFieldDescriptor dbg_process_full__field_descriptors[21] =
   {
     "parentProc",
     4,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgProcessFull, has_parentproc),
+    0,   /* quantifier_offset */
     offsetof(DbgProcessFull, parentproc),
     NULL,
     NULL,
@@ -1373,9 +1393,9 @@ static const ProtobufCFieldDescriptor dbg_process_full__field_descriptors[21] =
   {
     "oppid",
     5,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_INT32,
-    offsetof(DbgProcessFull, has_oppid),
+    0,   /* quantifier_offset */
     offsetof(DbgProcessFull, oppid),
     NULL,
     NULL,
@@ -1385,9 +1405,9 @@ static const ProtobufCFieldDescriptor dbg_process_full__field_descriptors[21] =
   {
     "dbgChild",
     6,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_INT32,
-    offsetof(DbgProcessFull, has_dbgchild),
+    0,   /* quantifier_offset */
     offsetof(DbgProcessFull, dbgchild),
     NULL,
     NULL,
@@ -1397,9 +1417,9 @@ static const ProtobufCFieldDescriptor dbg_process_full__field_descriptors[21] =
   {
     "vmspace",
     7,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgProcessFull, has_vmspace),
+    0,   /* quantifier_offset */
     offsetof(DbgProcessFull, vmspace),
     NULL,
     NULL,
@@ -1409,9 +1429,9 @@ static const ProtobufCFieldDescriptor dbg_process_full__field_descriptors[21] =
   {
     "exitThreads",
     8,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_INT32,
-    offsetof(DbgProcessFull, has_exitthreads),
+    0,   /* quantifier_offset */
     offsetof(DbgProcessFull, exitthreads),
     NULL,
     NULL,
@@ -1421,9 +1441,9 @@ static const ProtobufCFieldDescriptor dbg_process_full__field_descriptors[21] =
   {
     "sigParent",
     9,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_INT32,
-    offsetof(DbgProcessFull, has_sigparent),
+    0,   /* quantifier_offset */
     offsetof(DbgProcessFull, sigparent),
     NULL,
     NULL,
@@ -1433,9 +1453,9 @@ static const ProtobufCFieldDescriptor dbg_process_full__field_descriptors[21] =
   {
     "sig",
     10,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_INT32,
-    offsetof(DbgProcessFull, has_sig),
+    0,   /* quantifier_offset */
     offsetof(DbgProcessFull, sig),
     NULL,
     NULL,
@@ -1445,9 +1465,9 @@ static const ProtobufCFieldDescriptor dbg_process_full__field_descriptors[21] =
   {
     "code",
     11,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT32,
-    offsetof(DbgProcessFull, has_code),
+    0,   /* quantifier_offset */
     offsetof(DbgProcessFull, code),
     NULL,
     NULL,
@@ -1457,9 +1477,9 @@ static const ProtobufCFieldDescriptor dbg_process_full__field_descriptors[21] =
   {
     "stops",
     12,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT32,
-    offsetof(DbgProcessFull, has_stops),
+    0,   /* quantifier_offset */
     offsetof(DbgProcessFull, stops),
     NULL,
     NULL,
@@ -1469,9 +1489,9 @@ static const ProtobufCFieldDescriptor dbg_process_full__field_descriptors[21] =
   {
     "stype",
     13,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT32,
-    offsetof(DbgProcessFull, has_stype),
+    0,   /* quantifier_offset */
     offsetof(DbgProcessFull, stype),
     NULL,
     NULL,
@@ -1481,9 +1501,9 @@ static const ProtobufCFieldDescriptor dbg_process_full__field_descriptors[21] =
   {
     "singleThread",
     14,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgProcessFull, has_singlethread),
+    0,   /* quantifier_offset */
     offsetof(DbgProcessFull, singlethread),
     NULL,
     NULL,
@@ -1493,9 +1513,9 @@ static const ProtobufCFieldDescriptor dbg_process_full__field_descriptors[21] =
   {
     "suspendCount",
     15,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_INT32,
-    offsetof(DbgProcessFull, has_suspendcount),
+    0,   /* quantifier_offset */
     offsetof(DbgProcessFull, suspendcount),
     NULL,
     NULL,
@@ -1505,9 +1525,9 @@ static const ProtobufCFieldDescriptor dbg_process_full__field_descriptors[21] =
   {
     "dynlib",
     16,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgProcessFull, has_dynlib),
+    0,   /* quantifier_offset */
     offsetof(DbgProcessFull, dynlib),
     NULL,
     NULL,
@@ -1517,45 +1537,45 @@ static const ProtobufCFieldDescriptor dbg_process_full__field_descriptors[21] =
   {
     "name",
     17,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(DbgProcessFull, name),
     NULL,
-    NULL,
+    &protobuf_c_empty_string,
     0,             /* flags */
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },
   {
     "elfPath",
     18,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(DbgProcessFull, elfpath),
     NULL,
-    NULL,
+    &protobuf_c_empty_string,
     0,             /* flags */
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },
   {
     "randomizedPath",
     19,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(DbgProcessFull, randomizedpath),
     NULL,
-    NULL,
+    &protobuf_c_empty_string,
     0,             /* flags */
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },
   {
     "numThreads",
     20,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_INT32,
-    offsetof(DbgProcessFull, has_numthreads),
+    0,   /* quantifier_offset */
     offsetof(DbgProcessFull, numthreads),
     NULL,
     NULL,
@@ -1623,21 +1643,21 @@ static const ProtobufCFieldDescriptor dbg_vm_entry__field_descriptors[5] =
   {
     "name",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(DbgVmEntry, name),
     NULL,
-    NULL,
+    &protobuf_c_empty_string,
     0,             /* flags */
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },
   {
     "start",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgVmEntry, has_start),
+    0,   /* quantifier_offset */
     offsetof(DbgVmEntry, start),
     NULL,
     NULL,
@@ -1647,9 +1667,9 @@ static const ProtobufCFieldDescriptor dbg_vm_entry__field_descriptors[5] =
   {
     "end",
     3,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgVmEntry, has_end),
+    0,   /* quantifier_offset */
     offsetof(DbgVmEntry, end),
     NULL,
     NULL,
@@ -1659,9 +1679,9 @@ static const ProtobufCFieldDescriptor dbg_vm_entry__field_descriptors[5] =
   {
     "offset",
     4,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_UINT64,
-    offsetof(DbgVmEntry, has_offset),
+    0,   /* quantifier_offset */
     offsetof(DbgVmEntry, offset),
     NULL,
     NULL,
@@ -1671,9 +1691,9 @@ static const ProtobufCFieldDescriptor dbg_vm_entry__field_descriptors[5] =
   {
     "protection",
     5,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_INT32,
-    offsetof(DbgVmEntry, has_protection),
+    0,   /* quantifier_offset */
     offsetof(DbgVmEntry, protection),
     NULL,
     NULL,
@@ -1713,9 +1733,9 @@ static const ProtobufCFieldDescriptor dbg_process_limited__field_descriptors[3] 
   {
     "processId",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_INT32,
-    offsetof(DbgProcessLimited, has_processid),
+    0,   /* quantifier_offset */
     offsetof(DbgProcessLimited, processid),
     NULL,
     NULL,
@@ -1725,12 +1745,12 @@ static const ProtobufCFieldDescriptor dbg_process_limited__field_descriptors[3] 
   {
     "name",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_NONE,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(DbgProcessLimited, name),
     NULL,
-    NULL,
+    &protobuf_c_empty_string,
     0,             /* flags */
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },

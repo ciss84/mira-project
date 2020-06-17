@@ -252,4 +252,11 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define kdlsym_addr_sceRegMgrGetStr                        0x004FA510
 #define kdlsym_addr_sceRegMgrSetStr                        0x004FA350
 
+// Debug (Not needed to port)
+#define kdlsym_addr_g_obi_create                           0x0
+#define kdlsym_addr_g_obi_destroy                          0x0
+#define kdlsym_addr_g_obi_read                             0x0
+#define kdlsym_addr_g_part_ox_get_bank                     0x0
+#define kdlsym_addr_hexdump                                0x0
+
 #endif

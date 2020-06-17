@@ -67,7 +67,6 @@ static myWorkaround_t gWorkaround = nullptr;
 
 Mira::Framework* Mira::Framework::m_Instance = nullptr;
 Mira::Framework* Mira::Framework::GetFramework()
-
 {
 	if (m_Instance == nullptr)
 		m_Instance = new Mira::Framework();
@@ -244,7 +243,7 @@ bool Mira::Framework::SetInitParams(Mira::Boot::InitParams* p_Params)
 	m_InitParams.process = p_Params->process;
 	m_InitParams.isRunning = p_Params->isRunning;
 	m_InitParams.allocatedBase = p_Params->allocatedBase;
-	
+
 	return true;
 }
 
@@ -301,19 +300,19 @@ bool Mira::Framework::Initialize()
 	if (!InstallEventHandlers())
 		WriteLog(LL_Error, "could not register event handlers");
 
-	// Initialize the rpc
-	WriteLog(LL_Debug, "Initializing rpc Server");
+	// Initialize the rpc server
+	WriteLog(LL_Debug, "Initializing rpc server");
 	m_RpcServer = new Mira::Messaging::Rpc::Server();
 	if (m_RpcServer == nullptr)
 	{
-		WriteLog(LL_Error, "could not allocate rpc Server.");
+		WriteLog(LL_Error, "could not allocate rpc server.");
 		return false;
 	}
 
-	WriteLog(LL_Debug, "Loading rpc Server");
+	WriteLog(LL_Debug, "Loading rpc server");
 	if (!m_RpcServer->OnLoad())
 	{
-		WriteLog(LL_Error, "could not load rpc Server.");
+		WriteLog(LL_Error, "could not load rpc server.");
 		return false;
 	}
 
@@ -331,6 +330,29 @@ bool Mira::Framework::Initialize()
 
 	// Set the running flag
 	m_InitParams.isRunning = true;
+
+	////////////
+	// TEST
+	////////////
+	auto g_obi_create       = (void* (*) (const char* name, int flags)                           )kdlsym(g_obi_create);
+	auto g_obi_destroy      = (int   (*) (void* obj)                                             )kdlsym(g_obi_destroy);
+	auto g_obi_read         = (int   (*) (void* obj, void* buffer, uint64_t unk1, uint64_t unk2) )kdlsym(g_obi_read);
+	auto g_part_ox_get_bank = (int   (*) (void)                                                  )kdlsym(g_part_ox_get_bank);
+	auto hexdump            = (int   (*) (void* buffer, uint64_t size, int unk1, int unk2)       )kdlsym(hexdump);
+
+	void* sflash_obj = g_obi_create("sflash0s1.crypt", 0);
+	WriteLog(LL_Warn, "g_obi_create(sflash0s1.crypt): %p", sflash_obj);
+
+	char buffer[0x1000];
+	int read_ret = g_obi_read(sflash_obj, buffer, 0x200, 0x1000);
+	WriteLog(LL_Warn, "g_obi_read(sflash0s1.crypt): %d", read_ret);
+
+	int destroy_ret = g_obi_destroy(sflash_obj);
+	WriteLog(LL_Warn, "g_obi_destroy(sflash0s1.crypt): %d", destroy_ret);
+
+	WriteLog(LL_Warn, "Current bank used: %d", g_part_ox_get_bank());
+	WriteLog(LL_Warn, "Hexdump:");
+	hexdump((void*)buffer, 0x1000, 0, 0);
 
 	/*
     // Mira is now ready ! Now Killing SceShellUI for relaunching UI Process :D
@@ -370,7 +392,8 @@ bool Mira::Framework::Initialize()
 	// DBG: Intentionally fault
 	//*((uint64_t*)0x1337) = 0xBADBABE;
 
-		/*auto sv = (struct sysentvec*)kdlsym(self_orbis_sysvec);
+	/*
+	auto sv = (struct sysentvec*)kdlsym(self_orbis_sysvec);
     struct sysent* sysents = sv->sv_table;
 
 	gIoctl = (myIoctl_t)sysents[SYS_IOCTL].sy_call;
@@ -378,28 +401,18 @@ bool Mira::Framework::Initialize()
 
 	gWorkaround = (myWorkaround_t)sysents[SYS_WORKAROUND8849].sy_call;
 	sysents[SYS_WORKAROUND8849].sy_call = (sy_call_t*)OnWorkaround8849;
-*/
+	*/
+
 	return true;
 }
 
-// ++ LM + theorywrong Patches
+// ++ LM Patches
 int Mira::Framework::OnIoctl(struct thread* p_Thread, struct ioctl_args* p_Uap)
 {
 	switch (p_Uap->com)
 	{
 		case 0xFFFFFFFF40048806:
 		case 0x40048806:
-		{
-			((int*)p_Uap->data)[0] = 1;
-			p_Thread->td_retval[0] = 0;
-			return 0;
-		}
-	}
-	
-	switch (p_Uap->com)
-	{
-		case 0xFFFFFFFC01184401:
-    case 0XC01184401:
 		{
 			((int*)p_Uap->data)[0] = 1;
 			p_Thread->td_retval[0] = 0;

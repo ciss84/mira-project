@@ -1,8 +1,3 @@
-﻿/* SIE CONFIDENTIAL
-PlayStation(R)4 Programmer Tool Runtime Library Release 05.508.001
- * Copyright (C) 2016 Sony Interactive Entertainment Inc.
- * All rights reserved.
- */
 /*-
  * Copyright (c) 1999,2000,2001 Jonathan Lemon <jlemon@FreeBSD.org>
  * All rights reserved.
@@ -28,39 +23,26 @@ PlayStation(R)4 Programmer Tool Runtime Library Release 05.508.001
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * $FreeBSD$
+ * $FreeBSD: release/9.0.0/sys/sys/event.h 201350 2009-12-31 20:29:58Z brooks $
  */
 
 #ifndef _SYS_EVENT_H_
 #define _SYS_EVENT_H_
 
-#include <sys/types.h>
 #include <sys/queue.h> 
 
-#define EVFILT_READ     (-1)
-#define EVFILT_WRITE    (-2)
-#define EVFILT_AIO      (-3)    /* attached to aio requests */
-#define EVFILT_VNODE    (-4)    /* attached to vnodes */
-#define EVFILT_PROC     (-5)    /* attached to struct proc */
-#define EVFILT_SIGNAL   (-6)    /* attached to struct proc */
-#define EVFILT_TIMER    (-7)    /* timers */
-/*  EVFILT_NETDEV       (-8)       no longer supported */
-#define EVFILT_FS       (-9)    /* filesystem events */
-#define EVFILT_LIO      (-10)   /* attached to lio requests */
-#define EVFILT_USER     (-11)   /* User events */
-#define EVFILT_POLLING  (-12)
-#define EVFILT_DISPLAY  (-13)
-#define EVFILT_GRAPHICS_CORE    (-14)
-#define EVFILT_HRTIMER          (-15)
-#define EVFILT_UVD_TRAP         (-16)
-#define EVFILT_VCE_TRAP         (-17)
-#define EVFILT_SDMA_TRAP	(-18)
-#define EVFILT_REG_EV		(-19)
-#define EVFILT_GPU_EXCEPTION	(-20)
-#define EVFILT_GPU_SYSTEM_EXCEPTION  (-21)
-#define EVFILT_GPU_DBGGC_EV	(-22)
-#define EVFILT_CPUMODE		(-23)
-#define EVFILT_SYSCOUNT		(23)
+#define EVFILT_READ		(-1)
+#define EVFILT_WRITE		(-2)
+#define EVFILT_AIO		(-3)	/* attached to aio requests */
+#define EVFILT_VNODE		(-4)	/* attached to vnodes */
+#define EVFILT_PROC		(-5)	/* attached to struct proc */
+#define EVFILT_SIGNAL		(-6)	/* attached to struct proc */
+#define EVFILT_TIMER		(-7)	/* timers */
+/*	EVFILT_NETDEV		(-8)	   no longer supported */
+#define EVFILT_FS		(-9)	/* filesystem events */
+#define EVFILT_LIO		(-10)	/* attached to lio requests */
+#define EVFILT_USER		(-11)	/* User events */
+#define EVFILT_SYSCOUNT		11
 
 #define EV_SET(kevp_, a, b, c, d, e, f) do {	\
 	struct kevent *kevp = (kevp_);		\
@@ -149,13 +131,6 @@ struct kevent {
 #define	NOTE_TRACKERR	0x00000002		/* could not track child */
 #define	NOTE_CHILD	0x00000004		/* am a child process */
 
-/* flags for EVFILT_POLLING */
-#define NOTE_POLLING_EQUAL	0x00000001	/* trigger when var == data */
-#define NOTE_POLLING_LESS	0x00000002	/* trigger when var < data */
-#define NOTE_POLLING_NOT	0x00000004	/* negate trigger condition */
-#define NOTE_POLLING_COND	0x00000007
-#define NOTE_POLLING_64BIT	0x00000008	/* watch a 64-bit variable */
-
 struct knote;
 SLIST_HEAD(klist, knote);
 struct kqueue;
@@ -234,7 +209,6 @@ struct knote {
 #define KN_MARKER	0x20			/* ignore this knote */
 #define KN_KQUEUE	0x40			/* this knote belongs to a kq */
 #define KN_HASKQLOCK	0x80			/* for _inevent */
-#define	KN_SCAN		0x100			/* flux set in kqueue_scan() */
 	int			kn_sfflags;	/* saved filter flags */
 	intptr_t		kn_sdata;	/* saved data field */
 	union {
@@ -287,8 +261,6 @@ extern int 	kqfd_register(int fd, struct kevent *kev, struct thread *p,
 		    int waitok);
 extern int	kqueue_add_filteropts(int filt, struct filterops *filtops);
 extern int	kqueue_del_filteropts(int filt);
-extern void knote_nonfdclose(struct proc *proc, short filter, void *hook, uintptr_t id);
-
 
 #else 	/* !_KERNEL */
 

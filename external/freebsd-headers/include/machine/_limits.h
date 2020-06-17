@@ -1,4 +1,4 @@
-﻿/*-
+/*-
  * Copyright (c) 1988, 1993
  *	The Regents of the University of California.  All rights reserved.
  *
@@ -27,7 +27,7 @@
  * SUCH DAMAGE.
  *
  *	@(#)limits.h	8.3 (Berkeley) 1/4/94
- * $FreeBSD$
+ * $FreeBSD: release/9.0.0/sys/amd64/include/_limits.h 217145 2011-01-08 11:13:34Z tijl $
  */
 
 #ifndef	_MACHINE__LIMITS_H_
