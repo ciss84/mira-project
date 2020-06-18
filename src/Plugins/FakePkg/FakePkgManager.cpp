@@ -372,6 +372,55 @@ bool FakePkgManager::ShellCorePatch()
         WriteLog(LL_Error, "kdlsym_addr_sceRegMgrGetInt");
         return false;
     }
+    
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_Patch_debug_settingA), 1, (void*) "\x14", nullptr, true);
+    if (s_Ret < 0)
+      {
+        WriteLog(LL_Error, "ssc_Patch_debug_settingA");
+        return false;
+    }    
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_Patch_debug_settingB), 1, (void*) "\3", nullptr, true);
+    if (s_Ret < 0)
+      {
+        WriteLog(LL_Error, "ssc_Patch_debug_settingB");
+        return false;
+    }
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_Patch_debug_settingC), 1, (void*) "\1", nullptr, true);
+    if (s_Ret < 0)
+      {
+        WriteLog(LL_Error, "ssc_Patch_debug_settingC");
+        return false;
+    }    
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_Patch_debug_settingD), 1, (void*) "\1", nullptr, true);
+    if (s_Ret < 0)
+      {
+        WriteLog(LL_Error, "ssc_Patch_debug_settingD");
+        return false;
+    }
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_CreateUserForIDU_patch), 4, (void*) "\x48\x31\xC0\xC3", nullptr, true);
+    if (s_Ret < 0)
+      {
+        WriteLog(LL_Error, "ssc_CreateUserForIDU_patch");
+        return false;
+    }    
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_remote_play_menu_patch), 5, (void*) "\xE9\x82\x02\x00\x00", nullptr, true);
+    if (s_Ret < 0)
+      {
+        WriteLog(LL_Error, "ssc_remote_play_menu_patch");
+        return false;
+    }
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_SceRemotePlay_patch1), 1, (void*) "\x01", nullptr, true);
+    if (s_Ret < 0)
+      {
+        WriteLog(LL_Error, "ssc_SceRemotePlay_patch1");
+        return false;
+    }    
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_SceRemotePlay_patch2), 2, (void*) "\xEB\x1E", nullptr, true);
+    if (s_Ret < 0)
+      {
+        WriteLog(LL_Error, "ssc_SceRemotePlay_patch2");
+        return false;
+    }
      
     /*Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_1_1_OFFSET), sizeof(xor__ehx_eax), xor__ehx_eax, nullptr, true);
     Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_1_2_OFFSET), sizeof(xor__ehx_eax), xor__ehx_eax, nullptr, true);

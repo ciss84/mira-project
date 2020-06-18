@@ -4,7 +4,6 @@
 /*
     Implemented from: https://github.com/xvortex/ps4-hen-vtx
     Ported by: kiwidog (@kd_tech_)
-
     Bugfixes: SiSTRo (https://github.com/SiSTR0), SocraticBliss (https://github.com/SocraticBliss)
 */
 
@@ -59,20 +58,22 @@ const uint8_t FakeSelfManager::c_DynlibAuthInfo[] =
 FakeSelfManager::FakeSelfManager()
 {
     auto sv = (struct sysentvec*)kdlsym(self_orbis_sysvec);
+
 	struct sysent* sysents = sv->sv_table;
 
-	uint8_t* s_TrampolineA = reinterpret_cast<uint8_t*>(sysents[SYS___MAC_GET_PID].sy_call);
+	  uint8_t* s_TrampolineA = reinterpret_cast<uint8_t*>(sysents[SYS___MAC_GET_PID].sy_call);
     uint8_t* s_TrampolineB = reinterpret_cast<uint8_t*>(sysents[SYS___MAC_GET_PROC].sy_call);
     uint8_t* s_TrampolineC = reinterpret_cast<uint8_t*>(sysents[SYS___MAC_SET_PROC].sy_call);
     uint8_t* s_TrampolineD = reinterpret_cast<uint8_t*>(sysents[SYS___MAC_GET_FILE].sy_call);
     uint8_t* s_TrampolineE = reinterpret_cast<uint8_t*>(sysents[SYS___MAC_GET_FD].sy_call);
-
+    uint8_t* s_TrampolineF = reinterpret_cast<uint8_t*>(sysents[SYS___MAC_GET_PROC].sy_call);
+    
     Utilities::HookFunctionCall(s_TrampolineA, reinterpret_cast<void*>(OnSceSblAuthMgrVerifyHeader), kdlsym(sceSblAuthMgrVerifyHeader_hookA));
     Utilities::HookFunctionCall(s_TrampolineB, reinterpret_cast<void*>(OnSceSblAuthMgrVerifyHeader), kdlsym(sceSblAuthMgrVerifyHeader_hookB));
     Utilities::HookFunctionCall(s_TrampolineC, reinterpret_cast<void*>(OnSceSblAuthMgrIsLoadable2), kdlsym(sceSblAuthMgrIsLoadable2_hook));
     Utilities::HookFunctionCall(s_TrampolineD, reinterpret_cast<void*>(SceSblAuthMgrSmLoadSelfSegment_Mailbox), kdlsym(sceSblAuthMgrSmLoadSelfSegment__sceSblServiceMailbox_hook));
     Utilities::HookFunctionCall(s_TrampolineE, reinterpret_cast<void*>(SceSblAuthMgrSmLoadSelfBlock_Mailbox), kdlsym(sceSblAuthMgrSmLoadSelfBlock__sceSblServiceMailbox_hook));
-    //HookFunctionCall(s_TrampolineF, reinterpret_cast<void*>(SceSblAuthMgrIsLoadable_sceSblACMgrGetPathId), kdlsym(sceSblAuthMgrIsLoadable__sceSblACMgrGetPathId_hook));
+    Utilities::HookFunctionCall(s_TrampolineF, reinterpret_cast<void*>(SceSblAuthMgrIsLoadable_sceSblACMgrGetPathId), kdlsym(sceSblAuthMgrIsLoadable__sceSblACMgrGetPathId_hook));
 
     //m_SceSblServiceMailboxHook = new Utils::Hook(kdlsym(sceSblServiceMailbox), reinterpret_cast<void*>(OnSceSblServiceMailbox));
     //m_SceSblAuthMgrVerifyHeaderHook = new Utils::Hook(kdlsym(sceSblAuthMgrVerifyHeader), reinterpret_cast<void*>(OnSceSblAuthMgrVerifyHeader));
@@ -91,28 +92,24 @@ FakeSelfManager::~FakeSelfManager()
         delete m_SceSblServiceMailboxHook;
         m_SceSblServiceMailboxHook = nullptr;
     }
-
     if (m_SceSblAuthMgrVerifyHeaderHook != nullptr)
     {
         (void)m_SceSblAuthMgrVerifyHeaderHook->Disable();
         delete m_SceSblAuthMgrVerifyHeaderHook;
         m_SceSblAuthMgrVerifyHeaderHook = nullptr;
     }
-
-    if (m_SceSblAuthMgrIsLoadable2Hook != nullptr)
+    if (m_OnSceSblAuthMgrIsLoadable2Hook = nullptr)
     {
-        (void)m_SceSblAuthMgrIsLoadable2Hook->Disable();
-        delete m_SceSblAuthMgrIsLoadable2Hook;
-        m_SceSblAuthMgrIsLoadable2Hook = nullptr;
+        (void)m_OnSceSblAuthMgrIsLoadable2Hook->Disable();
+        delete m_OnSceSblAuthMgrIsLoadable2Hook;
+        m_OnSceSblAuthMgrIsLoadable2Hook = nullptr;
     }
-
-    if (m__SceSblAuthMgrSmLoadSelfBlockHook != nullptr)
+   if (m__SceSblAuthMgrSmLoadSelfBlockHook != nullptr)
     {
         (void)m__SceSblAuthMgrSmLoadSelfBlockHook->Disable();
         delete m__SceSblAuthMgrSmLoadSelfBlockHook;
         m__SceSblAuthMgrSmLoadSelfBlockHook = nullptr;
     }
-
     if (m__SceSblAuthMgrSmLoadSelfSegmentHook!= nullptr)
     {
         (void)m__SceSblAuthMgrSmLoadSelfSegmentHook->Disable();
@@ -143,14 +140,12 @@ int FakeSelfManager::OnSceSblAuthMgrIsLoadable2(SelfContext* p_Context, SelfAuth
 /*int FakeSelfManager::OnSceSblServiceMailbox(uint32_t p_ServiceId, void* p_Request, void* p_Response)
 {
     auto sceSblServiceMailbox = (int(*)(uint32_t p_ServiceId, void* p_Request, void* p_Response))kdlsym(sceSblServiceMailbox);
-
     auto s_Request = static_cast<MailboxMessage*>(p_Request);
     if (s_Request == nullptr)
     {
         WriteLog(LL_Error, "invalid request");
         return sceSblServiceMailbox(p_ServiceId, p_Request, p_Response);
     }
-
     // Only hook on the needed service id
     if (p_ServiceId != 0)
         return sceSblServiceMailbox(p_ServiceId, p_Request, p_Response);
@@ -416,6 +411,7 @@ int FakeSelfManager::SceSblAuthMgrGetSelfAuthInfoFake(SelfContext* p_Context, Se
     SelfHeader* s_Header = p_Context->header;
     auto s_Data = reinterpret_cast<const char*>(p_Context->header);
     auto s_FakeInfo = reinterpret_cast<const SelfFakeAuthInfo*>(s_Data + s_Header->headerSize + s_Header->metaSize - 0x100);
+    
     if (s_FakeInfo->size == sizeof(s_FakeInfo->info))
     {
         memcpy(p_Info, &s_FakeInfo->info, sizeof(*p_Info));
@@ -512,16 +508,13 @@ int FakeSelfManager::SceSblAuthMgrSmLoadSelfBlock_Mailbox(uint64_t p_ServiceId, 
 int FakeSelfManager::SceSblAuthMgrIsLoadable_sceSblACMgrGetPathId(const char* path) {
     /*auto strstr = (char *(*)(const char *haystack, const char *needle) )kdlsym(strstr);
     auto sceSblACMgrGetPathId = (int(*)(const char* path))kdlsym(sceSblACMgrGetPathId);
-
     static const char* s_SelfDirPrefix = "/data/self/";
     const char* p;
-
     if (path) {
         p = strstr(path, s_SelfDirPrefix);
         if (p)
             path = p + strlen(s_SelfDirPrefix) - 1;
     }
-
     return sceSblACMgrGetPathId(path);*/
     return 0;
 }
@@ -539,7 +532,6 @@ bool FakeSelfManager::OnLoad()
     
     if (m_SceSblServiceMailboxHook != nullptr)
         (void)m_SceSblServiceMailboxHook->Enable();
-
     if (m__SceSblAuthMgrSmLoadSelfBlockHook != nullptr)
         (void)m__SceSblAuthMgrSmLoadSelfBlockHook->Enable();
     
@@ -560,7 +552,6 @@ bool FakeSelfManager::OnUnload()
     
     if (m_SceSblServiceMailboxHook != nullptr)
         (void)m_SceSblServiceMailboxHook->Disable();
-
     if (m__SceSblAuthMgrSmLoadSelfBlockHook != nullptr)
         (void)m__SceSblAuthMgrSmLoadSelfBlockHook->Disable();
     
