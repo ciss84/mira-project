@@ -196,34 +196,8 @@ void Mira::Boot::Patches::install_prerunPatches_505()
 	kmem = (uint8_t *)&gKernelBase[0x001EA9E1];
 	kmem[0] = 0x90;
 	kmem[1] = 0x90;
-		
-  kmem = (uint8_t *)&gKernelBase[0x00000190];
-  kmem[0] = 0x2F;
-  kmem[1] = 0x44;
-  kmem[2] = 0x55;
-  kmem[3] = 0x4D;
-  kmem[4] = 0x4D;
-  kmem[5] = 0x59;
-  kmem[6] = 0x00;
-  kmem[7] = 0xE8;
-  kmem[8] = 0xF4;
-  kmem[9] = 0x5A;
-  kmem[10] = 0x73;
-
-  // Patch debug setting errors TESTKIT
-	kmem = (uint8_t *)&gKernelBase[0x004F5E4A];
-	kmem[0] = 0x00;
-	kmem[1] = 0x00;
-	kmem[2] = 0x00;
-	kmem[3] = 0x00;
-
-	kmem = (uint8_t *)&gKernelBase[0x004F5F51];
-	kmem[0] = 0x00;
-	kmem[1] = 0x00;
-	kmem[2] = 0x00;
-	kmem[3] = 0x00;
 	
-	// Patch debug setting errors RETAIL
+	// Patch debug setting errors
 	kmem = (uint8_t *)&gKernelBase[0x004F5B15];
 	kmem[0] = 0x00;
 	kmem[1] = 0x00;
@@ -349,133 +323,6 @@ void Mira::Boot::Patches::install_prerunPatches_505()
 	kmem[1] = 0x00;
 	kmem[2] = 0x00;
 	kmem[3] = 0x00;
-
-// Patch debug setting errors DEVKIT
-	kmem = (uint8_t *)&gKernelBase[0x0065DA25];
-	kmem[0] = 0x00;
-	kmem[1] = 0x00;
-	kmem[2] = 0x00;
-	kmem[3] = 0x00;
-
-	kmem = (uint8_t *)&gKernelBase[0x0065DD5A];
-	kmem[0] = 0x00;
-	kmem[1] = 0x00;
-	kmem[2] = 0x00;
-	kmem[3] = 0x00;
-
-	kmem = (uint8_t *)&gKernelBase[0x00660E61];
-	kmem[0] = 0x00;
-	kmem[1] = 0x00;
-	kmem[2] = 0x00;
-	kmem[3] = 0x00;
-
-	kmem = (uint8_t *)&gKernelBase[0x00660F58];
-	kmem[0] = 0x00;
-	kmem[1] = 0x00;
-	kmem[2] = 0x00;
-	kmem[3] = 0x00;
-
-	kmem = (uint8_t *)&gKernelBase[0x00660FFA];
-	kmem[0] = 0x00;
-	kmem[1] = 0x00;
-	kmem[2] = 0x00;
-	kmem[3] = 0x00;
-
-	kmem = (uint8_t *)&gKernelBase[0x0066132D];
-	kmem[0] = 0x00;
-	kmem[1] = 0x00;
-	kmem[2] = 0x00;
-	kmem[3] = 0x00;
-
-	kmem = (uint8_t *)&gKernelBase[0X0066206C];
-	kmem[0] = 0x00;
-	kmem[1] = 0x00;
-	kmem[2] = 0x00;
-	kmem[3] = 0x00;
-
-	kmem = (uint8_t *)&gKernelBase[0x00669349];
-	kmem[0] = 0x00;
-	kmem[1] = 0x00;
-	kmem[2] = 0x00;
-	kmem[3] = 0x00;
-
-	kmem = (uint8_t *)&gKernelBase[0x0066982A];
-	kmem[0] = 0x00;
-	kmem[1] = 0x00;
-	kmem[2] = 0x00;
-	kmem[3] = 0x00;
-
-	kmem = (uint8_t *)&gKernelBase[0x00669B4A];
-	kmem[0] = 0x00;
-	kmem[1] = 0x00;
-	kmem[2] = 0x00;
-	kmem[3] = 0x00;
-
-	kmem = (uint8_t *)&gKernelBase[0X0066A5F0];
-	kmem[0] = 0x00;
-	kmem[1] = 0x00;
-	kmem[2] = 0x00;
-	kmem[3] = 0x00;
-
-	kmem = (uint8_t *)&gKernelBase[0x0066A686];
-	kmem[0] = 0x00;
-	kmem[1] = 0x00;
-	kmem[2] = 0x00;
-	kmem[3] = 0x00;
-
-	kmem = (uint8_t *)&gKernelBase[0x0066A9B6];
-	kmem[0] = 0x00;
-	kmem[1] = 0x00;
-	kmem[2] = 0x00;
-	kmem[3] = 0x00;
-
-	kmem = (uint8_t *)&gKernelBase[0x0066AB37];
-	kmem[0] = 0x00;
-	kmem[1] = 0x00;
-	kmem[2] = 0x00;
-	kmem[3] = 0x00;
-
-	kmem = (uint8_t *)&gKernelBase[0x0066CAC4];
-	kmem[0] = 0x00;
-	kmem[1] = 0x00;
-	kmem[2] = 0x00;
-	kmem[3] = 0x00;
-	
-	kmem = (uint8_t *)&gKernelBase[0x0066CCBC];
-	kmem[0] = 0x00;
-	kmem[1] = 0x00;
-	kmem[2] = 0x00;
-	kmem[3] = 0x00;
-
-	kmem = (uint8_t *)&gKernelBase[0X0066E93A];
-	kmem[0] = 0x00;
-	kmem[1] = 0x00;
-	kmem[2] = 0x00;
-	kmem[3] = 0x00;
-
-	kmem = (uint8_t *)&gKernelBase[0x0066EAA1];
-	kmem[0] = 0x00;
-	kmem[1] = 0x00;
-	kmem[2] = 0x00;
-	kmem[3] = 0x00;
-
-	kmem = (uint8_t *)&gKernelBase[0x0066EB99];
-	kmem[0] = 0x00;
-	kmem[1] = 0x00;
-	kmem[2] = 0x00;
-	kmem[3] = 0x00;
-
-	kmem = (uint8_t *)&gKernelBase[0x0066EC21];
-	kmem[0] = 0x00;
-	kmem[1] = 0x00;
-	kmem[2] = 0x00;
-	kmem[3] = 0x00;
-
-	kmem = (uint8_t *)&gKernelBase[0x00675313];
-	kmem[0] = 0x00;
-	kmem[1] = 0x00;
-	kmem[2] = 0x00;
-	kmem[3] = 0x00;
 				
 	// prtinf hook patches
 	kmem = (uint8_t *)&gKernelBase[0x00436136];
@@ -532,7 +379,7 @@ void Mira::Boot::Patches::install_prerunPatches_505()
   kmem[1] = 0x00;
   kmem[2] = 0x51;
   kmem[3] = 0x07;
-// Firmware spoof sdk 05050031 to 7.508
+  // Firmware spoof sdk 05050031 to 7.508
   kmem = (uint8_t *)&gKernelBase[0x02862954];
   kmem[0] = 0x30;
   kmem[1] = 0x37;
@@ -662,6 +509,6 @@ void Mira::Boot::Patches::install_prerunPatches_505()
   kmem[57] = 0x3A;
   kmem[58] = 0x34;
   kmem[59] = 0x30;
-
+	
 #endif
 }

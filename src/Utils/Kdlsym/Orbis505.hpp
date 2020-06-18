@@ -255,6 +255,9 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define ssc_SceRemotePlay_patch1                            0x0003C33F
 #define ssc_SceRemotePlay_patch2                            0x0003C35A 
 
+// disable screenshot block
+#define ssc_disable_screenshot_patch                        0x000CB8C6
+
 // SceShellUI patches - debug patches
 #define ssu_sceSblRcMgrIsAllowDebugMenuForSettings_patch    0x0001BD90
 #define ssu_sceSblRcMgrIsStoreMode_patch                    0x0001C090
@@ -266,7 +269,7 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define kdlsym_addr_sceRegMgrSetBin                         0x004FA620
 #define kdlsym_addr_sceRegMgrGetStr                         0x004FA550
 #define kdlsym_addr_sceRegMgrSetStr                         0x004FA390
-
+ 
 // Debug (Not needed to port)
 #define kdlsym_addr_g_obi_create                           0x00461EA0
 #define kdlsym_addr_g_obi_destroy                          0x00461FA0
