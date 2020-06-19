@@ -336,13 +336,6 @@ void Mira::Boot::Patches::install_prerunPatches_505()
 	kmem[1] = 0x00;
 	kmem[2] = 0x00;
 	kmem[3] = 0x00;
-	
-	// Patch debug setting errors CE-30133-5
-	kmem = (uint8_t *)&gKernelBase[0x004B3C88];
-	kmem[0] = 0x00;
-	kmem[1] = 0x00;
-	kmem[2] = 0x00;
-	kmem[3] = 0x00;
 					
 	// prtinf hook patches
 	kmem = (uint8_t *)&gKernelBase[0x00436136];
