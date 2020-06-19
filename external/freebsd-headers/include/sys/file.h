@@ -1,4 +1,4 @@
-/*-
+﻿/*-
  * Copyright (c) 1982, 1986, 1989, 1993
  *	The Regents of the University of California.  All rights reserved.
  *
@@ -27,7 +27,7 @@
  * SUCH DAMAGE.
  *
  *	@(#)file.h	8.3 (Berkeley) 1/9/95
- * $FreeBSD: release/9.0.0/sys/sys/file.h 224987 2011-08-18 22:51:30Z jonathan $
+ * $FreeBSD$
  */
 
 #ifndef _SYS_FILE_H_
@@ -66,11 +66,16 @@ struct socket;
 #define	DTYPE_DEV	11	/* Device specific fd type */
 #define	DTYPE_CAPABILITY	12	/* capability */
 #define	DTYPE_PROCDESC	13	/* process descriptor */
+#define	DTYPE_JITSHM	14	/* shared memory for JIT compiler */
+#define	DTYPE_IPCSOCKET	15	/* unix domain socket */
+#define DTYPE_PHYSHM	16	/* PS4 physical shared memory */
+#define DTYPE_BLOCKPOOL	17	/* PlayStation blockpool */
 
 #ifdef _KERNEL
 
 struct file;
 struct ucred;
+struct gs_is_priority_tag;
 
 typedef int fo_rdwr_t(struct file *fp, struct uio *uio,
 		    struct ucred *active_cred, int flags,
@@ -145,10 +150,20 @@ struct file {
 	 * Mandatory Access control information.
 	 */
 	void		*f_label;	/* Place-holder for MAC label. */
+
+	/* GEOM I/O scheduling priority */
+	const struct gs_is_priority_tag	*f_iosched_priority;
+
+	/* for mDBG */
+	void *f_mdbg_data; /* only valid on devkits */
+
+	/* budget id */
+	int             f_budid;
 };
 
 #define	FOFFSET_LOCKED       0x1
 #define	FOFFSET_LOCK_WAITING 0x2		 
+#define	FDEVFS_VNODE	     0x4
 
 #endif /* _KERNEL || _WANT_FILE */
 

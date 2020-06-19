@@ -1,3 +1,8 @@
+﻿/* SIE CONFIDENTIAL
+ * PlayStation(R)4 Programmer Tool Runtime Library Release 05.508.001
+ * Copyright (C) 2015 Sony Interactive Entertainment Inc.
+ * All Rights Reserved.
+ */
 /*
  * Copyright (c) 1993, 1994 by Chris Provenzano, proven@mit.edu
  * Copyright (c) 1995-1998 by John Birrell <jb@cimlogic.com.au>
@@ -30,7 +35,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF 
  * SUCH DAMAGE.
  *
- * $FreeBSD: release/9.0.0/sys/sys/_pthreadtypes.h 189828 2009-03-14 20:10:14Z das $
+ * $FreeBSD$
  */
 
 #ifndef _SYS__PTHREADTYPES_H_
@@ -61,10 +66,7 @@ struct pthread_spinlock;
  * or assignment operators for the types pthread_attr_t, pthread_cond_t,
  * pthread_condattr_t, pthread_mutex_t, pthread_mutexattr_t.
  */
-#ifndef _PTHREAD_T_DECLARED
 typedef struct	pthread			*pthread_t;
-#define	_PTHREAD_T_DECLARED
-#endif
 typedef struct	pthread_attr		*pthread_attr_t;
 typedef struct	pthread_mutex		*pthread_mutex_t;
 typedef struct	pthread_mutex_attr	*pthread_mutexattr_t;

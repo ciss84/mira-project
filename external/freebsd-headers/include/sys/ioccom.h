@@ -1,4 +1,4 @@
-/*-
+﻿/*-
  * Copyright (c) 1982, 1986, 1990, 1993, 1994
  *	The Regents of the University of California.  All rights reserved.
  *
@@ -27,7 +27,7 @@
  * SUCH DAMAGE.
  *
  *	@(#)ioccom.h	8.2 (Berkeley) 3/28/94
- * $FreeBSD: release/9.0.0/sys/sys/ioccom.h 206051 2010-04-01 16:21:35Z pjd $
+ * $FreeBSD$
  */
 
 #ifndef	_SYS_IOCCOM_H_
@@ -59,6 +59,61 @@
 #define	_IOW(g,n,t)	_IOC(IOC_IN,	(g), (n), sizeof(t))
 /* this should be _IORW, but stdio got there first */
 #define	_IOWR(g,n,t)	_IOC(IOC_INOUT,	(g), (n), sizeof(t))
+
+/*
+ * Skiping all possible alphabetic letter based ioctl commands
+ * Now we have:
+ *   128 command base (0x80 - 0xFF)
+ *   Each command base can have 256 commands (0 - 0xFF)
+ */
+#define SCE_SYS_MAX_ASCII_VALUE (127)
+
+enum {
+    SCE_SYS_DEV_IOCTL_BASE = SCE_SYS_MAX_ASCII_VALUE,
+    SCE_SYS_DMEM_IOCTL_BASE,
+    SCE_SYS_GC_IOCTL_BASE,
+    SCE_SYS_DCE_IOCTL_BASE,
+    SCE_SYS_UVD_IOCTL_BASE,
+    SCE_SYS_VCE_IOCTL_BASE,
+    SCE_SYS_DBGGC_IOCTL_BASE,
+    SCE_SYS_TWSI_IOCTL_BASE,
+    SCE_SYS_MDBG_IOCTL_BASE,
+    SCE_SYS_DEVENV_IOCTL_BASE,
+    SCE_SYS_AJM_IOCTL_BASE,
+    SCE_SYS_TRACE_IOCTL_BASE,
+    SCE_SYS_IBS_IOCTL_BASE,
+    SCE_SYS_MBUS_IOCTL_BASE,
+    SCE_SYS_HDMI_IOCTL_BASE,
+    SCE_SYS_CAMERA_IOCTL_BASE,
+    SCE_SYS_FAN_IOCTL_BASE,
+    SCE_SYS_THERMAL_IOCTL_BASE,
+	SCE_SYS_PFS_IOCTL_BASE,
+    SCE_SYS_ICC_CONFIG_IOCTL_BASE,
+    SCE_SYS_IPC_IOCTL_BASE,
+    SCE_SYS_IOSCHED_IOCTL_BASE,
+    SCE_SYS_ICC_INDICATOR_IOCTL_BASE,
+    SCE_SYS_EXFATFS_IOCTL_BASE,
+    SCE_SYS_ICC_NVS_IOCTL_BASE,
+    SCE_SYS_DVE_IOCTL_BASE,
+    SCE_SYS_ICC_POWER_IOCTL_BASE,
+    SCE_SYS_AV_CONTROL_IOCTL_BASE,
+    SCE_SYS_ICC_SC_CONFIGURATION_IOCTL_BASE,
+    SCE_SYS_ICC_DEVICE_POWER_IOCTL_BASE,
+    SCE_SYS_SSHOT_IOCTL_BASE,
+    SCE_SYS_DCE_SCANIN_IOCTL_BASE,
+    SCE_SYS_FSCTRL_IOCTL_BASE,
+    SCE_SYS_HMD_IOCTL_BASE,
+    SCE_SYS_SHM_IOCTL_BASE,
+    SCE_SYS_PHYSHM_IOCTL_BASE,
+    SCE_SYS_HMDDFU_IOCTL_BASE,
+    SCE_SYS_BLUETOOTH_HID_IOCTL_BASE,
+    SCE_SYS_SBI_IOCTL_BASE,
+    SCE_SYS_S3DA_IOCTL_BASE,
+    SCE_SYS_SPM_IOCTL_BASE,
+    SCE_SYS_BLOCKPOOL_IOCTL_BASE,
+    SCE_SYS_SDK_EVENTLOG_IOCTL_BASE,
+    /* Placeholder: other devices ... */
+};
 
 #ifdef _KERNEL
 

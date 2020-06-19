@@ -1,4 +1,4 @@
-/*-
+﻿/*-
  * Copyright (c) 2003 Marcel Moolenaar
  * All rights reserved.
  *
@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: release/9.0.0/sys/sys/_null.h 192002 2009-05-11 21:13:00Z jhb $
+ * $FreeBSD$
  */
 
 #ifndef NULL

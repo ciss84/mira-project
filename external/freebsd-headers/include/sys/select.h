@@ -1,3 +1,8 @@
+﻿/* SIE CONFIDENTIAL
+ * PlayStation(R)4 Programmer Tool Runtime Library Release 05.508.001
+ * Copyright (C) 2015 Sony Interactive Entertainment Inc.
+ * All Rights Reserved.
+ */
 /*-
  * Copyright (c) 1992, 1993
  *	The Regents of the University of California.  All rights reserved.
@@ -26,7 +31,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * $FreeBSD: release/9.0.0/sys/sys/select.h 154090 2006-01-06 22:12:46Z marcel $
+ * $FreeBSD$
  */
 
 #ifndef _SYS_SELECT_H_
@@ -38,15 +43,11 @@
 #include <sys/_sigset.h>
 #include <sys/_timeval.h>
 #include <sys/timespec.h>
+#include <sys/_types/_sigset_t.h>
 
 typedef	unsigned long	__fd_mask;
 #if __BSD_VISIBLE
 typedef	__fd_mask	fd_mask;
-#endif
-
-#ifndef _SIGSET_T_DECLARED
-#define	_SIGSET_T_DECLARED
-typedef	__sigset_t	sigset_t;
 #endif
 
 /*
@@ -97,10 +98,12 @@ typedef	struct fd_set {
 __BEGIN_DECLS
 int pselect(int, fd_set *__restrict, fd_set *__restrict, fd_set *__restrict,
 	const struct timespec *__restrict, const sigset_t *__restrict);
+/* XXX missing restrict type-qualifier */
+#if __BSD_VISIBLE
 #ifndef _SELECT_DECLARED
 #define	_SELECT_DECLARED
-/* XXX missing restrict type-qualifier */
-int	select(int, fd_set *, fd_set *, fd_set *, struct timeval *);
+int	 select(int, fd_set *, fd_set *, fd_set *, struct timeval *);
+#endif
 #endif
 __END_DECLS
 #endif /* !_KERNEL */

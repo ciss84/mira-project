@@ -67,6 +67,10 @@
 #ifndef	_VM_PAGE_
 #define	_VM_PAGE_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <vm/pmap.h>
 
 /*
@@ -452,5 +456,8 @@ vm_page_undirty(vm_page_t m)
 	m->dirty = 0;
 }
 
+#ifdef __cplusplus
+}
+#endif
 #endif				/* _KERNEL */
 #endif				/* !_VM_PAGE_ */

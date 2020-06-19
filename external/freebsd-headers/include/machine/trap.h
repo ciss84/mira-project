@@ -1,4 +1,4 @@
-/*-
+﻿/*-
  * Copyright (c) 1990 The Regents of the University of California.
  * All rights reserved.
  *
@@ -30,7 +30,7 @@
  * SUCH DAMAGE.
  *
  *	from: @(#)trap.h	5.4 (Berkeley) 5/9/91
- * $FreeBSD: release/9.0.0/sys/amd64/include/trap.h 227946 2011-11-24 18:44:14Z rstone $
+ * $FreeBSD$
  */
 
 #ifndef _MACHINE_TRAP_H_
@@ -64,6 +64,7 @@
 #define	T_RESERVED	30	/* reserved (unknown) */
 #define	T_DTRACE_RET	32	/* DTrace pid return */
 #define	T_DTRACE_PROBE	33	/* DTrace fasttrap probe */
+#define	T_DBGSTOP	34	/* Uncatchable debug stop (mDBG) */
 
 /* XXX most of the following codes aren't used, but could be. */
 

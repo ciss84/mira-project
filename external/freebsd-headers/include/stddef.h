@@ -1,66 +1,109 @@
-/*-
- * Copyright (c) 1990, 1993
- *	The Regents of the University of California.  All rights reserved.
+﻿/* SIE CONFIDENTIAL
+ PlayStation(R)4 Programmer Tool Runtime Library Release 05.508.001
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- * 3. Neither the name of the University nor the names of its contributors
- *    may be used to endorse or promote products derived from this software
- *    without specific prior written permission.
+ *      Copyright (C) 2015 Sony Interactive Entertainment Inc.
+ *                        All Rights Reserved.
  *
- * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
- * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
- * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
- * SUCH DAMAGE.
- *
- *	@(#)stddef.h	8.1 (Berkeley) 6/2/93
- *
- * $FreeBSD: release/9.0.0/include/stddef.h 203964 2010-02-16 19:39:50Z imp $
  */
 
-#ifndef _STDDEF_H_
-#define _STDDEF_H_
+/* stddef.h standard header */
+#ifndef _STDDEF
+#define _STDDEF
+#include <sys/yvals.h>
+#include <sys/_types/_size_t.h>
 
-#include <sys/cdefs.h>
-#include <sys/_null.h>
-#include <sys/_types.h>
-
-typedef	__ptrdiff_t	ptrdiff_t;
-
-#if __BSD_VISIBLE
-#ifndef _RUNE_T_DECLARED
-typedef	__rune_t	rune_t;
-#define	_RUNE_T_DECLARED
-#endif
-#endif
-
-#ifndef _SIZE_T_DECLARED
-typedef	__size_t	size_t;
-#define	_SIZE_T_DECLARED
-#endif
-
-#ifndef	__cplusplus
-#ifndef _WCHAR_T_DECLARED
-typedef	__wchar_t	wchar_t;
-#define	_WCHAR_T_DECLARED
-#endif
-#endif
+_C_STD_BEGIN
+		/* macros */
 
 #ifndef offsetof
-#define	offsetof(type, member)	__offsetof(type, member)
-#endif
 
-#endif /* _STDDEF_H_ */
+ #if defined(__EDG__) && (__EDG__ != 0)
+  #define offsetof(T, member) ((_Sizet)__INTADDR__(&(((T *)0)->member)))
+
+ #elif defined(__ORBIS__) && defined(__clang__)
+  #define offsetof __builtin_offsetof
+
+ #elif defined(__cplusplus) && ((__GNUC__ == 3) && (3 < __GNUC_MINOR__))
+  #define offsetof(T, member) \
+	(__offsetof__ (reinterpret_cast<_CSTD size_t> \
+	(&reinterpret_cast<char &> \
+	(static_cast<T *>(0)->member))))
+
+ #else /* defined(__EDG__) && (__EDG__ != 0) */
+  #define offsetof(T, member)	((_CSTD size_t)&(((T *)0)->member))
+ #endif /* defined(__EDG__) && (__EDG__ != 0) */
+
+#endif /* offsetof */
+
+		/* type definitions */
+
+ #if !defined(_PTRDIFF_T) && !defined(_PTRDIFFT) \
+	&& !defined(_PTRDIFF_T_DEFINED)
+  #define _PTRDIFF_T
+  #define _PTRDIFFT
+  #define _PTRDIFF_T_DEFINED
+  #define _STD_USING_PTRDIFF_T
+typedef _Ptrdifft ptrdiff_t;
+ #endif /* !defined(_PTRDIFF_T) etc. */
+
+ #if !defined(_WCHART) && !defined(_WCHAR_T_DEFINED)
+  #define _WCHART
+  #define _WCHAR_T_DEFINED
+typedef _Wchart wchar_t;
+ #endif /* _WCHART etc. */
+
+ #if defined(__need_wint_t) && defined (__CYGWIN__)
+  #ifndef _WINTT
+   #define _WINTT
+typedef _Wintt wint_t;
+  #endif /* _WINTT */
+
+ #endif /* defined(__need_wint_t) && defined (__CYGWIN__) */
+
+ #if _HAS_CPP0X
+
+ #ifdef __cplusplus
+
+ #if _HAS_NULLPTR_T
+typedef decltype(nullptr) nullptr_t;
+
+ #else /* _HAS_NULLPTR_T */
+typedef void *nullptr_t;
+ #endif /* _HAS_NULLPTR_T */
+
+typedef float max_align_t __attribute__((__vector_size__ (32) )); // most aligned type
+ #endif /* __cplusplus */
+
+ #endif /* _HAS_CPP0X */
+_C_STD_END
+#endif /* _STDDEF */
+
+ #if defined(_STD_USING)
+
+  #ifdef _STD_USING_PTRDIFF_T
+using _CSTD ptrdiff_t;
+  #endif /* _STD_USING_PTRDIFF_T */
+
+  #ifdef _STD_USING_SIZE_T
+using _CSTD size_t;
+  #endif /* _STD_USING_SIZE_T */
+
+ #if __STDC_WANT_LIB_EXT1__
+using _CSTD rsize_t;
+
+ #if _HAS_CPP0X
+
+ #ifdef __cplusplus
+using _CSTD nullptr_t;
+using _CSTD max_align_t;
+ #endif /* __cplusplus */
+
+ #endif /* _HAS_CPP0X */
+ #endif /* __STDC_WANT_LIB_EXT1__ */
+
+ #endif /* defined(_STD_USING) */
+
+/*
+ * Copyright (c) 1992-2012 by P.J. Plauger.  ALL RIGHTS RESERVED.
+ * Consult your license regarding permissions and restrictions.
+V6.01:0216 */

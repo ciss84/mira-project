@@ -1,3 +1,11 @@
+﻿/* SIE CONFIDENTIAL
+ PlayStation(R)4 Programmer Tool Runtime Library Release 05.508.001
+ *
+ *      Copyright (C) 2016 Sony Interactive Entertainment Inc.
+ *                        All Rights Reserved.
+ *
+ */
+
 /*-
  * Copyright (c) 1991, 1993
  *	The Regents of the University of California.  All rights reserved.
@@ -30,7 +38,7 @@
  * SUCH DAMAGE.
  *
  *	@(#)cdefs.h	8.8 (Berkeley) 1/9/95
- * $FreeBSD: release/9.0.0/sys/sys/cdefs.h 218824 2011-02-18 21:44:53Z nwhitehorn $
+ * $FreeBSD$
  */
 
 #ifndef	_SYS_CDEFS_H_
@@ -219,8 +227,7 @@
 #endif
 
 #if __GNUC_PREREQ__(2, 96)
-// __attribute__((__malloc__))
-#define	__malloc_like	
+#define	__malloc_like	__attribute__((__malloc__))
 #define	__pure		__attribute__((__pure__))
 #else
 #define	__malloc_like
@@ -245,15 +252,28 @@
 #define __nonnull(x)
 #endif
 
+#if __GNUC_PREREQ__(4, 1)
+#define __returns_twice	__attribute__((__returns_twice__))
+#else
+#define __returns_twice
+#endif
+
 /* XXX: should use `#if __STDC_VERSION__ < 199901'. */
 #if !__GNUC_PREREQ__(2, 7) && !defined(__INTEL_COMPILER)
 #define	__func__	NULL
 #endif
 
-#if (defined(__INTEL_COMPILER) || (defined(__GNUC__) && __GNUC__ >= 2)) && !defined(__STRICT_ANSI__) || __STDC_VERSION__ >= 199901
-#define	__LONG_LONG_SUPPORTED
+#if (defined(__INTEL_COMPILER) || (defined(__GNUC__) && __GNUC__ >= 2)) && !defined(__STRICT_ANSI__) || __STDC_VERSION__ >= 199901 || defined(__ORBIS__)
+ /*
+  *  If "-std=c++0x" is specified, __STRICT_ANSI__ is defined as 1.
+  *  Then, FreeBSD does not support long long APIs.
+  *  But Dinkumware has long long APIs and they are used in C++11.
+  *  So, for ORBIS, __LONG_LONG_SUPPORTED is defined by default.
+  */
+ #define	__LONG_LONG_SUPPORTED
 #endif
 
+#ifndef __ORBIS__ /* B#16232 */
 /*
  * GCC 2.95 provides `__restrict' as an extension to C90 to support the
  * C99-specific `restrict' type qualifier.  We happen to use `__restrict' as
@@ -267,6 +287,7 @@
 #define	__restrict	restrict
 #endif
 #endif
+#endif /* __ORBIS__ */ /* B#16232 */
 
 /*
  * GNU C version 2.96 adds explicit branch prediction so that
@@ -342,8 +363,13 @@
 #define	__scanflike(fmtarg, firstvararg)
 #define	__format_arg(fmtarg)
 #else
+#ifdef _KERNEL
+#define	__printflike(fmtarg, firstvararg) \
+	    __attribute__((__format__ (freebsd_kprintf, fmtarg, firstvararg)))
+#else
 #define	__printflike(fmtarg, firstvararg) \
 	    __attribute__((__format__ (__printf__, fmtarg, firstvararg)))
+#endif
 #define	__scanflike(fmtarg, firstvararg) \
 	    __attribute__((__format__ (__scanf__, fmtarg, firstvararg)))
 #define	__format_arg(fmtarg)	__attribute__((__format_arg__ (fmtarg)))
@@ -408,7 +434,7 @@
  * Embed the rcs id of a source file in the resulting library.  Note that in
  * more recent ELF binutils, we use .ident allowing the ID to be stripped.
  * Usage:
- *	__FBSDID("$FreeBSD: release/9.0.0/sys/sys/cdefs.h 218824 2011-02-18 21:44:53Z nwhitehorn $");
+ *	__FBSDID("$FreeBSD$");
  */
 #ifndef	__FBSDID
 #if !defined(lint) && !defined(STRIP_FBSDID)

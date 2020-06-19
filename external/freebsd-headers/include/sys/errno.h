@@ -1,3 +1,11 @@
+﻿/* SIE CONFIDENTIAL
+ PlayStation(R)4 Programmer Tool Runtime Library Release 05.508.001
+ *
+ *      Copyright (C) 2015 Sony Interactive Entertainment Inc.
+ *                        All Rights Reserved.
+ *
+ */
+
 /*-
  * Copyright (c) 1982, 1986, 1989, 1993
  *	The Regents of the University of California.  All rights reserved.
@@ -32,7 +40,7 @@
  * SUCH DAMAGE.
  *
  *	@(#)errno.h	8.5 (Berkeley) 1/21/94
- * $FreeBSD: release/9.0.0/sys/sys/errno.h 220335 2011-04-04 17:39:30Z avg $
+ * $FreeBSD$
  */
 
 #ifndef _SYS_ERRNO_H_
@@ -178,9 +186,69 @@ __END_DECLS
 #define	ECAPMODE	94		/* Not permitted in capability mode */
 #endif /* _POSIX_SOURCE */
 
+#define ENOBLK		95
+#define EICV		96
+#define ENOPLAYGOENT 97
+#define EREVOKE		98
+#define ESDKVERSION	99
+#define ESTART		100		/* module_start() fails */
+#define ESTOP		101		/* module_stop() fails */
+#define EINVALID2MB	102		/* 2MB page is enabled against old binary */
+
 #ifndef _POSIX_SOURCE
-#define	ELAST		94		/* Must be equal largest errno */
+#define	ELAST		102		/* Must be equal largest errno */
 #endif /* _POSIX_SOURCE */
+
+#define EADHOC				160	/* adhoc mode */
+/* 161 reserved */
+/* 162 reserved */
+#define EINACTIVEDISABLED	163	/* IP address was changed */
+#define ENETNODATA			164	/* internal code */
+#define ENETDESC			165	/* internal code */
+#define ENETDESCTIMEDOUT	166	/* internal code */
+#define ENETINTR			167	/* network abort */
+/* 168 reserved */
+/* 169 reserved */
+
+#define ERETURN				205	/* libnetctl error */
+
+#ifdef __ORBIS__ /* Dinkumware */
+
+		/* ERROR CODES */
+
+#define EFPOS          0x0098
+
+		/* POSIX SUPPLEMENT */
+
+#ifndef ENODATA
+ #define ENODATA	1040
+#endif /* ENODATA */
+
+#ifndef ENOSR
+ #define ENOSR	1050
+#endif /* ENOSR */
+
+#ifndef ENOSTR
+ #define ENOSTR	1051
+#endif /* ENOSTR */
+
+#ifndef ENOTRECOVERABLE
+ #define ENOTRECOVERABLE	1056
+#endif /* ENOTRECOVERABLE */
+
+#ifndef EOTHER
+ #define EOTHER	1062
+#endif /* EOTHER */
+
+#ifndef EOWNERDEAD
+ #define EOWNERDEAD	1064
+#endif /* EOWNERDEAD */
+
+#ifndef ETIME
+ #define ETIME	1074
+#endif /* ETIME */
+
+#endif /* __ORBIS__ */ /* Dinkumware */
 
 #ifdef _KERNEL
 /* pseudo-errors returned inside kernel to modify return to process */
@@ -191,3 +259,8 @@ __END_DECLS
 #endif
 
 #endif
+
+/*
+ * Copyright (c) 1992-2012 by P.J. Plauger.  ALL RIGHTS RESERVED.
+ * Consult your license regarding permissions and restrictions.
+V6.01:0216 */

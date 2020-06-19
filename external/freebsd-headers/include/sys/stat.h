@@ -1,3 +1,9 @@
+﻿/* SIE CONFIDENTIAL
+ * PlayStation(R)4 Programmer Tool Runtime Library Release 05.508.001
+ * Copyright (C) 2016 Sony Interactive Entertainment Inc.
+ * All Rights Reserved.
+ */
+
 /*-
  * Copyright (c) 1982, 1986, 1989, 1993
  *	The Regents of the University of California.  All rights reserved.
@@ -32,7 +38,7 @@
  * SUCH DAMAGE.
  *
  *	@(#)stat.h	8.12 (Berkeley) 6/16/95
- * $FreeBSD: release/9.0.0/sys/sys/stat.h 205792 2010-03-28 13:13:22Z ed $
+ * $FreeBSD$
  */
 
 #ifndef _SYS_STAT_H_
@@ -41,56 +47,16 @@
 #include <sys/cdefs.h>
 #include <sys/_timespec.h>
 #include <sys/_types.h>
-
-#ifndef _BLKSIZE_T_DECLARED
-typedef	__blksize_t	blksize_t;
-#define	_BLKSIZE_T_DECLARED
-#endif
-
-#ifndef _BLKCNT_T_DECLARED
-typedef	__blkcnt_t	blkcnt_t;
-#define	_BLKCNT_T_DECLARED
-#endif
-
-#ifndef _DEV_T_DECLARED
-typedef	__dev_t		dev_t;
-#define	_DEV_T_DECLARED
-#endif
-
-#ifndef _FFLAGS_T_DECLARED
-typedef	__fflags_t	fflags_t;
-#define	_FFLAGS_T_DECLARED
-#endif
-
-#ifndef _GID_T_DECLARED
-typedef	__gid_t		gid_t;
-#define	_GID_T_DECLARED
-#endif
-
-#ifndef _INO_T_DECLARED
-typedef	__ino_t		ino_t;
-#define	_INO_T_DECLARED
-#endif
-
-#ifndef _MODE_T_DECLARED
-typedef	__mode_t	mode_t;
-#define	_MODE_T_DECLARED
-#endif
-
-#ifndef _NLINK_T_DECLARED
-typedef	__nlink_t	nlink_t;
-#define	_NLINK_T_DECLARED
-#endif
-
-#ifndef _OFF_T_DECLARED
-typedef	__off_t		off_t;
-#define	_OFF_T_DECLARED
-#endif
-
-#ifndef _UID_T_DECLARED
-typedef	__uid_t		uid_t;
-#define	_UID_T_DECLARED
-#endif
+#include <sys/_types/_blksize_t.h>
+#include <sys/_types/_blkcnt_t.h>
+#include <sys/_types/_dev_t.h>
+#include <sys/_types/_fflags_t.h>
+#include <sys/_types/_gid_t.h>
+#include <sys/_types/_ino_t.h>
+#include <sys/_types/_mode_t.h>
+#include <sys/_types/_nlink_t.h>
+#include <sys/_types/_off_t.h>
+#include <sys/_types/_uid_t.h>
 
 #if !defined(_KERNEL) && __BSD_VISIBLE
 /*
@@ -277,6 +243,11 @@ struct nstat {
 #define	SF_NOUNLINK	0x00100000	/* file may not be removed or renamed */
 #define	SF_SNAPSHOT	0x00200000	/* snapshot inode */
 
+/* proprietary extentions, may only work zone-aware UFS */
+#define	SF_NOCRYPT_OLD	0x10000000 /* deprecated */
+#define	SF_NOCRYPT	0x20000000  /* BIO_NOCRYPT safe */
+#define	SF_ZONED	0x40000000	/* is a zone-allocated file */
+
 #ifdef _KERNEL
 /*
  * Shorthand abbreviations of above.
@@ -301,33 +272,9 @@ int	fchflags(int, unsigned long);
 #if __POSIX_VISIBLE >= 200112
 int	fchmod(int, mode_t);
 #endif
-#if __POSIX_VISIBLE >= 200809
-int	fchmodat(int, const char *, mode_t, int);
-#endif
 int	fstat(int, struct stat *);
-#if __BSD_VISIBLE
-int	lchflags(const char *, int);
-int	lchmod(const char *, mode_t);
-#endif
-#if __POSIX_VISIBLE >= 200112
-int	lstat(const char * __restrict, struct stat * __restrict);
-#endif
 int	mkdir(const char *, mode_t);
-int	mkfifo(const char *, mode_t);
-#if !defined(_MKNOD_DECLARED) && __XSI_VISIBLE
-int	mknod(const char *, mode_t, dev_t);
-#define	_MKNOD_DECLARED
-#endif
 int	stat(const char * __restrict, struct stat * __restrict);
-mode_t	umask(mode_t);
-#if __BSD_VISIBLE || __POSIX_VISIBLE >= 200809
-int	fstatat(int, const char *, struct stat *, int);
-int	mkdirat(int, const char *, mode_t);
-int	mkfifoat(int, const char *, mode_t);
-#endif
-#if __BSD_VISIBLE || __XSI_VISIBLE >= 700
-int	mknodat(int, const char *, mode_t, dev_t);
-#endif
 __END_DECLS
 #endif /* !_KERNEL */
 
