@@ -33,6 +33,8 @@
 #ifndef _NETINET_IN_H_
 #define	_NETINET_IN_H_
 
+#include <features.h>
+#include <sys/socket.h>
 #include <sys/cdefs.h>
 #include <sys/_types.h>
 #include <machine/endian.h>
