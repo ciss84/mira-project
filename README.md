@@ -15,8 +15,6 @@ It works differently to the custom firmware experience on Playstation 3, where C
 |5.05|![](https://github.com/ciss84/mira-project/workflows/Orbis505/badge.svg)|
 |6.50|![](https://github.com/ciss84/mira-project/workflows/Orbis650/badge.svg) WIP|
 
-# Update freebsd-include v3 
-
 # New Features!
 
   - PVS-Studio 
@@ -34,7 +32,8 @@ It works differently to the custom firmware experience on Playstation 3, where C
   - Remote play Enabler (5.05)
   - Spoof 7.51 PSVR (Thanks @Leeful74) (5.05)
   - debug trophies on retail Enabler (5.01,5.05)(Thanks systro)
-  
+  - Update freebsd-include v3 (Thanks specter) 
+   
 You can also:
   - Mount and decrypt local gamesaves (Thanks ChendoChap) (WIP)
   - Transfer files to and from the harddrive
@@ -42,7 +41,7 @@ You can also:
   - Implement your own userland trainers (hooks included!)
   - Dump your HDD encryption keys
   - A bunch of other stuff
-  
+
 ### Release : https://github.com/ciss84/mira-project/releases/tag/v5
 ### Contributors
 
