@@ -36,10 +36,6 @@
 #ifndef VM_UMA_H
 #define VM_UMA_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <sys/param.h>		/* For NULL */
 #include <sys/malloc.h>		/* For M_* */
 
@@ -638,7 +634,5 @@ struct uma_percpu_stat {
 	u_int64_t	ups_cache_free;	/* Cache: free items in cache. */
 	u_int64_t	_ups_reserved[5];	/* Reserved. */
 };
-#ifdef __cplusplus
-}
+
 #endif
-#endif /* VM_UMA_H */

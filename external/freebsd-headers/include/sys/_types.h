@@ -1,11 +1,3 @@
-﻿/* SIE CONFIDENTIAL
- PlayStation(R)4 Programmer Tool Runtime Library Release 05.508.001
- *
- *      Copyright (C) 2015 Sony Interactive Entertainment Inc.
- *                        All Rights Reserved.
- *
- */
-
 /*-
  * Copyright (c) 2002 Mike Barcroft <mike@FreeBSD.org>
  * All rights reserved.
@@ -31,7 +23,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * $FreeBSD$
+ * $FreeBSD: release/9.0.0/sys/sys/_types.h 223710 2011-07-01 12:13:48Z jonathan $
  */
 
 #ifndef _SYS__TYPES_H_
@@ -95,20 +87,7 @@ typedef int		__cpusetid_t;	/* cpuset identifier. */
  */
 typedef	int		__ct_rune_t;	/* arg type for ctype funcs */
 typedef	__ct_rune_t	__rune_t;	/* rune_t (see above) */
-
-#ifdef __ORBIS__
-/* ORBIS B#2308 - wchar_t : 2-byte */
- #if !defined(__INTELLISENSE__)
-  #if !defined(__is_identifier)
-typedef	unsigned short __wchar_t;
-  #elif __is_identifier(__wchar_t) /* ORBIS B#64803 */
-typedef	unsigned short __wchar_t;
-  #endif /* __is_identifier(__wchar_t) */
- #endif /* !defined(__INTELLISENSE__) */
-#else /*__ORBIS__*/
 typedef	__ct_rune_t	__wchar_t;	/* wchar_t (see above) */
-#endif /*__ORBIS__*/
-
 typedef	__ct_rune_t	__wint_t;	/* wint_t (see above) */
 
 typedef	__uint32_t	__dev_t;	/* device number */

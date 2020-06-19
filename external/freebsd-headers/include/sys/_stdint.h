@@ -1,8 +1,3 @@
-﻿/* SIE CONFIDENTIAL
- * PlayStation(R)4 Programmer Tool Runtime Library Release 05.508.001
- * Copyright (C) 2015 Sony Interactive Entertainment Inc.
- * All Rights Reserved.
- */
 /*-
  * Copyright (c) 2011 David E. O'Brien <obrien@FreeBSD.org>
  * Copyright (c) 2001 Mike Barcroft <mike@FreeBSD.org>
@@ -29,21 +24,59 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * $FreeBSD$
+ * $FreeBSD: release/9.0.0/sys/sys/_stdint.h 222813 2011-06-07 08:46:13Z attilio $
  */
 
 #ifndef _SYS__STDINT_H_
 #define _SYS__STDINT_H_
 
-#include <sys/_types/_int8_t.h>
-#include <sys/_types/_int16_t.h>
-#include <sys/_types/_int32_t.h>
-#include <sys/_types/_int64_t.h>
-#include <sys/_types/_uint8_t.h>
-#include <sys/_types/_uint16_t.h>
-#include <sys/_types/_uint32_t.h>
-#include <sys/_types/_uint64_t.h>
-#include <sys/_types/_intptr_t.h>
-#include <sys/_types/_uintptr_t.h>
+#ifndef _INT8_T_DECLARED
+typedef	__int8_t		int8_t;
+#define	_INT8_T_DECLARED
+#endif
+
+#ifndef _INT16_T_DECLARED
+typedef	__int16_t		int16_t;
+#define	_INT16_T_DECLARED
+#endif
+
+#ifndef _INT32_T_DECLARED
+typedef	__int32_t		int32_t;
+#define	_INT32_T_DECLARED
+#endif
+
+#ifndef _INT64_T_DECLARED
+typedef	__int64_t		int64_t;
+#define	_INT64_T_DECLARED
+#endif
+
+#ifndef _UINT8_T_DECLARED
+typedef	__uint8_t		uint8_t;
+#define	_UINT8_T_DECLARED
+#endif
+
+#ifndef _UINT16_T_DECLARED
+typedef	__uint16_t		uint16_t;
+#define	_UINT16_T_DECLARED
+#endif
+
+#ifndef _UINT32_T_DECLARED
+typedef	__uint32_t		uint32_t;
+#define	_UINT32_T_DECLARED
+#endif
+
+#ifndef _UINT64_T_DECLARED
+typedef	__uint64_t		uint64_t;
+#define	_UINT64_T_DECLARED
+#endif
+
+#ifndef _INTPTR_T_DECLARED
+typedef	__intptr_t		intptr_t;
+#define	_INTPTR_T_DECLARED
+#endif
+#ifndef _UINTPTR_T_DECLARED
+typedef	__uintptr_t		uintptr_t;
+#define	_UINTPTR_T_DECLARED
+#endif
 
 #endif /* !_SYS__STDINT_H_ */
