@@ -370,42 +370,6 @@ bool FakePkgManager::ShellCorePatch()
         WriteLog(LL_Error, "ssc_sceKernelIsGenuineCEX_patchN");
         return false;
     }
-    
-#if MIRA_PLATFORM==MIRA_PLATFORM_ORBIS_BSD_505     
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_Patch_debug_settingA), 1, (void*) "\x14", nullptr, true);
-    if (s_Ret < 0)
-      {
-        WriteLog(LL_Error, "ssc_Patch_debug_settingA");
-        return false;
-    }
-#endif
-
-#if MIRA_PLATFORM==MIRA_PLATFORM_ORBIS_BSD_505    
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_Patch_debug_settingB), 1, (void*) "\3", nullptr, true);
-    if (s_Ret < 0)
-      {
-        WriteLog(LL_Error, "ssc_Patch_debug_settingB");
-        return false;
-    }
-#endif
-
-#if MIRA_PLATFORM==MIRA_PLATFORM_ORBIS_BSD_505 
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_Patch_debug_settingC), 1, (void*) "\1", nullptr, true);
-    if (s_Ret < 0)
-      {
-        WriteLog(LL_Error, "ssc_Patch_debug_settingC");
-        return false;
-    } 
-#endif
-
-#if MIRA_PLATFORM==MIRA_PLATFORM_ORBIS_BSD_505    
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_Patch_debug_settingD), 1, (void*) "\1", nullptr, true);
-    if (s_Ret < 0)
-      {
-        WriteLog(LL_Error, "ssc_Patch_debug_settingD");
-        return false;
-    }
-#endif
 
     s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_CreateUserForIDU_patch), sizeof(xor__edx_eax), xor__edx_eax, nullptr, true);
     if (s_Ret < 0)

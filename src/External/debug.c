@@ -25,14 +25,11 @@ void initDebugSocket(void)
 
 void closeDebugSocket(void)
 {
-  sceNetSocketClose(sock);
-}
-
-void notify(char *message)
-{
 	char buffer[512];
-	sprintf(buffer, "%s", message);
-	sceSysUtilSendSystemNotificationWithText(222, buffer);
+	sprintf(buffer, "%s\n\n\n\n\n\n\n", msg);
+	sceSysUtilSendSystemNotificationWithText(0x81, buffer);
+}
+  sceNetSocketClose(sock);
 }
 
 #endif
