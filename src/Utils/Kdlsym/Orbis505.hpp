@@ -238,6 +238,9 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 // make pkgs installer working with external hdd
 #define ssc_make_pkgs_installer_working_with_external_hdd   0x009312A1
 
+// flatz allow sys_dynlib_dlsym in all processes
+#define kdlsym_addr_sys_dynlib_dlsym_patch                  0x00237F3A
+
 // enable support with 7.xx external hdd
 #define ssc_enable_support_external_hdd                     0x00593C7D
 
