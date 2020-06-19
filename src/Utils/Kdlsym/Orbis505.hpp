@@ -244,6 +244,12 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 // enable support with 7.xx external hdd
 #define ssc_enable_support_external_hdd                     0x00593C7D
 
+// Patch debug setting             
+#define ssc_Patch_debug_settingA                            0x01CD0686
+#define ssc_Patch_debug_settingB                            0x01CD06A9
+#define ssc_Patch_debug_settingC                            0x01CD06AA
+#define ssc_Patch_debug_settingD                            0x01CD06C8
+
 // SceShellUI patches - remote play patches
 #define ssc_CreateUserForIDU_patch                          0x001A8FA0
 #define ssc_remote_play_menu_patch                          0x00EE638E
