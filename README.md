@@ -17,6 +17,7 @@ It works differently to the custom firmware experience on Playstation 3, where C
 |6.50|![](https://github.com/ciss84/mira-project/workflows/Orbis650/badge.svg) WIP|
 # New Features!
 
+  - PVS-Studio 
   - Homebrew Enabler (HEN)
   - Emulated Registry (EmuReg)
   - Emulated NVS (EmuNVS)
@@ -24,15 +25,13 @@ It works differently to the custom firmware experience on Playstation 3, where C
   - Remote GDB
   - System-level FUSE implementation (Experimental, WIP)
   - Load sprx modules + IAT + Function Hooking (Thanks theorywrong)
-  - Web browser activation 
-  - Debug settings fix 
-  - Remote packages fix (5.05)
-  - PVS-Studio 
-  - Spoof 7.51 PSVR (THX @Leeful74) (5.05)
-  - enable debug trophies on retail (5.01,5.05)
-  - flatbuffers
-  - Remote registry (not sure full)
-
+  - Web browser activation (Thanks al-azif)
+  - flatbuffers Enabler (Thanks flat)
+  - Debug settings fix (Thanks al-azif) + fix all error fix idu test(5.05)  
+  - Remote packages Enabler (5.05)
+  - Remote play Enabler (5.05)
+  - Spoof 7.51 PSVR (Thanks @Leeful74) (5.05)
+  - debug trophies on retail Enabler (5.01,5.05)(Thanks systro)
   
 You can also:
   - Mount and decrypt local gamesaves (Thanks ChendoChap) (WIP)
