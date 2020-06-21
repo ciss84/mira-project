@@ -58,22 +58,20 @@ const uint8_t FakeSelfManager::c_DynlibAuthInfo[] =
 FakeSelfManager::FakeSelfManager()
 {
     auto sv = (struct sysentvec*)kdlsym(self_orbis_sysvec);
-
 	struct sysent* sysents = sv->sv_table;
 
-	  uint8_t* s_TrampolineA = reinterpret_cast<uint8_t*>(sysents[SYS___MAC_GET_PID].sy_call);
+	uint8_t* s_TrampolineA = reinterpret_cast<uint8_t*>(sysents[SYS___MAC_GET_PID].sy_call);
     uint8_t* s_TrampolineB = reinterpret_cast<uint8_t*>(sysents[SYS___MAC_GET_PROC].sy_call);
     uint8_t* s_TrampolineC = reinterpret_cast<uint8_t*>(sysents[SYS___MAC_SET_PROC].sy_call);
     uint8_t* s_TrampolineD = reinterpret_cast<uint8_t*>(sysents[SYS___MAC_GET_FILE].sy_call);
     uint8_t* s_TrampolineE = reinterpret_cast<uint8_t*>(sysents[SYS___MAC_GET_FD].sy_call);
-    //uint8_t* s_TrampolineF = reinterpret_cast<uint8_t*>(sysents[SYS___MAC_GET_PROC].sy_call);
-    
+
     Utilities::HookFunctionCall(s_TrampolineA, reinterpret_cast<void*>(OnSceSblAuthMgrVerifyHeader), kdlsym(sceSblAuthMgrVerifyHeader_hookA));
     Utilities::HookFunctionCall(s_TrampolineB, reinterpret_cast<void*>(OnSceSblAuthMgrVerifyHeader), kdlsym(sceSblAuthMgrVerifyHeader_hookB));
     Utilities::HookFunctionCall(s_TrampolineC, reinterpret_cast<void*>(OnSceSblAuthMgrIsLoadable2), kdlsym(sceSblAuthMgrIsLoadable2_hook));
     Utilities::HookFunctionCall(s_TrampolineD, reinterpret_cast<void*>(SceSblAuthMgrSmLoadSelfSegment_Mailbox), kdlsym(sceSblAuthMgrSmLoadSelfSegment__sceSblServiceMailbox_hook));
     Utilities::HookFunctionCall(s_TrampolineE, reinterpret_cast<void*>(SceSblAuthMgrSmLoadSelfBlock_Mailbox), kdlsym(sceSblAuthMgrSmLoadSelfBlock__sceSblServiceMailbox_hook));
-    //Utilities::HookFunctionCall(s_TrampolineF, reinterpret_cast<void*>(SceSblAuthMgrIsLoadable_sceSblACMgrGetPathId), kdlsym(sceSblAuthMgrIsLoadable__sceSblACMgrGetPathId_hook));
+    //HookFunctionCall(s_TrampolineF, reinterpret_cast<void*>(SceSblAuthMgrIsLoadable_sceSblACMgrGetPathId), kdlsym(sceSblAuthMgrIsLoadable__sceSblACMgrGetPathId_hook));
 
     //m_SceSblServiceMailboxHook = new Utils::Hook(kdlsym(sceSblServiceMailbox), reinterpret_cast<void*>(OnSceSblServiceMailbox));
     //m_SceSblAuthMgrVerifyHeaderHook = new Utils::Hook(kdlsym(sceSblAuthMgrVerifyHeader), reinterpret_cast<void*>(OnSceSblAuthMgrVerifyHeader));
@@ -98,13 +96,13 @@ FakeSelfManager::~FakeSelfManager()
         delete m_SceSblAuthMgrVerifyHeaderHook;
         m_SceSblAuthMgrVerifyHeaderHook = nullptr;
     }
-    if (m_OnSceSblAuthMgrIsLoadable2Hook = nullptr)
+    if (m_SceSblAuthMgrIsLoadable2Hook != nullptr)
     {
-        (void)m_OnSceSblAuthMgrIsLoadable2Hook->Disable();
-        delete m_OnSceSblAuthMgrIsLoadable2Hook;
-        m_OnSceSblAuthMgrIsLoadable2Hook = nullptr;
+        (void)m_SceSblAuthMgrIsLoadable2Hook->Disable();
+        delete m_SceSblAuthMgrIsLoadable2Hook;
+        m_SceSblAuthMgrIsLoadable2Hook = nullptr;
     }
-   if (m__SceSblAuthMgrSmLoadSelfBlockHook != nullptr)
+    if (m__SceSblAuthMgrSmLoadSelfBlockHook != nullptr)
     {
         (void)m__SceSblAuthMgrSmLoadSelfBlockHook->Disable();
         delete m__SceSblAuthMgrSmLoadSelfBlockHook;
