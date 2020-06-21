@@ -7,7 +7,7 @@ using namespace Mira::Boot;
 
 void OptionsBlock::SetDefaults()
 {
-    IsAdvancedMode = false;
+    IsAdvancedMode = true;
 
     RpcValidationEnabled = true;
     SyscallGuardEnabled = true;
@@ -16,11 +16,11 @@ void OptionsBlock::SetDefaults()
 
     DebuggerBreakOnAttach = true;
     AslrEnabled = true;
-    FuseEnabled = false;
+    FuseEnabled = true;
 
-    LogServerEnabled = false;
+    LogServerEnabled = true;
     LogServerPort = 9998;
 
-    RpcServerEnabled = false;
+    RpcServerEnabled = true;
     RpcServerPort = 9999;
 }

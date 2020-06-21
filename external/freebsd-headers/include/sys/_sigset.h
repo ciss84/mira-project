@@ -1,8 +1,3 @@
-﻿/* SIE CONFIDENTIAL
- * PlayStation(R)4 Programmer Tool Runtime Library Release 05.508.001
- * Copyright (C) 2015 Sony Interactive Entertainment Inc.
- * All Rights Reserved.
- */
 /*-
  * Copyright (c) 1982, 1986, 1989, 1991, 1993
  *	The Regents of the University of California.  All rights reserved.
@@ -37,13 +32,11 @@
  * SUCH DAMAGE.
  *
  *	@(#)signal.h	8.4 (Berkeley) 5/4/95
- * $FreeBSD$
+ * $FreeBSD: release/9.0.0/sys/sys/_sigset.h 139825 2005-01-07 02:29:27Z imp $
  */
 
 #ifndef _SYS__SIGSET_H_
 #define	_SYS__SIGSET_H_
-
-#include <machine/_types.h>
 
 /*
  * sigset_t macros.

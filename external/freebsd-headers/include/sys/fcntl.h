@@ -1,9 +1,3 @@
-﻿/* SIE CONFIDENTIAL
- * PlayStation(R)4 Programmer Tool Runtime Library Release 05.508.001
- * Copyright (C) 2015 Sony Interactive Entertainment Inc.
- * All Rights Reserved.
- */
-
 /*-
  * Copyright (c) 1983, 1990, 1993
  *	The Regents of the University of California.  All rights reserved.
@@ -38,7 +32,7 @@
  * SUCH DAMAGE.
  *
  *	@(#)fcntl.h	8.3 (Berkeley) 1/21/94
- * $FreeBSD$
+ * $FreeBSD: release/9.0.0/sys/sys/fcntl.h 220791 2011-04-18 16:32:22Z mdf $
  */
 
 #ifndef _SYS_FCNTL_H_
@@ -52,9 +46,21 @@
 
 #include <sys/cdefs.h>
 #include <sys/_types.h>
-#include <sys/_types/_mode_t.h>
-#include <sys/_types/_off_t.h>
-#include <sys/_types/_pid_t.h>
+
+#ifndef _MODE_T_DECLARED
+typedef	__mode_t	mode_t;
+#define	_MODE_T_DECLARED
+#endif
+
+#ifndef _OFF_T_DECLARED
+typedef	__off_t		off_t;
+#define	_OFF_T_DECLARED
+#endif
+
+#ifndef _PID_T_DECLARED
+typedef	__pid_t		pid_t;
+#define	_PID_T_DECLARED
+#endif
 
 /*
  * File status flags: these are used by open(2), fcntl(2).
@@ -96,7 +102,6 @@
 #define	O_CREAT		0x0200		/* create if nonexistent */
 #define	O_TRUNC		0x0400		/* truncate to zero length */
 #define	O_EXCL		0x0800		/* error if already exists */
-#define	O_DSYNC		0x1000		/* synchronous data writes(omit inode writes) */
 #ifdef _KERNEL
 #define	FHASLOCK	0x4000		/* descriptor holds advisory lock */
 #endif
@@ -135,9 +140,9 @@
 #define	OFLAGS(fflags)	((fflags) - 1)
 
 /* bits to save after open */
-#define	FMASK	(FREAD|FWRITE|FAPPEND|FASYNC|FFSYNC|FDSYNC|FNONBLOCK|O_DIRECT|FEXEC)
+#define	FMASK	(FREAD|FWRITE|FAPPEND|FASYNC|FFSYNC|FNONBLOCK|O_DIRECT|FEXEC)
 /* bits settable by fcntl(F_SETFL, ...) */
-#define	FCNTLFLAGS	(FAPPEND|FASYNC|FFSYNC|FDSYNC|FNONBLOCK|FRDAHEAD|O_DIRECT)
+#define	FCNTLFLAGS	(FAPPEND|FASYNC|FFSYNC|FNONBLOCK|FRDAHEAD|O_DIRECT)
 
 #if defined(COMPAT_FREEBSD7) || defined(COMPAT_FREEBSD6) || \
     defined(COMPAT_FREEBSD5) || defined(COMPAT_FREEBSD4)
@@ -148,7 +153,7 @@
  */
 #define	FPOSIXSHM	O_NOFOLLOW
 #undef FCNTLFLAGS
-#define	FCNTLFLAGS	(FAPPEND|FASYNC|FFSYNC|FDSYNC|FNONBLOCK|FPOSIXSHM|FRDAHEAD| \
+#define	FCNTLFLAGS	(FAPPEND|FASYNC|FFSYNC|FNONBLOCK|FPOSIXSHM|FRDAHEAD| \
 			 O_DIRECT)
 #endif
 #endif
@@ -162,7 +167,6 @@
 #define	FAPPEND		O_APPEND	/* kernel/compat */
 #define	FASYNC		O_ASYNC		/* kernel/compat */
 #define	FFSYNC		O_FSYNC		/* kernel */
-#define	FDSYNC		O_DSYNC		/* kernel */
 #define	FNONBLOCK	O_NONBLOCK	/* kernel */
 #define	FNDELAY		O_NONBLOCK	/* compat */
 #define	O_NDELAY	O_NONBLOCK	/* compat */
@@ -202,11 +206,28 @@
  */
 
 /* command values */
+#define	F_DUPFD		0		/* duplicate file descriptor */
+#define	F_GETFD		1		/* get file descriptor flags */
+#define	F_SETFD		2		/* set file descriptor flags */
 #define	F_GETFL		3		/* get file status flags */
 #define	F_SETFL		4		/* set file status flags */
+#if __BSD_VISIBLE || __XSI_VISIBLE || __POSIX_VISIBLE >= 200112
+#define	F_GETOWN	5		/* get SIGIO/SIGURG proc/pgrp */
+#define F_SETOWN	6		/* set SIGIO/SIGURG proc/pgrp */
+#endif
+#define	F_OGETLK	7		/* get record locking information */
+#define	F_OSETLK	8		/* set record locking information */
+#define	F_OSETLKW	9		/* F_SETLK; wait if blocked */
+#define	F_DUP2FD	10		/* duplicate file descriptor to arg */
 #define	F_GETLK		11		/* get record locking information */
 #define	F_SETLK		12		/* set record locking information */
 #define	F_SETLKW	13		/* F_SETLK; wait if blocked */
+#define	F_SETLK_REMOTE	14		/* debugging support for remote locks */
+#define	F_READAHEAD	15		/* read ahead */
+#define	F_RDAHEAD	16		/* Darwin compatible read ahead */
+
+/* file descriptor flags (F_GETFD, F_SETFD) */
+#define	FD_CLOEXEC	1		/* close-on-exec flag */
 
 /* record locking flags (F_GETLK, F_SETLK, F_SETLKW) */
 #define	F_RDLCK		1		/* shared or read lock */
@@ -265,6 +286,12 @@ __BEGIN_DECLS
 int	open(const char *, int, ...);
 int	creat(const char *, mode_t);
 int	fcntl(int, int, ...);
+#if __BSD_VISIBLE || __POSIX_VISIBLE >= 200809
+int	openat(int, const char *, int, ...);
+#endif
+#if __BSD_VISIBLE || __POSIX_VISIBLE >= 200112
+int	posix_fallocate(int, off_t, off_t);
+#endif
 #if __BSD_VISIBLE
 int	flock(int, int);
 #endif

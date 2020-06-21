@@ -1,4 +1,4 @@
-﻿/*-
+/*-
  * Copyright (c) 2008,	Jeffrey Roberson <jeff@freebsd.org>
  * All rights reserved.
  *
@@ -26,7 +26,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD$
+ * $FreeBSD: release/9.0.0/sys/sys/cpuset.h 223759 2011-07-04 12:18:12Z attilio $
  */
 
 #ifndef _SYS_CPUSET_H_
@@ -193,9 +193,8 @@ struct cpuset {
 	struct setlist		cs_children;	/* (c) List of children. */
 };
 
-#define CPU_SET_ROOT     0x0001  /* Set is a root set. */
-#define CPU_SET_RDONLY   0x0002  /* No modification allowed. */
-#define CPU_SET_NOUPDATE 0x0004  /* No updated allowed. */
+#define CPU_SET_ROOT    0x0001  /* Set is a root set. */
+#define CPU_SET_RDONLY  0x0002  /* No modification allowed. */
 
 extern cpuset_t *cpuset_root;
 struct prison;
@@ -205,20 +204,11 @@ struct cpuset *cpuset_thread0(void);
 struct cpuset *cpuset_ref(struct cpuset *);
 void	cpuset_rel(struct cpuset *);
 int	cpuset_setthread(lwpid_t id, cpuset_t *);
-int	cpuset_setthread_prio(lwpid_t id, cpuset_t *mask,
-    int prio);
 int	cpuset_create_root(struct prison *, struct cpuset **);
 int	cpuset_setproc_update_set(struct proc *, struct cpuset *);
 int	cpusetobj_ffs(const cpuset_t *);
 char	*cpusetobj_strprint(char *, const cpuset_t *);
 int	cpusetobj_strscan(cpuset_t *, const char *);
-uint8_t	cpunum_shift_ktou(uint8_t cpu);
-uint8_t cpunum_shift_utok(uint8_t cpu);
-uint8_t cpumask_shift_utok(uint8_t mask);
-uint8_t cpumask_shift_ktou(uint8_t mask);
-
-int     cpuset_changethread(struct thread *td, cpuset_t *mask);
-int     cpuset_changethread2(struct thread *td, cpuset_t *mask);
 
 #else
 __BEGIN_DECLS
