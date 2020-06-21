@@ -1,4 +1,4 @@
-﻿/*-
+/*-
  * Copyright (c) 2010, David Xu <davidxu@freebsd.org>
  * All rights reserved.
  *
@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD$
+ * $FreeBSD: release/9.0.0/sys/sys/_umtx.h 216641 2010-12-22 05:01:52Z davidxu $
  *
  */
 

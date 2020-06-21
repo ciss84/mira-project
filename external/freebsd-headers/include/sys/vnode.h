@@ -1,431 +1,794 @@
+/*-
+ * Copyright (c) 1989, 1993
+ *	The Regents of the University of California.  All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 4. Neither the name of the University nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ *
+ *	@(#)vnode.h	8.7 (Berkeley) 2/4/94
+ * $FreeBSD: release/9.0.0/sys/sys/vnode.h 225166 2011-08-25 08:17:39Z mm $
+ */
+
+#ifndef _SYS_VNODE_H_
+#define	_SYS_VNODE_H_
+
+#include <sys/bufobj.h>
+#include <sys/queue.h>
+#include <sys/lock.h>
+#include <sys/lockmgr.h>
+#include <sys/mutex.h>
+#include <sys/selinfo.h>
+#include <sys/uio.h>
+#include <sys/acl.h>
+#include <sys/ktr.h>
+
 /*
- * CDDL HEADER START
- *
- * The contents of this file are subject to the terms of the
- * Common Development and Distribution License (the "License").
- * You may not use this file except in compliance with the License.
- *
- * You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
- * or http://www.opensolaris.org/os/licensing.
- * See the License for the specific language governing permissions
- * and limitations under the License.
- *
- * When distributing Covered Code, include this CDDL HEADER in each
- * file and include the License file at usr/src/OPENSOLARIS.LICENSE.
- * If applicable, add the following below this CDDL HEADER, with the
- * fields enclosed by brackets "[]" replaced with your own identifying
- * information: Portions Copyright [yyyy] [name of copyright owner]
- *
- * CDDL HEADER END
+ * The vnode is the focus of all file activity in UNIX.  There is a
+ * unique vnode allocated for each active file, each current directory,
+ * each mounted-on file, text file, and the root.
  */
 
 /*
- * Copyright (c) 1988, 2010, Oracle and/or its affiliates. All rights reserved.
+ * Vnode types.  VNON means no type.
  */
-
-/*	Copyright (c) 1983, 1984, 1985, 1986, 1987, 1988, 1989 AT&T	*/
-/*	  All Rights Reserved  	*/
+enum vtype	{ VNON, VREG, VDIR, VBLK, VCHR, VLNK, VSOCK, VFIFO, VBAD,
+		  VMARKER };
 
 /*
- * University Copyright- Copyright (c) 1982, 1986, 1988
- * The Regents of the University of California
- * All Rights Reserved
- *
- * University Acknowledgment- Portions of this document are derived from
- * software developed by the University of California, Berkeley, and its
- * contributors.
+ * Each underlying filesystem allocates its own private area and hangs
+ * it from v_data.  If non-null, this area is freed in getnewvnode().
  */
 
-#ifndef _SYS_VNODE_H
-#define	_SYS_VNODE_H
-#if defined(__ORBIS__)
-#include <playstation_types.h>
+struct namecache;
+
+struct vpollinfo {
+	struct	mtx vpi_lock;		/* lock to protect below */
+	struct	selinfo vpi_selinfo;	/* identity of poller(s) */
+	short	vpi_events;		/* what they are looking for */
+	short	vpi_revents;		/* what has happened */
+};
+
+/*
+ * Reading or writing any of these items requires holding the appropriate lock.
+ *
+ * Lock reference:
+ *	c - namecache mutex
+ *	f - freelist mutex
+ *	i - interlock
+ *	m - mount point interlock
+ *	p - pollinfo lock
+ *	u - Only a reference to the vnode is needed to read.
+ *	v - vnode lock
+ *
+ * Vnodes may be found on many lists.  The general way to deal with operating
+ * on a vnode that is on a list is:
+ *	1) Lock the list and find the vnode.
+ *	2) Lock interlock so that the vnode does not go away.
+ *	3) Unlock the list to avoid lock order reversals.
+ *	4) vget with LK_INTERLOCK and check for ENOENT, or
+ *	5) Check for DOOMED if the vnode lock is not required.
+ *	6) Perform your operation, then vput().
+ */
+
+#if defined(_KERNEL) || defined(_KVM_VNODE)
+
+struct vnode {
+	/*
+	 * Fields which define the identity of the vnode.  These fields are
+	 * owned by the filesystem (XXX: and vgone() ?)
+	 */
+	enum	vtype v_type;			/* u vnode type */
+	const char *v_tag;			/* u type of underlying data */
+	struct	vop_vector *v_op;		/* u vnode operations vector */
+	void	*v_data;			/* u private data for fs */
+
+	/*
+	 * Filesystem instance stuff
+	 */
+	struct	mount *v_mount;			/* u ptr to vfs we are in */
+	TAILQ_ENTRY(vnode) v_nmntvnodes;	/* m vnodes for mount point */
+
+	/*
+	 * Type specific fields, only one applies to any given vnode.
+	 * See #defines below for renaming to v_* namespace.
+	 */
+	union {
+		struct mount	*vu_mount;	/* v ptr to mountpoint (VDIR) */
+		struct socket	*vu_socket;	/* v unix domain net (VSOCK) */
+		struct cdev	*vu_cdev; 	/* v device (VCHR, VBLK) */
+		struct fifoinfo	*vu_fifoinfo;	/* v fifo (VFIFO) */
+	} v_un;
+
+	/*
+	 * vfs_hash:  (mount + inode) -> vnode hash.
+	 */
+	LIST_ENTRY(vnode)	v_hashlist;
+	u_int			v_hash;
+
+	/*
+	 * VFS_namecache stuff
+	 */
+	LIST_HEAD(, namecache) v_cache_src;	/* c Cache entries from us */
+	TAILQ_HEAD(, namecache) v_cache_dst;	/* c Cache entries to us */
+	struct namecache *v_cache_dd;		/* c Cache entry for .. vnode */
+
+	/*
+	 * clustering stuff
+	 */
+	daddr_t	v_cstart;			/* v start block of cluster */
+	daddr_t	v_lasta;			/* v last allocation  */
+	daddr_t	v_lastw;			/* v last write  */
+	int	v_clen;				/* v length of cur. cluster */
+
+	/*
+	 * Locking
+	 */
+	struct	lock v_lock;			/* u (if fs don't have one) */
+	struct	mtx v_interlock;		/* lock for "i" things */
+	struct	lock *v_vnlock;			/* u pointer to vnode lock */
+	int	v_holdcnt;			/* i prevents recycling. */
+	int	v_usecount;			/* i ref count of users */
+	u_long	v_iflag;			/* i vnode flags (see below) */
+	u_long	v_vflag;			/* v vnode flags */
+	int	v_writecount;			/* v ref count of writers */
+
+	/*
+	 * The machinery of being a vnode
+	 */
+	TAILQ_ENTRY(vnode) v_freelist;		/* f vnode freelist */
+	struct bufobj	v_bufobj;		/* * Buffer cache object */
+
+	/*
+	 * Hooks for various subsystems and features.
+	 */
+	struct vpollinfo *v_pollinfo;		/* i Poll events, p for *v_pi */
+	struct label *v_label;			/* MAC label for vnode */
+	struct lockf *v_lockf;			/* Byte-level lock list */
+};
+
+#endif /* defined(_KERNEL) || defined(_KVM_VNODE) */
+
+#define	v_mountedhere	v_un.vu_mount
+#define	v_socket	v_un.vu_socket
+#define	v_rdev		v_un.vu_cdev
+#define	v_fifoinfo	v_un.vu_fifoinfo
+
+/* XXX: These are temporary to avoid a source sweep at this time */
+#define v_object	v_bufobj.bo_object
+
+/*
+ * Userland version of struct vnode, for sysctl.
+ */
+struct xvnode {
+	size_t	xv_size;			/* sizeof(struct xvnode) */
+	void	*xv_vnode;			/* address of real vnode */
+	u_long	xv_flag;			/* vnode vflags */
+	int	xv_usecount;			/* reference count of users */
+	int	xv_writecount;			/* reference count of writers */
+	int	xv_holdcnt;			/* page & buffer references */
+	u_long	xv_id;				/* capability identifier */
+	void	*xv_mount;			/* address of parent mount */
+	long	xv_numoutput;			/* num of writes in progress */
+	enum	vtype xv_type;			/* vnode type */
+	union {
+		void	*xvu_socket;		/* socket, if VSOCK */
+		void	*xvu_fifo;		/* fifo, if VFIFO */
+		dev_t	xvu_rdev;		/* maj/min, if VBLK/VCHR */
+		struct {
+			dev_t	xvu_dev;	/* device, if VDIR/VREG/VLNK */
+			ino_t	xvu_ino;	/* id, if VDIR/VREG/VLNK */
+		} xv_uns;
+	} xv_un;
+};
+#define xv_socket	xv_un.xvu_socket
+#define xv_fifo		xv_un.xvu_fifo
+#define xv_rdev		xv_un.xvu_rdev
+#define xv_dev		xv_un.xv_uns.xvu_dev
+#define xv_ino		xv_un.xv_uns.xvu_ino
+
+/* We don't need to lock the knlist */
+#define	VN_KNLIST_EMPTY(vp) ((vp)->v_pollinfo == NULL ||	\
+	    KNLIST_EMPTY(&(vp)->v_pollinfo->vpi_selinfo.si_note))
+
+#define VN_KNOTE(vp, b, a)					\
+	do {							\
+		if (!VN_KNLIST_EMPTY(vp))			\
+			KNOTE(&vp->v_pollinfo->vpi_selinfo.si_note, (b), \
+			    (a) | KNF_NOKQLOCK);		\
+	} while (0)
+#define	VN_KNOTE_LOCKED(vp, b)		VN_KNOTE(vp, b, KNF_LISTLOCKED)
+#define	VN_KNOTE_UNLOCKED(vp, b)	VN_KNOTE(vp, b, 0)
+
+/*
+ * Vnode flags.
+ *	VI flags are protected by interlock and live in v_iflag
+ *	VV flags are protected by the vnode lock and live in v_vflag
+ *
+ *	VI_DOOMED is doubly protected by the interlock and vnode lock.  Both
+ *	are required for writing but the status may be checked with either.
+ */
+#define	VI_MOUNT	0x0020	/* Mount in progress */
+#define	VI_AGE		0x0040	/* Insert vnode at head of free list */
+#define	VI_DOOMED	0x0080	/* This vnode is being recycled */
+#define	VI_FREE		0x0100	/* This vnode is on the freelist */
+#define	VI_DOINGINACT	0x0800	/* VOP_INACTIVE is in progress */
+#define	VI_OWEINACT	0x1000	/* Need to call inactive */
+
+#define	VV_ROOT		0x0001	/* root of its filesystem */
+#define	VV_ISTTY	0x0002	/* vnode represents a tty */
+#define	VV_NOSYNC	0x0004	/* unlinked, stop syncing */
+#define	VV_ETERNALDEV	0x0008	/* device that is never destroyed */
+#define	VV_CACHEDLABEL	0x0010	/* Vnode has valid cached MAC label */
+#define	VV_TEXT		0x0020	/* vnode is a pure text prototype */
+#define	VV_COPYONWRITE	0x0040	/* vnode is doing copy-on-write */
+#define	VV_SYSTEM	0x0080	/* vnode being used by kernel */
+#define	VV_PROCDEP	0x0100	/* vnode is process dependent */
+#define	VV_NOKNOTE	0x0200	/* don't activate knotes on this vnode */
+#define	VV_DELETED	0x0400	/* should be removed */
+#define	VV_MD		0x0800	/* vnode backs the md device */
+#define	VV_FORCEINSMQ	0x1000	/* force the insmntque to succeed */
+
+/*
+ * Vnode attributes.  A field value of VNOVAL represents a field whose value
+ * is unavailable (getattr) or which is not to be changed (setattr).
+ */
+struct vattr {
+	enum vtype	va_type;	/* vnode type (for create) */
+	u_short		va_mode;	/* files access mode and type */
+	short		va_nlink;	/* number of references to file */
+	uid_t		va_uid;		/* owner user id */
+	gid_t		va_gid;		/* owner group id */
+	dev_t		va_fsid;	/* filesystem id */
+	long		va_fileid;	/* file id */
+	u_quad_t	va_size;	/* file size in bytes */
+	long		va_blocksize;	/* blocksize preferred for i/o */
+	struct timespec	va_atime;	/* time of last access */
+	struct timespec	va_mtime;	/* time of last modification */
+	struct timespec	va_ctime;	/* time file changed */
+	struct timespec	va_birthtime;	/* time file created */
+	u_long		va_gen;		/* generation number of file */
+	u_long		va_flags;	/* flags defined for file */
+	dev_t		va_rdev;	/* device the special file represents */
+	u_quad_t	va_bytes;	/* bytes of disk space held by file */
+	u_quad_t	va_filerev;	/* file modification number */
+	u_int		va_vaflags;	/* operations flags, see below */
+	long		va_spare;	/* remain quad aligned */
+};
+
+/*
+ * Flags for va_vaflags.
+ */
+#define	VA_UTIMES_NULL	0x01		/* utimes argument was NULL */
+#define	VA_EXCLUSIVE	0x02		/* exclusive create request */
+
+/*
+ * Flags for ioflag. (high 16 bits used to ask for read-ahead and
+ * help with write clustering)
+ * NB: IO_NDELAY and IO_DIRECT are linked to fcntl.h
+ */
+#define	IO_UNIT		0x0001		/* do I/O as atomic unit */
+#define	IO_APPEND	0x0002		/* append write to end */
+#define	IO_NDELAY	0x0004		/* FNDELAY flag set in file table */
+#define	IO_NODELOCKED	0x0008		/* underlying node already locked */
+#define	IO_ASYNC	0x0010		/* bawrite rather then bdwrite */
+#define	IO_VMIO		0x0020		/* data already in VMIO space */
+#define	IO_INVAL	0x0040		/* invalidate after I/O */
+#define	IO_SYNC		0x0080		/* do I/O synchronously */
+#define	IO_DIRECT	0x0100		/* attempt to bypass buffer cache */
+#define	IO_EXT		0x0400		/* operate on external attributes */
+#define	IO_NORMAL	0x0800		/* operate on regular data */
+#define	IO_NOMACCHECK	0x1000		/* MAC checks unnecessary */
+#define	IO_BUFLOCKED	0x2000		/* ffs flag; indir buf is locked */
+
+#define IO_SEQMAX	0x7F		/* seq heuristic max value */
+#define IO_SEQSHIFT	16		/* seq heuristic in upper 16 bits */
+
+/*
+ * Flags for accmode_t.
+ */
+#define	VEXEC			000000000100 /* execute/search permission */
+#define	VWRITE			000000000200 /* write permission */
+#define	VREAD			000000000400 /* read permission */
+#define	VADMIN			000000010000 /* being the file owner */
+#define	VAPPEND			000000040000 /* permission to write/append */
+/*
+ * VEXPLICIT_DENY makes VOP_ACCESSX(9) return EPERM or EACCES only
+ * if permission was denied explicitly, by a "deny" rule in NFSv4 ACL,
+ * and 0 otherwise.  This never happens with ordinary unix access rights
+ * or POSIX.1e ACLs.  Obviously, VEXPLICIT_DENY must be OR-ed with
+ * some other V* constant.
+ */
+#define	VEXPLICIT_DENY		000000100000
+#define	VREAD_NAMED_ATTRS 	000000200000 /* not used */
+#define	VWRITE_NAMED_ATTRS 	000000400000 /* not used */
+#define	VDELETE_CHILD	 	000001000000
+#define	VREAD_ATTRIBUTES 	000002000000 /* permission to stat(2) */
+#define	VWRITE_ATTRIBUTES 	000004000000 /* change {m,c,a}time */
+#define	VDELETE		 	000010000000
+#define	VREAD_ACL	 	000020000000 /* read ACL and file mode */
+#define	VWRITE_ACL	 	000040000000 /* change ACL and/or file mode */
+#define	VWRITE_OWNER	 	000100000000 /* change file owner */
+#define	VSYNCHRONIZE	 	000200000000 /* not used */
+
+/*
+ * Permissions that were traditionally granted only to the file owner.
+ */
+#define VADMIN_PERMS	(VADMIN | VWRITE_ATTRIBUTES | VWRITE_ACL | \
+    VWRITE_OWNER)
+
+/*
+ * Permissions that were traditionally granted to everyone.
+ */
+#define VSTAT_PERMS	(VREAD_ATTRIBUTES | VREAD_ACL)
+
+/*
+ * Permissions that allow to change the state of the file in any way.
+ */
+#define VMODIFY_PERMS	(VWRITE | VAPPEND | VADMIN_PERMS | VDELETE_CHILD | \
+    VDELETE)
+
+/*
+ * Token indicating no attribute value yet assigned.
+ */
+#define	VNOVAL	(-1)
+
+/*
+ * LK_TIMELOCK timeout for vnode locks (used mainly by the pageout daemon)
+ */
+#define VLKTIMEOUT	(hz / 20 + 1)
+
+#ifdef _KERNEL
+
+#ifdef MALLOC_DECLARE
+MALLOC_DECLARE(M_VNODE);
 #endif
 
-#include_next <sys/vnode.h>
-
-#define	IS_DEVVP(vp)	\
-	((vp)->v_type == VCHR || (vp)->v_type == VBLK || (vp)->v_type == VFIFO)
-
-#define	V_XATTRDIR	0x0000	/* attribute unnamed directory */
-
-#define	AV_SCANSTAMP_SZ	32		/* length of anti-virus scanstamp */
-#if !defined(__ORBIS__)
 /*
- * Structure of all optional attributes.
+ * Convert between vnode types and inode formats (since POSIX.1
+ * defines mode word of stat structure in terms of inode formats).
  */
-typedef struct xoptattr {
-	timestruc_t	xoa_createtime;	/* Create time of file */
-	uint8_t		xoa_archive;
-	uint8_t		xoa_system;
-	uint8_t		xoa_readonly;
-	uint8_t		xoa_hidden;
-	uint8_t		xoa_nounlink;
-	uint8_t		xoa_immutable;
-	uint8_t		xoa_appendonly;
-	uint8_t		xoa_nodump;
-	uint8_t		xoa_opaque;
-	uint8_t		xoa_av_quarantined;
-	uint8_t		xoa_av_modified;
-	uint8_t		xoa_av_scanstamp[AV_SCANSTAMP_SZ];
-	uint8_t		xoa_reparse;
-	uint64_t	xoa_generation;
-	uint8_t		xoa_offline;
-	uint8_t		xoa_sparse;
-} xoptattr_t;
+extern enum vtype	iftovt_tab[];
+extern int		vttoif_tab[];
+#define	IFTOVT(mode)	(iftovt_tab[((mode) & S_IFMT) >> 12])
+#define	VTTOIF(indx)	(vttoif_tab[(int)(indx)])
+#define	MAKEIMODE(indx, mode)	(int)(VTTOIF(indx) | (mode))
+
+/*
+ * Flags to various vnode functions.
+ */
+#define	SKIPSYSTEM	0x0001	/* vflush: skip vnodes marked VSYSTEM */
+#define	FORCECLOSE	0x0002	/* vflush: force file closure */
+#define	WRITECLOSE	0x0004	/* vflush: only close writable files */
+#define	DOCLOSE		0x0008	/* vclean: close active files */
+#define	V_SAVE		0x0001	/* vinvalbuf: sync file first */
+#define	V_ALT		0x0002	/* vinvalbuf: invalidate only alternate bufs */
+#define	V_NORMAL	0x0004	/* vinvalbuf: invalidate only regular bufs */
+#define	REVOKEALL	0x0001	/* vop_revoke: revoke all aliases */
+#define	V_WAIT		0x0001	/* vn_start_write: sleep for suspend */
+#define	V_NOWAIT	0x0002	/* vn_start_write: don't sleep for suspend */
+#define	V_XSLEEP	0x0004	/* vn_start_write: just return after sleep */
+
+#define	VREF(vp)	vref(vp)
+
+#ifdef DIAGNOSTIC
+#define	VATTR_NULL(vap)	vattr_null(vap)
+#else
+#define	VATTR_NULL(vap)	(*(vap) = va_null)	/* initialize a vattr */
+#endif /* DIAGNOSTIC */
+
+#define	NULLVP	((struct vnode *)NULL)
+
+/*
+ * Global vnode data.
+ */
+extern	struct vnode *rootvnode;	/* root (i.e. "/") vnode */
+extern	int async_io_version;		/* 0 or POSIX version of AIO i'face */
+extern	int desiredvnodes;		/* number of vnodes desired */
+extern	struct uma_zone *namei_zone;
+extern	struct vattr va_null;		/* predefined null vattr structure */
+
+#define	VI_LOCK(vp)	mtx_lock(&(vp)->v_interlock)
+#define	VI_LOCK_FLAGS(vp, flags) mtx_lock_flags(&(vp)->v_interlock, (flags))
+#define	VI_TRYLOCK(vp)	mtx_trylock(&(vp)->v_interlock)
+#define	VI_UNLOCK(vp)	mtx_unlock(&(vp)->v_interlock)
+#define	VI_MTX(vp)	(&(vp)->v_interlock)
+
+#define	VN_LOCK_AREC(vp)	lockallowrecurse((vp)->v_vnlock)
+#define	VN_LOCK_ASHARE(vp)	lockallowshare((vp)->v_vnlock)
+
+#endif /* _KERNEL */
+
+/*
+ * Mods for extensibility.
+ */
+
+/*
+ * Flags for vdesc_flags:
+ */
+#define	VDESC_MAX_VPS		16
+/* Low order 16 flag bits are reserved for willrele flags for vp arguments. */
+#define	VDESC_VP0_WILLRELE	0x0001
+#define	VDESC_VP1_WILLRELE	0x0002
+#define	VDESC_VP2_WILLRELE	0x0004
+#define	VDESC_VP3_WILLRELE	0x0008
+#define	VDESC_NOMAP_VPP		0x0100
+#define	VDESC_VPP_WILLRELE	0x0200
+
+/*
+ * A generic structure.
+ * This can be used by bypass routines to identify generic arguments.
+ */
+struct vop_generic_args {
+	struct vnodeop_desc *a_desc;
+	/* other random data follows, presumably */
+};
+
+typedef int vop_bypass_t(struct vop_generic_args *);
+
+/*
+ * VDESC_NO_OFFSET is used to identify the end of the offset list
+ * and in places where no such field exists.
+ */
+#define VDESC_NO_OFFSET -1
+
+/*
+ * This structure describes the vnode operation taking place.
+ */
+struct vnodeop_desc {
+	char	*vdesc_name;		/* a readable name for debugging */
+	int	 vdesc_flags;		/* VDESC_* flags */
+	vop_bypass_t	*vdesc_call;	/* Function to call */
+
+	/*
+	 * These ops are used by bypass routines to map and locate arguments.
+	 * Creds and procs are not needed in bypass routines, but sometimes
+	 * they are useful to (for example) transport layers.
+	 * Nameidata is useful because it has a cred in it.
+	 */
+	int	*vdesc_vp_offsets;	/* list ended by VDESC_NO_OFFSET */
+	int	vdesc_vpp_offset;	/* return vpp location */
+	int	vdesc_cred_offset;	/* cred location, if any */
+	int	vdesc_thread_offset;	/* thread location, if any */
+	int	vdesc_componentname_offset; /* if any */
+};
+
+#ifdef _KERNEL
+/*
+ * A list of all the operation descs.
+ */
+extern struct vnodeop_desc *vnodeop_descs[];
+
+#define	VOPARG_OFFSETOF(s_type, field)	__offsetof(s_type, field)
+#define	VOPARG_OFFSETTO(s_type, s_offset, struct_p) \
+    ((s_type)(((char*)(struct_p)) + (s_offset)))
+
+
+#ifdef DEBUG_VFS_LOCKS
+/*
+ * Support code to aid in debugging VFS locking problems.  Not totally
+ * reliable since if the thread sleeps between changing the lock
+ * state and checking it with the assert, some other thread could
+ * change the state.  They are good enough for debugging a single
+ * filesystem using a single-threaded test.
+ */
+void	assert_vi_locked(struct vnode *vp, const char *str);
+void	assert_vi_unlocked(struct vnode *vp, const char *str);
+void	assert_vop_elocked(struct vnode *vp, const char *str);
+#if 0
+void	assert_vop_elocked_other(struct vnode *vp, const char *str);
 #endif
-
-/*
- * The xvattr structure is really a variable length structure that
- * is made up of:
- * - The classic vattr_t (xva_vattr)
- * - a 32 bit quantity (xva_mapsize) that specifies the size of the
- *   attribute bitmaps in 32 bit words.
- * - A pointer to the returned attribute bitmap (needed because the
- *   previous element, the requested attribute bitmap) is variable lenth.
- * - The requested attribute bitmap, which is an array of 32 bit words.
- *   Callers use the XVA_SET_REQ() macro to set the bits corresponding to
- *   the attributes that are being requested.
- * - The returned attribute bitmap, which is an array of 32 bit words.
- *   File systems that support optional attributes use the XVA_SET_RTN()
- *   macro to set the bits corresponding to the attributes that are being
- *   returned.
- * - The xoptattr_t structure which contains the attribute values
- *
- * xva_mapsize determines how many words in the attribute bitmaps.
- * Immediately following the attribute bitmaps is the xoptattr_t.
- * xva_getxoptattr() is used to get the pointer to the xoptattr_t
- * section.
- */
-
-#define	XVA_MAPSIZE	3		/* Size of attr bitmaps */
-#define	XVA_MAGIC	0x78766174	/* Magic # for verification */
-
-/*
- * The xvattr structure is an extensible structure which permits optional
- * attributes to be requested/returned.  File systems may or may not support
- * optional attributes.  They do so at their own discretion but if they do
- * support optional attributes, they must register the VFSFT_XVATTR feature
- * so that the optional attributes can be set/retrived.
- *
- * The fields of the xvattr structure are:
- *
- * xva_vattr - The first element of an xvattr is a legacy vattr structure
- * which includes the common attributes.  If AT_XVATTR is set in the va_mask
- * then the entire structure is treated as an xvattr.  If AT_XVATTR is not
- * set, then only the xva_vattr structure can be used.
- *
- * xva_magic - 0x78766174 (hex for "xvat"). Magic number for verification.
- *
- * xva_mapsize - Size of requested and returned attribute bitmaps.
- *
- * xva_rtnattrmapp - Pointer to xva_rtnattrmap[].  We need this since the
- * size of the array before it, xva_reqattrmap[], could change which means
- * the location of xva_rtnattrmap[] could change.  This will allow unbundled
- * file systems to find the location of xva_rtnattrmap[] when the sizes change.
- *
- * xva_reqattrmap[] - Array of requested attributes.  Attributes are
- * represented by a specific bit in a specific element of the attribute
- * map array.  Callers set the bits corresponding to the attributes
- * that the caller wants to get/set.
- *
- * xva_rtnattrmap[] - Array of attributes that the file system was able to
- * process.  Not all file systems support all optional attributes.  This map
- * informs the caller which attributes the underlying file system was able
- * to set/get.  (Same structure as the requested attributes array in terms
- * of each attribute  corresponding to specific bits and array elements.)
- *
- * xva_xoptattrs - Structure containing values of optional attributes.
- * These values are only valid if the corresponding bits in xva_reqattrmap
- * are set and the underlying file system supports those attributes.
- */
-#if !defined(__ORBIS__)
-typedef struct xvattr {
-	vattr_t		xva_vattr;	/* Embedded vattr structure */
-	uint32_t	xva_magic;	/* Magic Number */
-	uint32_t	xva_mapsize;	/* Size of attr bitmap (32-bit words) */
-	uint32_t	*xva_rtnattrmapp;	/* Ptr to xva_rtnattrmap[] */
-	uint32_t	xva_reqattrmap[XVA_MAPSIZE];	/* Requested attrs */
-	uint32_t	xva_rtnattrmap[XVA_MAPSIZE];	/* Returned attrs */
-	xoptattr_t	xva_xoptattrs;	/* Optional attributes */
-} xvattr_t;
+void	assert_vop_locked(struct vnode *vp, const char *str);
+#if 0
+voi0	assert_vop_slocked(struct vnode *vp, const char *str);
 #endif
+void	assert_vop_unlocked(struct vnode *vp, const char *str);
+
+#define	ASSERT_VI_LOCKED(vp, str)	assert_vi_locked((vp), (str))
+#define	ASSERT_VI_UNLOCKED(vp, str)	assert_vi_unlocked((vp), (str))
+#define	ASSERT_VOP_ELOCKED(vp, str)	assert_vop_elocked((vp), (str))
+#if 0
+#define	ASSERT_VOP_ELOCKED_OTHER(vp, str) assert_vop_locked_other((vp), (str))
+#endif
+#define	ASSERT_VOP_LOCKED(vp, str)	assert_vop_locked((vp), (str))
+#if 0
+#define	ASSERT_VOP_SLOCKED(vp, str)	assert_vop_slocked((vp), (str))
+#endif
+#define	ASSERT_VOP_UNLOCKED(vp, str)	assert_vop_unlocked((vp), (str))
+
+#else /* !DEBUG_VFS_LOCKS */
+
+#define	ASSERT_VI_LOCKED(vp, str)	((void)0)
+#define	ASSERT_VI_UNLOCKED(vp, str)	((void)0)
+#define	ASSERT_VOP_ELOCKED(vp, str)	((void)0)
+#if 0
+#define	ASSERT_VOP_ELOCKED_OTHER(vp, str)
+#endif
+#define	ASSERT_VOP_LOCKED(vp, str)	((void)0)
+#if 0
+#define	ASSERT_VOP_SLOCKED(vp, str)
+#endif
+#define	ASSERT_VOP_UNLOCKED(vp, str)	((void)0)
+#endif /* DEBUG_VFS_LOCKS */
+
 
 /*
- * Attributes of interest to the caller of setattr or getattr.
+ * This call works for vnodes in the kernel.
  */
-#define	AT_TYPE		0x00001
-#define	AT_MODE		0x00002
-#define	AT_UID		0x00004
-#define	AT_GID		0x00008
-#define	AT_FSID		0x00010
-#define	AT_NODEID	0x00020
-#define	AT_NLINK	0x00040
-#define	AT_SIZE		0x00080
-#define	AT_ATIME	0x00100
-#define	AT_MTIME	0x00200
-#define	AT_CTIME	0x00400
-#define	AT_RDEV		0x00800
-#define	AT_BLKSIZE	0x01000
-#define	AT_NBLOCKS	0x02000
-/*			0x04000 */	/* unused */
-#define	AT_SEQ		0x08000
-/*
- * If AT_XVATTR is set then there are additional bits to process in
- * the xvattr_t's attribute bitmap.  If this is not set then the bitmap
- * MUST be ignored.  Note that this bit must be set/cleared explicitly.
- * That is, setting AT_ALL will NOT set AT_XVATTR.
- */
-#define	AT_XVATTR	0x10000
-
-#define	AT_ALL		(AT_TYPE|AT_MODE|AT_UID|AT_GID|AT_FSID|AT_NODEID|\
-			AT_NLINK|AT_SIZE|AT_ATIME|AT_MTIME|AT_CTIME|\
-			AT_RDEV|AT_BLKSIZE|AT_NBLOCKS|AT_SEQ)
-
-#define	AT_STAT		(AT_MODE|AT_UID|AT_GID|AT_FSID|AT_NODEID|AT_NLINK|\
-			AT_SIZE|AT_ATIME|AT_MTIME|AT_CTIME|AT_RDEV|AT_TYPE)
-
-#define	AT_TIMES	(AT_ATIME|AT_MTIME|AT_CTIME)
-
-#define	AT_NOSET	(AT_NLINK|AT_RDEV|AT_FSID|AT_NODEID|AT_TYPE|\
-			AT_BLKSIZE|AT_NBLOCKS|AT_SEQ)
+#define VCALL(c) ((c)->a_desc->vdesc_call(c))
 
 /*
- * Attribute bits used in the extensible attribute's (xva's) attribute
- * bitmaps.  Note that the bitmaps are made up of a variable length number
- * of 32-bit words.  The convention is to use XAT{n}_{attrname} where "n"
- * is the element in the bitmap (starting at 1).  This convention is for
- * the convenience of the maintainer to keep track of which element each
- * attribute belongs to.
- *
- * NOTE THAT CONSUMERS MUST *NOT* USE THE XATn_* DEFINES DIRECTLY.  CONSUMERS
- * MUST USE THE XAT_* DEFINES.
+ * VMIO support inline
  */
-#define	XAT0_INDEX	0LL		/* Index into bitmap for XAT0 attrs */
-#define	XAT0_CREATETIME	0x00000001	/* Create time of file */
-#define	XAT0_ARCHIVE	0x00000002	/* Archive */
-#define	XAT0_SYSTEM	0x00000004	/* System */
-#define	XAT0_READONLY	0x00000008	/* Readonly */
-#define	XAT0_HIDDEN	0x00000010	/* Hidden */
-#define	XAT0_NOUNLINK	0x00000020	/* Nounlink */
-#define	XAT0_IMMUTABLE	0x00000040	/* immutable */
-#define	XAT0_APPENDONLY	0x00000080	/* appendonly */
-#define	XAT0_NODUMP	0x00000100	/* nodump */
-#define	XAT0_OPAQUE	0x00000200	/* opaque */
-#define	XAT0_AV_QUARANTINED	0x00000400	/* anti-virus quarantine */
-#define	XAT0_AV_MODIFIED	0x00000800	/* anti-virus modified */
-#define	XAT0_AV_SCANSTAMP	0x00001000	/* anti-virus scanstamp */
-#define	XAT0_REPARSE	0x00002000	/* FS reparse point */
-#define	XAT0_GEN	0x00004000	/* object generation number */
-#define	XAT0_OFFLINE	0x00008000	/* offline */
-#define	XAT0_SPARSE	0x00010000	/* sparse */
 
-#define	XAT0_ALL_ATTRS	(XAT0_CREATETIME|XAT0_ARCHIVE|XAT0_SYSTEM| \
-    XAT0_READONLY|XAT0_HIDDEN|XAT0_NOUNLINK|XAT0_IMMUTABLE|XAT0_APPENDONLY| \
-    XAT0_NODUMP|XAT0_OPAQUE|XAT0_AV_QUARANTINED|  XAT0_AV_MODIFIED| \
-    XAT0_AV_SCANSTAMP|XAT0_REPARSE|XATO_GEN|XAT0_OFFLINE|XAT0_SPARSE)
+extern int vmiodirenable;
 
-/* Support for XAT_* optional attributes */
-#define	XVA_MASK		0xffffffff	/* Used to mask off 32 bits */
-#define	XVA_SHFT		32		/* Used to shift index */
+static __inline int
+vn_canvmio(struct vnode *vp)
+{
+      if (vp && (vp->v_type == VREG || (vmiodirenable && vp->v_type == VDIR)))
+		return(TRUE);
+	return(FALSE);
+}
 
 /*
- * Used to pry out the index and attribute bits from the XAT_* attributes
- * defined below.  Note that we're masking things down to 32 bits then
- * casting to uint32_t.
+ * Finally, include the default set of vnode operations.
  */
-#define	XVA_INDEX(attr)		((uint32_t)(((attr) >> XVA_SHFT) & XVA_MASK))
-#define	XVA_ATTRBIT(attr)	((uint32_t)((attr) & XVA_MASK))
+#include "vnode_if.h"
 
-/*
- * The following defines present a "flat namespace" so that consumers don't
- * need to keep track of which element belongs to which bitmap entry.
- *
- * NOTE THAT THESE MUST NEVER BE OR-ed TOGETHER
- */
-#define	XAT_CREATETIME		((XAT0_INDEX << XVA_SHFT) | XAT0_CREATETIME)
-#define	XAT_ARCHIVE		((XAT0_INDEX << XVA_SHFT) | XAT0_ARCHIVE)
-#define	XAT_SYSTEM		((XAT0_INDEX << XVA_SHFT) | XAT0_SYSTEM)
-#define	XAT_READONLY		((XAT0_INDEX << XVA_SHFT) | XAT0_READONLY)
-#define	XAT_HIDDEN		((XAT0_INDEX << XVA_SHFT) | XAT0_HIDDEN)
-#define	XAT_NOUNLINK		((XAT0_INDEX << XVA_SHFT) | XAT0_NOUNLINK)
-#define	XAT_IMMUTABLE		((XAT0_INDEX << XVA_SHFT) | XAT0_IMMUTABLE)
-#define	XAT_APPENDONLY		((XAT0_INDEX << XVA_SHFT) | XAT0_APPENDONLY)
-#define	XAT_NODUMP		((XAT0_INDEX << XVA_SHFT) | XAT0_NODUMP)
-#define	XAT_OPAQUE		((XAT0_INDEX << XVA_SHFT) | XAT0_OPAQUE)
-#define	XAT_AV_QUARANTINED	((XAT0_INDEX << XVA_SHFT) | XAT0_AV_QUARANTINED)
-#define	XAT_AV_MODIFIED		((XAT0_INDEX << XVA_SHFT) | XAT0_AV_MODIFIED)
-#define	XAT_AV_SCANSTAMP	((XAT0_INDEX << XVA_SHFT) | XAT0_AV_SCANSTAMP)
-#define	XAT_REPARSE		((XAT0_INDEX << XVA_SHFT) | XAT0_REPARSE)
-#define	XAT_GEN			((XAT0_INDEX << XVA_SHFT) | XAT0_GEN)
-#define	XAT_OFFLINE		((XAT0_INDEX << XVA_SHFT) | XAT0_OFFLINE)
-#define	XAT_SPARSE		((XAT0_INDEX << XVA_SHFT) | XAT0_SPARSE)
-
-/*
- * The returned attribute map array (xva_rtnattrmap[]) is located past the
- * requested attribute map array (xva_reqattrmap[]).  Its location changes
- * when the array sizes change.  We use a separate pointer in a known location
- * (xva_rtnattrmapp) to hold the location of xva_rtnattrmap[].  This is
- * set in xva_init()
- */
-#define	XVA_RTNATTRMAP(xvap)	((xvap)->xva_rtnattrmapp)
-
-/*
- * XVA_SET_REQ() sets an attribute bit in the proper element in the bitmap
- * of requested attributes (xva_reqattrmap[]).
- */
-#define	XVA_SET_REQ(xvap, attr)					\
-	ASSERT((xvap)->xva_vattr.va_mask | AT_XVATTR);		\
-	ASSERT((xvap)->xva_magic == XVA_MAGIC);			\
-	(xvap)->xva_reqattrmap[XVA_INDEX(attr)] |= XVA_ATTRBIT(attr)
-/*
- * XVA_CLR_REQ() clears an attribute bit in the proper element in the bitmap
- * of requested attributes (xva_reqattrmap[]).
- */
-#define	XVA_CLR_REQ(xvap, attr)					\
-	ASSERT((xvap)->xva_vattr.va_mask | AT_XVATTR);		\
-	ASSERT((xvap)->xva_magic == XVA_MAGIC);			\
-	(xvap)->xva_reqattrmap[XVA_INDEX(attr)] &= ~XVA_ATTRBIT(attr)
-
-/*
- * XVA_SET_RTN() sets an attribute bit in the proper element in the bitmap
- * of returned attributes (xva_rtnattrmap[]).
- */
-#define	XVA_SET_RTN(xvap, attr)					\
-	ASSERT((xvap)->xva_vattr.va_mask | AT_XVATTR);		\
-	ASSERT((xvap)->xva_magic == XVA_MAGIC);			\
-	(XVA_RTNATTRMAP(xvap))[XVA_INDEX(attr)] |= XVA_ATTRBIT(attr)
-
-/*
- * XVA_ISSET_REQ() checks the requested attribute bitmap (xva_reqattrmap[])
- * to see of the corresponding attribute bit is set.  If so, returns non-zero.
- */
-#define	XVA_ISSET_REQ(xvap, attr)					\
-	((((xvap)->xva_vattr.va_mask | AT_XVATTR) &&			\
-		((xvap)->xva_magic == XVA_MAGIC) &&			\
-		((xvap)->xva_mapsize > XVA_INDEX(attr))) ?		\
-	((xvap)->xva_reqattrmap[XVA_INDEX(attr)] & XVA_ATTRBIT(attr)) :	0)
-
-/*
- * XVA_ISSET_RTN() checks the returned attribute bitmap (xva_rtnattrmap[])
- * to see of the corresponding attribute bit is set.  If so, returns non-zero.
- */
-#define	XVA_ISSET_RTN(xvap, attr)					\
-	((((xvap)->xva_vattr.va_mask | AT_XVATTR) &&			\
-		((xvap)->xva_magic == XVA_MAGIC) &&			\
-		((xvap)->xva_mapsize > XVA_INDEX(attr))) ?		\
-	((XVA_RTNATTRMAP(xvap))[XVA_INDEX(attr)] & XVA_ATTRBIT(attr)) : 0)
-
-#define	MODEMASK	07777		/* mode bits plus permission bits */
-#define	PERMMASK	00777		/* permission bits */
-
-/*
- * VOP_ACCESS flags
- */
-#define	V_ACE_MASK	0x1	/* mask represents  NFSv4 ACE permissions */
-
-/*
- * Flags for vnode operations.
- */
-enum rm		{ RMFILE, RMDIRECTORY };	/* rm or rmdir (remove) */
-enum create	{ CRCREAT, CRMKNOD, CRMKDIR };	/* reason for create */
-
-/*
- * Structure used on VOP_GETSECATTR and VOP_SETSECATTR operations
- */
-
-typedef struct vsecattr {
-	uint_t		vsa_mask;	/* See below */
-	int		vsa_aclcnt;	/* ACL entry count */
-	void		*vsa_aclentp;	/* pointer to ACL entries */
-	int		vsa_dfaclcnt;	/* default ACL entry count */
-	void		*vsa_dfaclentp;	/* pointer to default ACL entries */
-	size_t		vsa_aclentsz;	/* ACE size in bytes of vsa_aclentp */
-	uint_t		vsa_aclflags;	/* ACE ACL flags */
-} vsecattr_t;
-
-/* vsa_mask values */
-#define	VSA_ACL			0x0001
-#define	VSA_ACLCNT		0x0002
-#define	VSA_DFACL		0x0004
-#define	VSA_DFACLCNT		0x0008
-#define	VSA_ACE			0x0010
-#define	VSA_ACECNT		0x0020
-#define	VSA_ACE_ALLTYPES	0x0040
-#define	VSA_ACE_ACLFLAGS	0x0080	/* get/set ACE ACL flags */
-
-/*
- * Structure used by various vnode operations to determine
- * the context (pid, host, identity) of a caller.
- *
- * The cc_caller_id is used to identify one or more callers who invoke
- * operations, possibly on behalf of others.  For example, the NFS
- * server could have it's own cc_caller_id which can be detected by
- * vnode/vfs operations or (FEM) monitors on those operations.  New
- * caller IDs are generated by fs_new_caller_id().
- */
-typedef struct caller_context {
-	pid_t		cc_pid;		/* Process ID of the caller */
-	int		cc_sysid;	/* System ID, used for remote calls */
-	u_longlong_t	cc_caller_id;	/* Identifier for (set of) caller(s) */
-	ulong_t		cc_flags;
-} caller_context_t;
-
-struct taskq;
-
-/*
- * Flags for VOP_LOOKUP
- *
- * Defined in file.h, but also possible, FIGNORECASE and FSEARCH
- *
- */
-#define	LOOKUP_DIR		0x01	/* want parent dir vp */
-#define	LOOKUP_XATTR		0x02	/* lookup up extended attr dir */
-#define	CREATE_XATTR_DIR	0x04	/* Create extended attr dir */
-#define	LOOKUP_HAVE_SYSATTR_DIR	0x08	/* Already created virtual GFS dir */
-
-/*
- * Flags for VOP_READDIR
- */
-#define	V_RDDIR_ENTFLAGS	0x01	/* request dirent flags */
-#define	V_RDDIR_ACCFILTER	0x02	/* filter out inaccessible dirents */
+/* vn_open_flags */
+#define	VN_OPEN_NOAUDIT		0x00000001
 
 /*
  * Public vnode manipulation functions.
  */
-#ifdef	_KERNEL
+struct componentname;
+struct file;
+struct mount;
+struct nameidata;
+struct ostat;
+struct thread;
+struct proc;
+struct stat;
+struct nstat;
+struct ucred;
+struct uio;
+struct vattr;
+struct vnode;
 
-void	vn_rele_async(struct vnode *vp, struct taskq *taskq);
+/* cache_* may belong in namei.h. */
+void	cache_enter(struct vnode *dvp, struct vnode *vp,
+	    struct componentname *cnp);
+int	cache_lookup(struct vnode *dvp, struct vnode **vpp,
+	    struct componentname *cnp);
+void	cache_purge(struct vnode *vp);
+void	cache_purge_negative(struct vnode *vp);
+void	cache_purgevfs(struct mount *mp);
+int	change_dir(struct vnode *vp, struct thread *td);
+int	change_root(struct vnode *vp, struct thread *td);
+void	cvtstat(struct stat *st, struct ostat *ost);
+void	cvtnstat(struct stat *sb, struct nstat *nsb);
+int	getnewvnode(const char *tag, struct mount *mp, struct vop_vector *vops,
+	    struct vnode **vpp);
+int	insmntque1(struct vnode *vp, struct mount *mp,
+	    void (*dtr)(struct vnode *, void *), void *dtr_arg);
+int	insmntque(struct vnode *vp, struct mount *mp);
+u_quad_t init_va_filerev(void);
+int	speedup_syncer(void);
+int	vn_vptocnp(struct vnode **vp, struct ucred *cred, char *buf,
+	    u_int *buflen);
+#define textvp_fullpath(p, rb, rfb) \
+	vn_fullpath(FIRST_THREAD_IN_PROC(p), (p)->p_textvp, rb, rfb)
+int	vn_fullpath(struct thread *td, struct vnode *vn,
+	    char **retbuf, char **freebuf);
+int	vn_fullpath_global(struct thread *td, struct vnode *vn,
+	    char **retbuf, char **freebuf);
+int	vn_commname(struct vnode *vn, char *buf, u_int buflen);
+int	vaccess(enum vtype type, mode_t file_mode, uid_t file_uid,
+	    gid_t file_gid, accmode_t accmode, struct ucred *cred,
+	    int *privused);
+int	vaccess_acl_nfs4(enum vtype type, uid_t file_uid, gid_t file_gid,
+	    struct acl *aclp, accmode_t accmode, struct ucred *cred,
+	    int *privused);
+int	vaccess_acl_posix1e(enum vtype type, uid_t file_uid,
+	    gid_t file_gid, struct acl *acl, accmode_t accmode,
+	    struct ucred *cred, int *privused);
+void	vattr_null(struct vattr *vap);
+int	vcount(struct vnode *vp);
+void	vdrop(struct vnode *);
+void	vdropl(struct vnode *);
+void	vdestroy(struct vnode *);
+int	vflush(struct mount *mp, int rootrefs, int flags, struct thread *td);
+int	vget(struct vnode *vp, int lockflag, struct thread *td);
+void	vgone(struct vnode *vp);
+void	vhold(struct vnode *);
+void	vholdl(struct vnode *);
+int	vinvalbuf(struct vnode *vp, int save, int slpflag, int slptimeo);
+int	vtruncbuf(struct vnode *vp, struct ucred *cred, struct thread *td,
+	    off_t length, int blksize);
+void	vunref(struct vnode *);
+void	vn_printf(struct vnode *vp, const char *fmt, ...) __printflike(2,3);
+#define vprint(label, vp) vn_printf((vp), "%s\n", (label))
+int	vrecycle(struct vnode *vp, struct thread *td);
+int	vn_close(struct vnode *vp,
+	    int flags, struct ucred *file_cred, struct thread *td);
+void	vn_finished_write(struct mount *mp);
+void	vn_finished_secondary_write(struct mount *mp);
+int	vn_isdisk(struct vnode *vp, int *errp);
+int	_vn_lock(struct vnode *vp, int flags, char *file, int line);
+#define vn_lock(vp, flags) _vn_lock(vp, flags, __FILE__, __LINE__)
+int	vn_open(struct nameidata *ndp, int *flagp, int cmode, struct file *fp);
+int	vn_open_cred(struct nameidata *ndp, int *flagp, int cmode,
+	    u_int vn_open_flags, struct ucred *cred, struct file *fp);
+void	vn_pages_remove(struct vnode *vp, vm_pindex_t start, vm_pindex_t end);
+int	vn_pollrecord(struct vnode *vp, struct thread *p, int events);
+int	vn_rdwr(enum uio_rw rw, struct vnode *vp, void *base,
+	    int len, off_t offset, enum uio_seg segflg, int ioflg,
+	    struct ucred *active_cred, struct ucred *file_cred, int *aresid,
+	    struct thread *td);
+int	vn_rdwr_inchunks(enum uio_rw rw, struct vnode *vp, void *base,
+	    size_t len, off_t offset, enum uio_seg segflg, int ioflg,
+	    struct ucred *active_cred, struct ucred *file_cred, size_t *aresid,
+	    struct thread *td);
+int	vn_rlimit_fsize(const struct vnode *vn, const struct uio *uio,
+	    const struct thread *td);
+int	vn_stat(struct vnode *vp, struct stat *sb, struct ucred *active_cred,
+	    struct ucred *file_cred, struct thread *td);
+int	vn_start_write(struct vnode *vp, struct mount **mpp, int flags);
+int	vn_start_secondary_write(struct vnode *vp, struct mount **mpp,
+	    int flags);
+int	vn_writechk(struct vnode *vp);
+int	vn_extattr_get(struct vnode *vp, int ioflg, int attrnamespace,
+	    const char *attrname, int *buflen, char *buf, struct thread *td);
+int	vn_extattr_set(struct vnode *vp, int ioflg, int attrnamespace,
+	    const char *attrname, int buflen, char *buf, struct thread *td);
+int	vn_extattr_rm(struct vnode *vp, int ioflg, int attrnamespace,
+	    const char *attrname, struct thread *td);
+int	vn_vget_ino(struct vnode *vp, ino_t ino, int lkflags,
+	    struct vnode **rvp);
 
-#if !defined(__ORBIS__)
-/*
- * Extensible vnode attribute (xva) routines:
- * xva_init() initializes an xvattr_t (zero struct, init mapsize, set AT_XATTR)
- * xva_getxoptattr() returns a ponter to the xoptattr_t section of xvattr_t
- */
-void		xva_init(xvattr_t *);
-xoptattr_t	*xva_getxoptattr(xvattr_t *);	/* Get ptr to xoptattr_t */
-#endif
 
-#define	VN_RELE_ASYNC(vp, taskq)	{ \
-	vn_rele_async(vp, taskq); \
-}
+int	vfs_cache_lookup(struct vop_lookup_args *ap);
+void	vfs_timestamp(struct timespec *);
+void	vfs_write_resume(struct mount *mp);
+int	vfs_write_suspend(struct mount *mp);
+int	vop_stdbmap(struct vop_bmap_args *);
+int	vop_stdfsync(struct vop_fsync_args *);
+int	vop_stdgetwritemount(struct vop_getwritemount_args *);
+int	vop_stdgetpages(struct vop_getpages_args *);
+int	vop_stdinactive(struct vop_inactive_args *);
+int	vop_stdislocked(struct vop_islocked_args *);
+int	vop_stdkqfilter(struct vop_kqfilter_args *);
+int	vop_stdlock(struct vop_lock1_args *);
+int	vop_stdputpages(struct vop_putpages_args *);
+int	vop_stdunlock(struct vop_unlock_args *);
+int	vop_nopoll(struct vop_poll_args *);
+int	vop_stdaccess(struct vop_access_args *ap);
+int	vop_stdaccessx(struct vop_accessx_args *ap);
+int	vop_stdadvlock(struct vop_advlock_args *ap);
+int	vop_stdadvlockasync(struct vop_advlockasync_args *ap);
+int	vop_stdadvlockpurge(struct vop_advlockpurge_args *ap);
+int	vop_stdallocate(struct vop_allocate_args *ap);
+int	vop_stdpathconf(struct vop_pathconf_args *);
+int	vop_stdpoll(struct vop_poll_args *);
+int	vop_stdvptocnp(struct vop_vptocnp_args *ap);
+int	vop_stdvptofh(struct vop_vptofh_args *ap);
+int	vop_eopnotsupp(struct vop_generic_args *ap);
+int	vop_ebadf(struct vop_generic_args *ap);
+int	vop_einval(struct vop_generic_args *ap);
+int	vop_enoent(struct vop_generic_args *ap);
+int	vop_enotty(struct vop_generic_args *ap);
+int	vop_null(struct vop_generic_args *ap);
+int	vop_panic(struct vop_generic_args *ap);
 
-#endif	/* _KERNEL */
+/* These are called from within the actual VOPS. */
+void	vop_create_post(void *a, int rc);
+void	vop_link_post(void *a, int rc);
+void	vop_lock_pre(void *a);
+void	vop_lock_post(void *a, int rc);
+void	vop_lookup_post(void *a, int rc);
+void	vop_lookup_pre(void *a);
+void	vop_mkdir_post(void *a, int rc);
+void	vop_mknod_post(void *a, int rc);
+void	vop_remove_post(void *a, int rc);
+void	vop_rename_post(void *a, int rc);
+void	vop_rename_pre(void *a);
+void	vop_rmdir_post(void *a, int rc);
+void	vop_setattr_post(void *a, int rc);
+void	vop_strategy_pre(void *a);
+void	vop_symlink_post(void *a, int rc);
+void	vop_unlock_post(void *a, int rc);
+void	vop_unlock_pre(void *a);
 
-/*
- * Flags to VOP_SETATTR/VOP_GETATTR.
- */
-#define	ATTR_UTIME	0x01	/* non-default utime(2) request */
-#define	ATTR_EXEC	0x02	/* invocation from exec(2) */
-#define	ATTR_COMM	0x04	/* yield common vp attributes */
-#define	ATTR_HINT	0x08	/* information returned will be `hint' */
-#define	ATTR_REAL	0x10	/* yield attributes of the real vp */
-#define	ATTR_NOACLCHECK	0x20	/* Don't check ACL when checking permissions */
-#define	ATTR_TRIGGER	0x40	/* Mount first if vnode is a trigger mount */
+void	vop_rename_fail(struct vop_rename_args *ap);
 
-#ifdef	__cplusplus
-}
-#endif
+#define	VOP_WRITE_PRE(ap)						\
+	struct vattr va;						\
+	int error, osize, ooffset, noffset;				\
+									\
+	osize = ooffset = noffset = 0;					\
+	if (!VN_KNLIST_EMPTY((ap)->a_vp)) {				\
+		error = VOP_GETATTR((ap)->a_vp, &va, (ap)->a_cred);	\
+		if (error)						\
+			return (error);					\
+		ooffset = (ap)->a_uio->uio_offset;			\
+		osize = va.va_size;					\
+	}
 
-#endif	/* _SYS_VNODE_H */
+#define VOP_WRITE_POST(ap, ret)						\
+	noffset = (ap)->a_uio->uio_offset;				\
+	if (noffset > ooffset && !VN_KNLIST_EMPTY((ap)->a_vp)) {	\
+		VFS_KNOTE_LOCKED((ap)->a_vp, NOTE_WRITE			\
+		    | (noffset > osize ? NOTE_EXTEND : 0));		\
+	}
+
+#define VOP_LOCK(vp, flags) VOP_LOCK1(vp, flags, __FILE__, __LINE__)
+
+
+void	vput(struct vnode *vp);
+void	vrele(struct vnode *vp);
+void	vref(struct vnode *vp);
+int	vrefcnt(struct vnode *vp);
+void 	v_addpollinfo(struct vnode *vp);
+
+int vnode_create_vobject(struct vnode *vp, off_t size, struct thread *td);
+void vnode_destroy_vobject(struct vnode *vp);
+
+extern struct vop_vector fifo_specops;
+extern struct vop_vector dead_vnodeops;
+extern struct vop_vector default_vnodeops;
+
+#define VOP_PANIC	((void*)(uintptr_t)vop_panic)
+#define VOP_NULL	((void*)(uintptr_t)vop_null)
+#define VOP_EBADF	((void*)(uintptr_t)vop_ebadf)
+#define VOP_ENOTTY	((void*)(uintptr_t)vop_enotty)
+#define VOP_EINVAL	((void*)(uintptr_t)vop_einval)
+#define VOP_ENOENT	((void*)(uintptr_t)vop_enoent)
+#define VOP_EOPNOTSUPP	((void*)(uintptr_t)vop_eopnotsupp)
+
+/* vfs_hash.c */
+typedef int vfs_hash_cmp_t(struct vnode *vp, void *arg);
+
+int vfs_hash_get(const struct mount *mp, u_int hash, int flags, struct thread *td, struct vnode **vpp, vfs_hash_cmp_t *fn, void *arg);
+int vfs_hash_insert(struct vnode *vp, u_int hash, int flags, struct thread *td, struct vnode **vpp, vfs_hash_cmp_t *fn, void *arg);
+void vfs_hash_rehash(struct vnode *vp, u_int hash);
+void vfs_hash_remove(struct vnode *vp);
+
+int vfs_kqfilter(struct vop_kqfilter_args *);
+void vfs_mark_atime(struct vnode *vp, struct ucred *cred);
+struct dirent;
+int vfs_read_dirent(struct vop_readdir_args *ap, struct dirent *dp, off_t off);
+
+int vfs_unixify_accmode(accmode_t *accmode);
+
+int setfmode(struct thread *td, struct ucred *cred, struct vnode *vp, int mode);
+int setfown(struct thread *td, struct ucred *cred, struct vnode *vp, uid_t uid,
+    gid_t gid);
+int vn_chmod(struct file *fp, mode_t mode, struct ucred *active_cred,
+    struct thread *td);
+int vn_chown(struct file *fp, uid_t uid, gid_t gid, struct ucred *active_cred,
+    struct thread *td);
+
+#endif /* _KERNEL */
+
+#endif /* !_SYS_VNODE_H_ */

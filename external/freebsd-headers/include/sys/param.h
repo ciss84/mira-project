@@ -1,4 +1,4 @@
-﻿/*-
+/*-
  * Copyright (c) 1982, 1986, 1989, 1993
  *	The Regents of the University of California.  All rights reserved.
  * (c) UNIX System Laboratories, Inc.
@@ -32,7 +32,7 @@
  * SUCH DAMAGE.
  *
  *	@(#)param.h	8.3 (Berkeley) 4/4/95
- * $FreeBSD$
+ * $FreeBSD: release/9.0.0/sys/sys/param.h 226199 2011-10-10 12:07:04Z kib $
  */
 
 #ifndef _SYS_PARAM_H_
@@ -88,8 +88,6 @@
 #define	NOGROUP		65535		/* marker for empty group set member */
 #define MAXHOSTNAMELEN	256		/* max hostname size */
 #define SPECNAMELEN	63		/* max length of devicename */
-#define MAXOBJLEN       31              /* max lenght of named objects, thread */
-					/* and sync objects */
 
 /* More types and definitions used throughout the kernel. */
 #ifdef _KERNEL
@@ -194,17 +192,17 @@
 	((off_t)(db) << DEV_BSHIFT)
 #endif
 
-#define	PRIMASK	0x0fff
-#define	PCATCH	0x1000		/* OR'd with pri for tsleep to check signals */
-#define	PDROP	0x2000	/* OR'd with pri to stop re-entry of interlock mutex */
-#define	PBDRY	0x4000	/* for PCATCH stop is done on the user boundary */
+#define	PRIMASK	0x0ff
+#define	PCATCH	0x100		/* OR'd with pri for tsleep to check signals */
+#define	PDROP	0x200	/* OR'd with pri to stop re-entry of interlock mutex */
+#define	PBDRY	0x400	/* for PCATCH stop is done on the user boundary */
 
 #define	NZERO	0		/* default "nice" */
 
 #define	NBBY	8		/* number of bits in a byte */
 #define	NBPW	sizeof(int)	/* number of bytes per word (integer) */
 
-#define	CMASK	000		/* default file mask for Orbis */
+#define	CMASK	022		/* default file mask: S_IWGRP|S_IWOTH */
 
 #define	NODEV	(dev_t)(-1)	/* non-existent device */
 
@@ -232,7 +230,7 @@
  *		normal UFS filesystem.
  */
 #define MAXBSIZE	65536	/* must be power of 2 */
-#define BKVASIZE	(MAXBSIZE)	/* must be power of 2 */
+#define BKVASIZE	16384	/* must be power of 2 */
 #define BKVAMASK	(BKVASIZE-1)
 
 /*
@@ -259,11 +257,10 @@
 #ifndef howmany
 #define	howmany(x, y)	(((x)+((y)-1))/(y))
 #endif
-#define	rounddown(x, y)	 (((x)/(y))*(y))
-#define rounddown2(x, y) ((x)&(~((y)-1)))
-#define	roundup(x, y)	 ((((x)+((y)-1))/(y))*(y))  /* to any y */
-#define	roundup2(x, y)	 (((x)+((y)-1))&(~((y)-1))) /* if y is powers of two */
-#define powerof2(x)	 ((((x)-1)&(x))==0)
+#define	rounddown(x, y)	(((x)/(y))*(y))
+#define	roundup(x, y)	((((x)+((y)-1))/(y))*(y))  /* to any y */
+#define	roundup2(x, y)	(((x)+((y)-1))&(~((y)-1))) /* if y is powers of two */
+#define powerof2(x)	((((x)-1)&(x))==0)
 
 /* Macros for min/max. */
 #define	MIN(a,b) (((a)<(b))?(a):(b))

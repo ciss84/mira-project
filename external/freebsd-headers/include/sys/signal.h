@@ -1,8 +1,3 @@
-﻿/* SIE CONFIDENTIAL
- * PlayStation(R)4 Programmer Tool Runtime Library Release 05.508.001
- * Copyright (C) 2015 Sony Interactive Entertainment Inc.
- * All Rights Reserved.
- */
 /*-
  * Copyright (c) 1982, 1986, 1989, 1991, 1993
  *	The Regents of the University of California.  All rights reserved.
@@ -37,7 +32,7 @@
  * SUCH DAMAGE.
  *
  *	@(#)signal.h	8.4 (Berkeley) 5/4/95
- * $FreeBSD$
+ * $FreeBSD: release/9.0.0/sys/sys/signal.h 215183 2010-11-12 15:30:49Z jilles $
  */
 
 #ifndef _SYS_SIGNAL_H_
@@ -46,7 +41,7 @@
 #include <sys/cdefs.h>
 #include <sys/_types.h>
 #include <sys/_sigset.h>
-#include <sys/_types/_sigset_t.h>
+
 #include <machine/_limits.h>	/* __MINSIGSTKSZ */
 #include <machine/signal.h>	/* sig_atomic_t; trap codes; sigcontext */
 
@@ -117,7 +112,7 @@
 #define	SIGTHR		32	/* reserved by thread library. */
 #define	SIGLWP		SIGTHR
 #endif
-#define	SIGINVL2MB	33	/* 2MB page is enabled against old binary */
+
 #define	SIGRTMIN	65
 #define	SIGRTMAX	126
 
@@ -144,6 +139,13 @@
  * A bit in sa_flags could be used to specify the number of args.
  */
 typedef	void __sighandler_t(int);
+
+#if __POSIX_VISIBLE || __XSI_VISIBLE
+#ifndef _SIGSET_T_DECLARED
+#define	_SIGSET_T_DECLARED
+typedef	__sigset_t	sigset_t;
+#endif
+#endif
 
 #if __POSIX_VISIBLE >= 199309 || __XSI_VISIBLE >= 500
 union sigval {
