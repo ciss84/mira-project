@@ -90,11 +90,7 @@ void	 (*free)(void *);
 char	*getenv(const char *);
 long	 labs(long) __pure2;
 ldiv_t	 ldiv(long, long) __pure2;
-<<<<<<< HEAD
 void	*(*malloc)(size_t) __malloc_like;
-=======
-void	*malloc(size_t) __malloc_like;
->>>>>>> e59ae9ab549139ee11ea3b7113316063deecab24
 int	 mblen(const char *, size_t);
 size_t	 mbstowcs(wchar_t * __restrict , const char * __restrict, size_t);
 int	 mbtowc(wchar_t * __restrict, const char * __restrict, size_t);
