@@ -135,6 +135,25 @@ bool Debugger2::OnResume()
 {
     return OnLoad();
 }
+bool Debugger2::SingleStep()
+{
+	return true;
+}
+
+bool Debugger2::UpdateRegisters()
+{
+	return true;
+}
+
+bool Debugger2::UpdateWatches()
+{
+	return true;
+}
+
+bool Debugger2::UpdateBreakpoints()
+{
+	return true;
+}
 
 bool Debugger2::ReadProcessMemory(uint64_t p_Address, uint32_t p_Size, uint8_t*& p_OutputBuffer)
 {

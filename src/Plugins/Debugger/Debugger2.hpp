@@ -32,7 +32,7 @@ extern "C"
 
     #include <vm/vm.h>
 	#include <vm/pmap.h>
-
+    #include <netinet/in.h>
     #include <machine/reg.h>
     #include <machine/param.h>
     #include <machine/frame.h>
@@ -47,17 +47,14 @@ namespace Mira
 {
     namespace Plugins
     {
-        /**
-         * @brief Debugger Plugin
-         * 
-         * This thing memory leaks like a mf
-         * go back and fix it at a later date, maybe tomorow?
-         */
         class Debugger2 : public Utils::IModule
         {
         private:
             enum
             {
+                Debugger_MaxTaintedThreads = 20,
+                Debugger_MaxPath = 260,
+                MAX_TRAP_MSG = 33,
                 GdbDefaultPort = 9997
             };
 
@@ -88,7 +85,7 @@ namespace Mira
             } Commands;
 
             Utils::Hook* m_TrapFatalHook;
-
+            
             // Remote GDB extension
             // https://www.embecosm.com/appnotes/ean4/embecosm-howto-rsp-server-ean4-issue-2.html
             struct sockaddr m_ServerAddress;
@@ -116,11 +113,28 @@ namespace Mira
             virtual bool OnUnload() override;
             virtual bool OnSuspend() override;
             virtual bool OnResume() override;
+            
+            bool LaunchApplication(const char* p_Path);
 
+        private:
+
+            bool Attach(int32_t p_ProcessId, int32_t* p_Status = nullptr);
+            bool Detach(bool p_Force = false, int32_t* p_Status = nullptr);
+            uint32_t ReadData(uint64_t p_Address, uint8_t* p_OutData, uint32_t p_Size);
+            uint32_t WriteData(uint64_t p_Address, uint8_t* p_Data, uint32_t p_Size);
+
+            bool SingleStep();
+
+            bool UpdateRegisters();
+            bool UpdateWatches();
+            bool UpdateBreakpoints();
+
+            bool UpdateAll();
+                       
         protected:
             static void OnTrapFatal(struct trapframe* p_Frame, vm_offset_t p_Eva);
             static bool IsStackSpace(void* p_Address);
-
+            
              /**
              * @brief Replaces an exception handler function in the IDT (interrupt descriptor table) for the specified exception number
              * 
@@ -331,24 +345,7 @@ namespace Mira
              * @return true on success
              * @return false if already attached, or failure
              */
-            bool Attach(int32_t p_ProcessId, int32_t* p_Status = nullptr);
 
-            /**
-             * @brief Detaches from the process, this does not clear bp and wp's
-             * 
-             * @param p_Force force debugger detach uncleanly (may leave proc/console in unstable state)
-             * @param p_Status optional status output
-             * @return true Successful detach
-             * @return false Not attached, or failure
-             */
-            bool Detach(bool p_Force = false, int32_t* p_Status = nullptr);
-
-            /**
-             * @brief Single steps the process
-             * 
-             * @return true Success
-             * @return false Error
-             */
             bool Step();
 
             /**
