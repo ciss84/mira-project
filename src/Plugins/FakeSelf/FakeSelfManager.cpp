@@ -403,11 +403,10 @@ int FakeSelfManager::SceSblAuthMgrGetSelfAuthInfoFake(SelfContext* p_Context, Se
 
 int FakeSelfManager::SceSblAuthMgrSmLoadSelfBlock_Mailbox(uint32_t p_ServiceId, void* p_Request, void* p_Response)
 {
-    auto sceSblServiceMailbox = (int(*)(uint32_t p_ServiceId, void* p_Request, void* p_Response))kdlsym(sceSblServiceMailbox);
-
-#if MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_455	
+    auto sceSblServiceMailbox = (int(*)(uint32_t p_ServiceId, void* p_Request, void* p_Response))kdlsym(sceSblServiceMailbox);   
+#if MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_405 || MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_455 || MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_474
 	register SelfContext* s_Context = nullptr ("r14");
-#elif MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_501 || MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_505 || MIRA_PLATFORM >= MIRA_PLATFORM_ORBIS_BSD_620
+#elif MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_501 || MIRA_PLATFORM >= MIRA_PLATFORM_ORBIS_BSD_503 || MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_505 || MIRA_PLATFORM >= MIRA_PLATFORM_ORBIS_BSD_620 || MIRA_PLATFORM >= MIRA_PLATFORM_ORBIS_BSD_650
 	uint8_t* frame = (uint8_t*)__builtin_frame_address(1);
 	SelfContext* s_Context = *(SelfContext**)(frame - 0x1C8);
 #elif MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_555
@@ -478,16 +477,16 @@ int FakeSelfManager::SceSblAuthMgrSmLoadSelfBlock_Mailbox(uint32_t p_ServiceId, 
 
 int FakeSelfManager::SceSblAuthMgrSmLoadSelfSegment_Mailbox(uint32_t p_ServiceId, void* p_Request, void* p_Response)
 {
-    auto sceSblServiceMailbox = (int(*)(uint32_t p_ServiceId, void* p_Request, void* p_Response))kdlsym(sceSblServiceMailbox);
-#if MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_455	
+    auto sceSblServiceMailbox = (int(*)(uint32_t p_ServiceId, void* p_Request, void* p_Response))kdlsym(sceSblServiceMailbox);   
+#if MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_455 || MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_474
 	uint8_t* frame = (uint8_t*)__builtin_frame_address(1);
 	SelfContext* s_Context = *(SelfContext**)(frame - 0x100);
-#elif MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_501 || MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_505
+#elif MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_501 || MIRA_PLATFORM >= MIRA_PLATFORM_ORBIS_BSD_503 || MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_505
   uint8_t* frame = (uint8_t*)__builtin_frame_address(1);
 	SelfContext* s_Context = *(SelfContext**)(frame - 0x100);
-#elif MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_555 || MIRA_PLATFORM >= MIRA_PLATFORM_ORBIS_BSD_620
-    uint8_t* frame = (uint8_t*)__builtin_frame_address(1);
-    SelfContext* s_Context = *(SelfContext**)(frame - 0x100);
+#elif MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_555 || MIRA_PLATFORM >= MIRA_PLATFORM_ORBIS_BSD_620 || MIRA_PLATFORM >= MIRA_PLATFORM_ORBIS_BSD_650
+   uint8_t* frame = (uint8_t*)__builtin_frame_address(1);
+   SelfContext* s_Context = *(SelfContext**)(frame - 0x100);
 #endif
 
     auto s_RequestMessage = static_cast<MailboxMessage*>(p_Request);

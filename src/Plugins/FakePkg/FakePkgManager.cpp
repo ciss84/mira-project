@@ -371,40 +371,6 @@ bool FakePkgManager::ShellCorePatch()
         return false;
     }
 
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_CreateUserForIDU_patch), sizeof(xor__edx_eax), xor__edx_eax, nullptr, true);
-    if (s_Ret < 0)
-      {
-        WriteLog(LL_Error, "ssc_CreateUserForIDU_patch");
-        return false;
-    }   
-    
-#if MIRA_PLATFORM==MIRA_PLATFORM_ORBIS_BSD_505    
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_remote_play_menu_patch), 5, (void*) "\xE9\x82\x02\x00\x00", nullptr, true);
-    if (s_Ret < 0)
-      {
-        WriteLog(LL_Error, "ssc_remote_play_menu_patch");
-        return false;
-    }
-#endif
-
-#if MIRA_PLATFORM==MIRA_PLATFORM_ORBIS_BSD_505 
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_SceRemotePlay_patch1), 1, (void*) "\x01", nullptr, true);
-    if (s_Ret < 0)
-      {
-        WriteLog(LL_Error, "ssc_SceRemotePlay_patch1");
-        return false;
-    }
-#endif
-
-#if MIRA_PLATFORM==MIRA_PLATFORM_ORBIS_BSD_505 
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_SceRemotePlay_patch2), 2, (void*) "\xEB\x1E", nullptr, true);
-    if (s_Ret < 0)
-      {
-        WriteLog(LL_Error, "ssc_SceRemotePlay_patch2");
-        return false;
-    }
-#endif
-
 #if MIRA_PLATFORM==MIRA_PLATFORM_ORBIS_BSD_505 
     s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + kdlsym_addr_sceRegMgrGetInt), 1, (void*)  "\1", nullptr, true);
     if (s_Ret < 0)

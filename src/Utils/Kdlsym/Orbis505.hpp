@@ -235,6 +235,9 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 // SceShellCore patches - use free prefix instead fake
 #define ssc_fake_to_free_patch                              0x00EA96A7
 
+// SceShellCore patches - enable VR without spoof
+#define ssc_enable_vr                                       0x00C791A0
+
 // flatz allow sys_dynlib_dlsym in all processes
 #define kdlsym_addr_sys_dynlib_dlsym_patch                  0x00237F3A
 
@@ -250,13 +253,13 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define ssc_Patch_debug_settingC                            0x01CD06AA
 #define ssc_Patch_debug_settingD                            0x01CD06C8
 
-// SceShellUI patches - remote play patches
-#define ssc_CreateUserForIDU_patch                          0x001A8FA0
-#define ssc_remote_play_menu_patch                          0x00EE638E
+// SceShellUI - remote play related patching
+#define ssu_CreateUserForIDU_patch                          0x001A8FA0
+#define ssu_remote_play_menu_patch                          0x00EE638E
 
-// SceRemotePlay patches - remote play patches
-#define ssc_SceRemotePlay_patch1                            0x0003C33F
-#define ssc_SceRemotePlay_patch2                            0x0003C35A 
+// SceRemotePlay - enabler patches
+#define srp_enabler_patch1                                  0x0003C33F
+#define srp_enabler_patch2                                  0x0003C35A
 
 // disable screenshot block
 #define ssc_disable_screenshot_patch                        0x000CB8C6
