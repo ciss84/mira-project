@@ -89,7 +89,7 @@ namespace Mira
             //static int _SceSblAuthMgrSmLoadSelfBlock(SelfContext* p_Context, uint32_t p_SegmentIndex, uint32_t p_BlockIndex, uint8_t* p_Data, size_t p_Size, int(*p_ReadCallback)(uint64_t /*p_Offset*/, uint8_t* /*p_Data*/, size_t /*p_Size*/), void* p_CallbackArg, void* unk0, void* unk1, void* unk2, void* unk3);
             //static int _SceSblAuthMgrSmLoadSelfSegment(SelfContext *p_Context, uint32_t p_SegmentIndex, bool p_IsBlockTable, uint8_t* p_Data, size_t p_Size, int(*p_ReadCallback)(uint64_t /*p_Offset*/, uint8_t* /*p_Data*/, size_t /*p_Size*/), void* p_CallbackArg, void* unk0, void* unk1);
 
-            //void HookFunctionCall(uint8_t* p_HookTrampoline, void* p_Function, void* p_Address);
+            void HookFunctionCall(uint8_t* p_HookTrampoline, void* p_Function, void* p_Address);
 
         protected:
             //
