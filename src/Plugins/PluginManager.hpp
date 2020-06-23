@@ -36,7 +36,6 @@ namespace Mira
             Mira::Utils::IModule* m_Substitute;
             Mira::Utils::IModule* m_BrowserActivator;
             Mira::Utils::IModule* m_MorpheusEnabler;
-            Mira::Utils::IModule* m_RemotePlayEnabler;
             Mira::Utils::IModule* m_SyscallGuard;
 
         public:
@@ -46,7 +45,6 @@ namespace Mira
             Mira::Utils::IModule* GetSubstitute() { return m_Substitute; }
             Mira::Utils::IModule* GetBrowserActivator() { return m_BrowserActivator; }
             Mira::Utils::IModule* GetMorpheusEnabler() { return m_MorpheusEnabler; }
-            Mira::Utils::IModule* GetRemotePlayEnabler() { return m_RemotePlayEnabler; }
             Mira::Utils::IModule* GetSyscallGuard() { return m_SyscallGuard; }
         };
     }

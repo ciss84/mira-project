@@ -31,10 +31,6 @@ struct dynlib_get_obj_member {
     uint64_t value;
 };
 
-struct sandbox_path_args {
-    char* path;
-};
-
 extern "C"
 {
 
@@ -153,10 +149,4 @@ extern "C"
     extern int kunmount_t(char* path, int flags, struct thread* td);
 
     extern int knmount_t(struct iovec* iov, int iovlen, unsigned int flags, struct thread* td);
-
-    extern int klink_t(const char *path, const char *link, struct thread* td);
-
-    extern int klinkat_t(int fd1, const char *path1, int fd2, const char *path2, int flag, struct thread* td);
-
-    extern int ksandbox_path_t(char* path, struct thread* td);
 };

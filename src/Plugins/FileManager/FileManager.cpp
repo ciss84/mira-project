@@ -959,7 +959,7 @@ uint8_t* FileManager::DecryptSelfFd(int p_SelfFd, size_t* p_OutElfSize)
     }
 
     size_t s_SelfSize = s_Offset;
-    
+
     // This is unsigned, will never be < 0
     s_Offset = klseek_t(p_SelfFd, 0, SEEK_SET, s_IoThread);
 

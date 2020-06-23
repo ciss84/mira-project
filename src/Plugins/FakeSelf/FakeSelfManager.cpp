@@ -1,3 +1,13 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
+
+/*
+    Implemented from: https://github.com/xvortex/ps4-hen-vtx
+    Ported by: kiwidog (@kd_tech_)
+
+    Bugfixes: SiSTRo (https://github.com/SiSTR0), SocraticBliss (https://github.com/SocraticBliss)
+*/
+
 #include "FakeSelfManager.hpp"
 #include <Utils/_Syscall.hpp>
 #include <Utils/Kernel.hpp>
@@ -16,6 +26,7 @@ extern "C"
 };
 
 using namespace Mira::Plugins;
+using namespace Mira::OrbisOS;
 
 //SelfContext* FakeSelfManager::m_LastContext = nullptr;
 
@@ -49,17 +60,19 @@ FakeSelfManager::FakeSelfManager()
 {
     auto sv = (struct sysentvec*)kdlsym(self_orbis_sysvec);
 	struct sysent* sysents = sv->sv_table;
+
 	uint8_t* s_TrampolineA = reinterpret_cast<uint8_t*>(sysents[SYS___MAC_GET_PID].sy_call);
     uint8_t* s_TrampolineB = reinterpret_cast<uint8_t*>(sysents[SYS___MAC_GET_PROC].sy_call);
     uint8_t* s_TrampolineC = reinterpret_cast<uint8_t*>(sysents[SYS___MAC_SET_PROC].sy_call);
-    uint8_t* s_TrampolineD = reinterpret_cast<uint8_t*>(sysents[SYS___MAC_GET_FD].sy_call);
-    uint8_t* s_TrampolineE = reinterpret_cast<uint8_t*>(sysents[SYS___MAC_GET_FILE].sy_call);
+    uint8_t* s_TrampolineD = reinterpret_cast<uint8_t*>(sysents[SYS___MAC_GET_FILE].sy_call);
+    uint8_t* s_TrampolineE = reinterpret_cast<uint8_t*>(sysents[SYS___MAC_GET_FD].sy_call);
 
-    HookFunctionCall(s_TrampolineA, reinterpret_cast<void*>(OnSceSblAuthMgrVerifyHeader), kdlsym(sceSblAuthMgrVerifyHeader_hookA));
-    HookFunctionCall(s_TrampolineB, reinterpret_cast<void*>(OnSceSblAuthMgrVerifyHeader), kdlsym(sceSblAuthMgrVerifyHeader_hookB));
-    HookFunctionCall(s_TrampolineC, reinterpret_cast<void*>(OnSceSblAuthMgrIsLoadable2), kdlsym(sceSblAuthMgrIsLoadable2_hook));
-    HookFunctionCall(s_TrampolineD, reinterpret_cast<void*>(SceSblAuthMgrSmLoadSelfBlock_Mailbox), kdlsym(sceSblAuthMgrSmLoadSelfBlock__sceSblServiceMailbox_hook));
-    HookFunctionCall(s_TrampolineE, reinterpret_cast<void*>(SceSblAuthMgrSmLoadSelfSegment_Mailbox), kdlsym(sceSblAuthMgrSmLoadSelfSegment__sceSblServiceMailbox_hook));
+    Utilities::HookFunctionCall(s_TrampolineA, reinterpret_cast<void*>(OnSceSblAuthMgrVerifyHeader), kdlsym(sceSblAuthMgrVerifyHeader_hookA));
+    Utilities::HookFunctionCall(s_TrampolineB, reinterpret_cast<void*>(OnSceSblAuthMgrVerifyHeader), kdlsym(sceSblAuthMgrVerifyHeader_hookB));
+    Utilities::HookFunctionCall(s_TrampolineC, reinterpret_cast<void*>(OnSceSblAuthMgrIsLoadable2), kdlsym(sceSblAuthMgrIsLoadable2_hook));
+    Utilities::HookFunctionCall(s_TrampolineD, reinterpret_cast<void*>(SceSblAuthMgrSmLoadSelfSegment_Mailbox), kdlsym(sceSblAuthMgrSmLoadSelfSegment__sceSblServiceMailbox_hook));
+    Utilities::HookFunctionCall(s_TrampolineE, reinterpret_cast<void*>(SceSblAuthMgrSmLoadSelfBlock_Mailbox), kdlsym(sceSblAuthMgrSmLoadSelfBlock__sceSblServiceMailbox_hook));
+    //HookFunctionCall(s_TrampolineF, reinterpret_cast<void*>(SceSblAuthMgrIsLoadable_sceSblACMgrGetPathId), kdlsym(sceSblAuthMgrIsLoadable__sceSblACMgrGetPathId_hook));
 
     //m_SceSblServiceMailboxHook = new Utils::Hook(kdlsym(sceSblServiceMailbox), reinterpret_cast<void*>(OnSceSblServiceMailbox));
     //m_SceSblAuthMgrVerifyHeaderHook = new Utils::Hook(kdlsym(sceSblAuthMgrVerifyHeader), reinterpret_cast<void*>(OnSceSblAuthMgrVerifyHeader));
@@ -220,16 +233,30 @@ SblMapListEntry* FakeSelfManager::SceSblDriverFindMappedPageListByGpuVa(vm_offse
         WriteLog(LL_Error, "invalid gpu va");
         return nullptr;
     }
-    
+
+    auto _mtx_lock_flags = (void(*)(struct mtx *m, int opts, const char *file, int line))kdlsym(_mtx_lock_flags);
+    auto _mtx_unlock_flags = (void(*)(struct mtx *m, int opts, const char *file, int line))kdlsym(_mtx_unlock_flags);
+    auto s_SblDrvMsgMtx = (struct mtx*)kdlsym(sbl_drv_msg_mtx);
+
     SblMapListEntry* s_Entry = *(SblMapListEntry**)kdlsym(gpu_va_page_list);
+    SblMapListEntry* s_FinalEntry = nullptr;
+
+    // Lock before we iterate this list, because other paths can absolutely use it concurrently
+    _mtx_lock_flags(s_SblDrvMsgMtx, 0, __FILE__, __LINE__);
+
     while (s_Entry)
     {
         if (s_Entry->gpuVa == p_GpuVa)
-            return s_Entry;
+        {
+            s_FinalEntry = s_Entry;
+            break;
+        }
+
         s_Entry = s_Entry->next;
     }
 
-    return nullptr;
+    _mtx_unlock_flags(s_SblDrvMsgMtx, 0, __FILE__, __LINE__);
+    return s_FinalEntry;
 }
 
 vm_offset_t FakeSelfManager::SceSblDriverGpuVaToCpuVa(vm_offset_t p_GpuVa, size_t* p_NumPageGroups)
@@ -259,11 +286,9 @@ bool FakeSelfManager::IsFakeSelf(SelfContext* p_Context)
     SelfExInfo* s_Info = nullptr;
     if (p_Context != nullptr && p_Context->format == SelfFormat::Self)
     {
-        auto s_Ret = _sceSblAuthMgrGetSelfInfo(p_Context, &s_Info);  
-        if (s_Ret)
-            s_Ret = 0;
+        (void)_sceSblAuthMgrGetSelfInfo(p_Context, &s_Info);
         
-        WriteLog(LL_Debug, "ptype: (%d)", s_Info->ptype);
+        //WriteLog(LL_Debug, "ptype: (%d)", s_Info->ptype);
         return (int32_t)s_Info->ptype == SelfPtypeFake;
     }
     else
@@ -388,106 +413,26 @@ int FakeSelfManager::SceSblAuthMgrGetSelfAuthInfoFake(SelfContext* p_Context, Se
         return -EAGAIN;
     }
     
-    SelfHeader* s_Header = reinterpret_cast<SelfHeader*>(p_Context->header);
-    SelfFakeAuthInfo* s_FakeInfo = reinterpret_cast<SelfFakeAuthInfo*>(p_Context->header + s_Header->headerSize + s_Header->metaSize - 0x100);
-
+    SelfHeader* s_Header = p_Context->header;
+    auto s_Data = reinterpret_cast<const char*>(p_Context->header);
+    auto s_FakeInfo = reinterpret_cast<const SelfFakeAuthInfo*>(s_Data + s_Header->headerSize + s_Header->metaSize - 0x100);
     if (s_FakeInfo->size == sizeof(s_FakeInfo->info))
     {
         memcpy(p_Info, &s_FakeInfo->info, sizeof(*p_Info));
         return 0;
     }
 
-    WriteLog(LL_Error, "ealready");
+    WriteLog(LL_Error, "ealready (no valid authinfo)");
     return -EALREADY;
 }
 
-int FakeSelfManager::SceSblAuthMgrSmLoadSelfBlock_Mailbox(uint32_t p_ServiceId, void* p_Request, void* p_Response)
+int FakeSelfManager::SceSblAuthMgrSmLoadSelfSegment_Mailbox(uint64_t p_ServiceId, void* p_Request, void* p_Response)
 {
-    auto sceSblServiceMailbox = (int(*)(uint32_t p_ServiceId, void* p_Request, void* p_Response))kdlsym(sceSblServiceMailbox);   
-#if MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_405 || MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_455 || MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_474
-	register SelfContext* s_Context = nullptr ("r14");
-#elif MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_501 || MIRA_PLATFORM >= MIRA_PLATFORM_ORBIS_BSD_503 || MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_505 || MIRA_PLATFORM >= MIRA_PLATFORM_ORBIS_BSD_620 || MIRA_PLATFORM >= MIRA_PLATFORM_ORBIS_BSD_650
+    auto sceSblServiceMailbox = (int(*)(uint32_t p_ServiceId, void* p_Request, void* p_Response))kdlsym(sceSblServiceMailbox);
+
+	// self_context is first param of caller. 0x08 = sizeof(struct self_context*)
 	uint8_t* frame = (uint8_t*)__builtin_frame_address(1);
-	SelfContext* s_Context = *(SelfContext**)(frame - 0x1C8);
-#elif MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_555
-	uint8_t* frame = (uint8_t*)__builtin_frame_address(1);
-	SelfContext* s_Context = *(SelfContext**)(frame - 0x1B8);
-#endif	
-
-    auto s_RequestMessage = static_cast<MailboxMessage*>(p_Request);
-    if (s_RequestMessage == nullptr)
-    {
-        WriteLog(LL_Error, "invalid request message");
-        return sceSblServiceMailbox(p_ServiceId, p_Request, p_Response);
-    }
-    
-    // Disgusting hack, we hook the caller of this, save the context, then continue as normal
-    // Then we pick up the context later
-    //SelfContext* s_Context = FakeSelfManager::m_LastContext;
-    // Check our context
-    if (s_Context == nullptr)
-    {
-        WriteLog(LL_Error, "could not load self BLOCK, could not get the self context");
-        return sceSblServiceMailbox(p_ServiceId, p_Request, p_Response);
-    }
-
-    bool s_IsUnsigned = s_Context->format == SelfFormat::Elf;
-    if (!s_IsUnsigned)
-        return sceSblServiceMailbox(p_ServiceId, p_Request, p_Response);
-
-    WriteLog(LL_Error, "unsigned/fake (s)elf detected");
-
-    // TODO: Remove after testing
-    auto s_Test1 = *(uint32_t*)&s_RequestMessage->unk08;
-    auto s_Test2 = s_RequestMessage->unk08;
-    if (s_Test1 != s_Test2)
-        WriteLog(LL_Error, "test1 != test2");
-    
-    // Do these ever change?
-    vm_offset_t s_SegmentDataGpuVa = *(uint32_t*)&s_RequestMessage->unk08;
-    vm_offset_t s_CurrentDataGpuVa = *(uint32_t*)(((uint8_t*)p_Response) + 0x50);
-    vm_offset_t s_CurrentData2GpuVa = *(uint32_t*)(((uint8_t*)p_Response) + 0x58);
-    
-    uint32_t s_DataOffset = *(uint32_t*)(((uint8_t*)p_Response) + 0x44);
-    uint32_t s_DataSize = *(uint32_t*)(((uint8_t*)p_Response) + 0x48);
-
-    vm_offset_t s_SegmentDataCpuVa = SceSblDriverGpuVaToCpuVa(s_SegmentDataGpuVa, nullptr);
-    vm_offset_t s_CurrentDataCpuVa = SceSblDriverGpuVaToCpuVa(s_CurrentDataGpuVa, nullptr);
-    vm_offset_t s_CurrentData2CpuVa = s_CurrentData2GpuVa ? SceSblDriverGpuVaToCpuVa(s_CurrentData2GpuVa, nullptr) : 0;
-
-    if (s_SegmentDataCpuVa && s_CurrentDataCpuVa)
-    {
-        if (s_CurrentData2GpuVa && s_CurrentData2GpuVa != s_CurrentDataGpuVa && s_DataOffset > 0)
-        {
-            // xxx: data spans two consecutive memory's pages, so we need to copy twice
-            uint32_t s_Size1 = PAGE_SIZE - s_DataOffset;
-            memcpy((uint8_t*)s_SegmentDataCpuVa, (const uint8_t*)s_CurrentDataCpuVa, s_Size1);
-
-            // PATCH: Prevent *potential* kpanic here
-            if (s_CurrentData2CpuVa != 0)
-                memcpy((uint8_t*)s_SegmentDataCpuVa + s_Size1, (const uint8_t*)s_CurrentData2CpuVa, s_DataSize - s_Size1);
-        }
-        else
-            memcpy((uint8_t*)s_SegmentDataCpuVa, (const uint8_t*)s_CurrentDataCpuVa + s_DataOffset, s_DataSize);
-    }
-
-    s_RequestMessage->retVal = 0;
-    return 0;
-}
-
-int FakeSelfManager::SceSblAuthMgrSmLoadSelfSegment_Mailbox(uint32_t p_ServiceId, void* p_Request, void* p_Response)
-{
-    auto sceSblServiceMailbox = (int(*)(uint32_t p_ServiceId, void* p_Request, void* p_Response))kdlsym(sceSblServiceMailbox);   
-#if MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_455 || MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_474
-	uint8_t* frame = (uint8_t*)__builtin_frame_address(1);
-	SelfContext* s_Context = *(SelfContext**)(frame - 0x100);
-#elif MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_501 || MIRA_PLATFORM >= MIRA_PLATFORM_ORBIS_BSD_503 || MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_505
-  uint8_t* frame = (uint8_t*)__builtin_frame_address(1);
-	SelfContext* s_Context = *(SelfContext**)(frame - 0x100);
-#elif MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_555 || MIRA_PLATFORM >= MIRA_PLATFORM_ORBIS_BSD_620 || MIRA_PLATFORM >= MIRA_PLATFORM_ORBIS_BSD_650
-   uint8_t* frame = (uint8_t*)__builtin_frame_address(1);
-   SelfContext* s_Context = *(SelfContext**)(frame - 0x100);
-#endif
+	SelfContext* s_Context = *(SelfContext**)(frame - 0x08);
 
     auto s_RequestMessage = static_cast<MailboxMessage*>(p_Request);
     if (s_RequestMessage == nullptr)
@@ -495,8 +440,7 @@ int FakeSelfManager::SceSblAuthMgrSmLoadSelfSegment_Mailbox(uint32_t p_ServiceId
         WriteLog(LL_Error, "invalid response");
         return sceSblServiceMailbox(p_ServiceId, p_Request, p_Response);
     }
-    
-    //SelfContext* s_Context = FakeSelfManager::m_LastContext;
+
     if (s_Context == nullptr)
     {
         WriteLog(LL_Error, "could not load segment, could not get self context.");
@@ -512,6 +456,74 @@ int FakeSelfManager::SceSblAuthMgrSmLoadSelfSegment_Mailbox(uint32_t p_ServiceId
     }
     
     return sceSblServiceMailbox(p_ServiceId, p_Request, p_Response);
+}
+
+int FakeSelfManager::SceSblAuthMgrSmLoadSelfBlock_Mailbox(uint64_t p_ServiceId, uint8_t* p_Request, void* p_Response)
+{
+    // self_context is first param of caller. 0x08 = sizeof(struct self_context*)
+    uint8_t* frame = (uint8_t*)__builtin_frame_address(1);
+    SelfContext* p_Context = *(SelfContext**)(frame - 0x08);
+
+    bool s_IsUnsigned = p_Context && (p_Context->format == SelfFormat::Elf || IsFakeSelf((SelfContext*)p_Context));
+
+    if (!s_IsUnsigned) {
+        //WriteLog(LL_Debug, "signed (s)elf detected");
+
+        auto sceSblServiceMailbox = (int(*)(uint64_t p_ServiceId, void* p_Request, void* p_Response))kdlsym(sceSblServiceMailbox);
+        return sceSblServiceMailbox(p_ServiceId, p_Request, p_Response);
+    } else {
+        //WriteLog(LL_Debug, "unsigned/fake (s)elf detected");
+
+        vm_offset_t s_SegmentDataGpuVa = *(uint64_t*)(p_Request + 0x08);
+        vm_offset_t s_CurrentDataGpuVa = *(uint64_t*)(p_Request + 0x50);
+        vm_offset_t s_CurrentData2GpuVa = *(uint64_t*)(p_Request + 0x58);
+
+        uint32_t s_DataOffset = *(uint32_t*)(p_Request + 0x44);
+        uint32_t s_DataSize = *(uint32_t*)(p_Request + 0x48);
+
+        /* looking into lists of GPU's mapped memory regions */
+        vm_offset_t s_SegmentDataCpuVa = SceSblDriverGpuVaToCpuVa(s_SegmentDataGpuVa, NULL);
+        vm_offset_t s_CurrentDataCpuVa = SceSblDriverGpuVaToCpuVa(s_CurrentDataGpuVa, NULL);
+        vm_offset_t s_CurrentData2CpuVa = s_CurrentData2GpuVa ? SceSblDriverGpuVaToCpuVa(s_CurrentData2GpuVa, NULL) : 0;
+
+        if (s_SegmentDataCpuVa && s_CurrentDataCpuVa) {
+            if (s_CurrentData2GpuVa && s_CurrentData2GpuVa != s_CurrentDataGpuVa && s_DataOffset > 0) {
+
+                /* data spans two consecutive memory's pages, so we need to copy twice */
+                uint32_t s_Size = PAGE_SIZE - s_DataOffset;
+                memcpy((char*)s_SegmentDataCpuVa, (char*)s_CurrentDataCpuVa + s_DataOffset, s_Size);
+
+                // prevent *potential* kpanic here
+                if (s_CurrentData2CpuVa) {
+                    memcpy((char *) s_SegmentDataCpuVa + s_Size, (char *) s_CurrentData2CpuVa, s_DataSize - s_Size);
+                }
+            } else {
+                memcpy((char*)s_SegmentDataCpuVa, (char*)s_CurrentDataCpuVa + s_DataOffset, s_DataSize);
+            }
+        }
+
+        /* setting error field to zero, thus we have no errors */
+        *(int*)(p_Request + 0x04) = 0;
+
+        return 0;
+    }
+}
+
+int FakeSelfManager::SceSblAuthMgrIsLoadable_sceSblACMgrGetPathId(const char* path) {
+    /*auto strstr = (char *(*)(const char *haystack, const char *needle) )kdlsym(strstr);
+    auto sceSblACMgrGetPathId = (int(*)(const char* path))kdlsym(sceSblACMgrGetPathId);
+
+    static const char* s_SelfDirPrefix = "/data/self/";
+    const char* p;
+
+    if (path) {
+        p = strstr(path, s_SelfDirPrefix);
+        if (p)
+            path = p + strlen(s_SelfDirPrefix) - 1;
+    }
+
+    return sceSblACMgrGetPathId(path);*/
+    return 0;
 }
 
 bool FakeSelfManager::OnLoad()
@@ -572,33 +584,4 @@ bool FakeSelfManager::OnResume()
 {
     // Don't touch the hooks here, leave them in-tact
     return true;
-}
-
-// Credits: m0rph
-void FakeSelfManager::HookFunctionCall(uint8_t* p_HookTrampoline, void* p_Function, void* p_Address)
-{
-    uint8_t* s_HookPayload = p_HookTrampoline;
-    uint16_t* s_TempAddress = reinterpret_cast<uint16_t*>(p_HookTrampoline);
-    s_TempAddress++;
-
-    uint64_t* s_FunctionAddress = reinterpret_cast<uint64_t*>(s_TempAddress);
-
-    cpu_disable_wp();
-
-    // mov rax
-    s_HookPayload[0] = 0x48;
-    s_HookPayload[1] = 0xB8;
-
-    *s_FunctionAddress = reinterpret_cast<uint64_t>(p_Function);
-
-    s_HookPayload[0x0A] = 0xFF;
-    s_HookPayload[0x0B] = 0xE0;
-
-    int32_t s_CallAddress = (int32_t)(p_HookTrampoline - (uint8_t*)p_Address) - 5;
-    s_HookPayload = reinterpret_cast<uint8_t*>(p_Address);
-    s_HookPayload++;
-    int32_t* s_Pointer = reinterpret_cast<int32_t*>(s_HookPayload);
-    *s_Pointer = s_CallAddress;
-
-    cpu_enable_wp();
 }

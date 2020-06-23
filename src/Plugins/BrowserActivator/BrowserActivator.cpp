@@ -34,7 +34,7 @@ bool BrowserActivator::OnLoad()
 		WriteLog(LL_Info, "web browser already activated");
 		return true;
 	}
-	
+
 	WriteLog(LL_Warn, "activating web browser");
 
 	s_Ret = sceRegMgrSetInt(0x3C040000, 0);
