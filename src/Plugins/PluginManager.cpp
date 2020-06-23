@@ -13,6 +13,7 @@
 #include <Plugins/Substitute/Substitute.hpp>
 #include <Plugins/BrowserActivator/BrowserActivator.hpp>
 #include <Plugins/MorpheusEnabler/MorpheusEnabler.hpp>
+#include <Plugins/RemotePlayEnabler/RemotePlayEnabler.hpp>
 #include <Plugins/SyscallGuard/SyscallGuardPlugin.hpp>
 
 // Utility functions
@@ -159,6 +160,15 @@ bool PluginManager::OnLoad()
             s_Success = false;
             break;
         }
+        
+        // Initialize RemotePlayEnabler
+        m_RemotePlayEnabler = new Mira::Plugins::RemotePlayEnabler();
+        if (m_RemotePlayEnabler == nullptr)
+        {
+            WriteLog(LL_Error, "could not allocate remote play enabler.");
+            s_Success = false;
+            break;
+        }
 
     } while (false);
 
@@ -208,6 +218,12 @@ bool PluginManager::OnLoad()
     {
         if (!m_MorpheusEnabler->OnLoad())
             WriteLog(LL_Error, "could not load morpheus enabler.");
+    }
+    
+    if (m_RemotePlayEnabler)
+    {
+        if (!m_RemotePlayEnabler->OnLoad())
+            WriteLog(LL_Error, "could not load remote play enabler.");
     }
 
     return s_Success;
@@ -366,6 +382,18 @@ bool PluginManager::OnUnload()
         delete m_MorpheusEnabler;
         m_MorpheusEnabler = nullptr;
     }
+    
+    // Delete RemotePlayEnabler
+    if (m_RemotePlayEnabler)
+    {
+        WriteLog(LL_Debug, "unloading remote play enabler");
+        if (!m_RemotePlayEnabler->OnUnload())
+            WriteLog(LL_Error, "remote play enabler could not unload");
+
+        // Free RemotePlayEnabler
+        delete m_RemotePlayEnabler;
+        m_RemotePlayEnabler = nullptr;
+    }
 
     // Delete the debugger
     // NOTE: Don't unload before the debugger for catch error if something wrong
@@ -459,6 +487,13 @@ bool PluginManager::OnSuspend()
     {
         if (!m_MorpheusEnabler->OnSuspend())
             WriteLog(LL_Error, "morpheus enabler suspend failed");
+    }
+    
+    // Suspend RemotePlayEnabler (does nothing)
+    if (m_RemotePlayEnabler)
+    {
+        if (!m_RemotePlayEnabler->OnSuspend())
+            WriteLog(LL_Error, "remote play enabler suspend failed");
     }
 
     // Nota: Don't suspend before the debugger for catch error if something when wrong
