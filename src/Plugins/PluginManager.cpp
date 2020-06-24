@@ -14,6 +14,8 @@
 #include <Plugins/BrowserActivator/BrowserActivator.hpp>
 #include <Plugins/MorpheusEnabler/MorpheusEnabler.hpp>
 #include <Plugins/RemotePlayEnabler/RemotePlayEnabler.hpp>
+#include <Plugins/RemotePkgEnabler/RemotePkgEnabler.hpp>
+#include <Plugins/DebugTrophyEnabler/DebugTrophyEnabler.hpp>
 #include <Plugins/SyscallGuard/SyscallGuardPlugin.hpp>
 
 // Utility functions
@@ -169,6 +171,23 @@ bool PluginManager::OnLoad()
             s_Success = false;
             break;
         }
+        
+        // Initialize RemotePkgEnabler
+        m_RemotePkgEnabler = new Mira::Plugins::RemotePkgEnabler();
+        if (m_RemotePkgEnabler == nullptr)
+        {
+            WriteLog(LL_Error, "could not allocate remote pkg enabler.");
+            s_Success = false;
+            break;
+        }
+        // Initialize DebugTrophyEnabler
+        m_DebugTrophyEnabler = new Mira::Plugins::DebugTrophyEnabler();
+        if (m_DebugTrophyEnabler == nullptr)
+        {
+            WriteLog(LL_Error, "could not allocate Debug Trophy Enabler.");
+            s_Success = false;
+            break;
+        }
 
     } while (false);
 
@@ -224,6 +243,17 @@ bool PluginManager::OnLoad()
     {
         if (!m_RemotePlayEnabler->OnLoad())
             WriteLog(LL_Error, "could not load remote play enabler.");
+    }
+    
+    if (m_RemotePkgEnabler)
+    {
+        if (!m_RemotePkgEnabler->OnLoad())
+            WriteLog(LL_Error, "could not load remote pkg enabler.");
+    }
+    if (m_DebugTrophyEnabler)
+    {
+        if (!m_DebugTrophyEnabler->OnLoad())
+            WriteLog(LL_Error, "could not load Debug Trophy Enabler.");
     }
 
     return s_Success;
@@ -394,6 +424,29 @@ bool PluginManager::OnUnload()
         delete m_RemotePlayEnabler;
         m_RemotePlayEnabler = nullptr;
     }
+    
+    // Delete RemotePkgEnabler
+    if (m_RemotePlayEnabler)
+    {
+        WriteLog(LL_Debug, "unloading remote pkg enabler");
+        if (!m_RemotePkgEnabler->OnUnload())
+            WriteLog(LL_Error, "remote pkg enabler could not unload");
+
+        // Free RemotePkgEnabler
+        delete m_RemotePkgEnabler;
+        m_RemotePkgEnabler = nullptr;
+    }
+    // Delete DebugTrophyEnabler
+    if (m_DebugTrophyEnabler)
+    {
+        WriteLog(LL_Debug, "unloading remote pkg enabler");
+        if (!m_DebugTrophyEnabler->OnUnload())
+            WriteLog(LL_Error, "Debug Trophy Enabler could not unload");
+
+        // Free DebugTrophyEnabler
+        delete m_DebugTrophyEnabler;
+        m_DebugTrophyEnabler = nullptr;
+    }
 
     // Delete the debugger
     // NOTE: Don't unload before the debugger for catch error if something wrong
@@ -495,6 +548,19 @@ bool PluginManager::OnSuspend()
         if (!m_RemotePlayEnabler->OnSuspend())
             WriteLog(LL_Error, "remote play enabler suspend failed");
     }
+    
+    // Suspend RemotePkgEnabler (does nothing)
+    if (m_RemotePkgEnabler)
+    {
+        if (!m_RemotePkgEnabler->OnSuspend())
+            WriteLog(LL_Error, "remote pkg enabler suspend failed");
+    }
+    // Suspend DebugTrophyEnabler (does nothing)
+    if (m_DebugTrophyEnabler)
+    {
+        if (!m_DebugTrophyEnabler->OnSuspend())
+            WriteLog(LL_Error, "Debug Trophy Enabler suspend failed");
+    }
 
     // Nota: Don't suspend before the debugger for catch error if something when wrong
     if (m_Debugger)
@@ -561,6 +627,26 @@ bool PluginManager::OnResume()
     {
         if (!m_MorpheusEnabler->OnResume())
             WriteLog(LL_Error, "morpheus enabler resume failed");
+    }
+    
+    WriteLog(LL_Debug, "resuming Remote Play Enabler");
+    if (m_RemotePlayEnabler)
+    {
+        if (!m_RemotePlayEnabler->OnResume())
+            WriteLog(LL_Error, "Remote Play Enabler resume failed");
+    }
+
+    WriteLog(LL_Debug, "resuming Remote Pkg Enabler");
+    if (m_RemotePkgEnabler)
+    {
+        if (!m_RemotePkgEnabler->OnResume())
+            WriteLog(LL_Error, "Remote Pkg Enabler resume failed");
+    }
+    WriteLog(LL_Debug, "resuming Remote Pkg Enabler");
+    if (m_DebugTrophyEnabler)
+    {
+        if (!m_DebugTrophyEnabler->OnResume())
+            WriteLog(LL_Error, "Debug Trophy Enabler resume failed");
     }
 
     // Iterate through all of the plugins
