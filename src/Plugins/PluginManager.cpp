@@ -16,6 +16,7 @@
 #include <Plugins/RemotePlayEnabler/RemotePlayEnabler.hpp>
 #include <Plugins/RemotePkgEnabler/RemotePkgEnabler.hpp>
 #include <Plugins/DebugTrophyEnabler/DebugTrophyEnabler.hpp>
+#include <Plugins/SaveDataMountEnabler/SaveDataMountEnabler.hpp>
 #include <Plugins/SyscallGuard/SyscallGuardPlugin.hpp>
 
 // Utility functions
@@ -188,6 +189,14 @@ bool PluginManager::OnLoad()
             s_Success = false;
             break;
         }
+        // Initialize SaveDataMountEnabler
+        m_SaveDataMountEnabler = new Mira::Plugins::SaveDataMountEnabler();
+        if (m_SaveDataMountEnabler == nullptr)
+        {
+            WriteLog(LL_Error, "could not allocate Save Data Mount Enabler.");
+            s_Success = false;
+            break;
+        }
 
     } while (false);
 
@@ -254,6 +263,11 @@ bool PluginManager::OnLoad()
     {
         if (!m_DebugTrophyEnabler->OnLoad())
             WriteLog(LL_Error, "could not load Debug Trophy Enabler.");
+    }
+    if (m_SaveDataMountEnabler)
+    {
+        if (!m_SaveDataMountEnabler->OnLoad())
+            WriteLog(LL_Error, "could not load Save Data Mount Enabler.");
     }
 
     return s_Success;
@@ -447,6 +461,17 @@ bool PluginManager::OnUnload()
         delete m_DebugTrophyEnabler;
         m_DebugTrophyEnabler = nullptr;
     }
+    // Delete SaveDataMountEnabler
+    if (m_SaveDataMountEnabler)
+    {
+        WriteLog(LL_Debug, "unloading Save Data Mount Enabler");
+        if (!m_SaveDataMountEnabler->OnUnload())
+            WriteLog(LL_Error, "Save Data Mount Enabler could not unload");
+
+        // Free SaveDataMountEnabler
+        delete m_SaveDataMountEnabler;
+        m_SaveDataMountEnabler = nullptr;
+    }
 
     // Delete the debugger
     // NOTE: Don't unload before the debugger for catch error if something wrong
@@ -561,7 +586,13 @@ bool PluginManager::OnSuspend()
         if (!m_DebugTrophyEnabler->OnSuspend())
             WriteLog(LL_Error, "Debug Trophy Enabler suspend failed");
     }
-
+    // Suspend SaveDataMountEnabler (does nothing)
+    if (m_SaveDataMountEnabler)
+    {
+        if (!m_SaveDataMountEnabler->OnSuspend())
+            WriteLog(LL_Error, "Save Data Mount Enabler suspend failed");
+    }
+    
     // Nota: Don't suspend before the debugger for catch error if something when wrong
     if (m_Debugger)
     {
@@ -642,11 +673,17 @@ bool PluginManager::OnResume()
         if (!m_RemotePkgEnabler->OnResume())
             WriteLog(LL_Error, "Remote Pkg Enabler resume failed");
     }
-    WriteLog(LL_Debug, "resuming Remote Pkg Enabler");
+    WriteLog(LL_Debug, "resuming Debug Trophy Enabler");
     if (m_DebugTrophyEnabler)
     {
         if (!m_DebugTrophyEnabler->OnResume())
             WriteLog(LL_Error, "Debug Trophy Enabler resume failed");
+    }
+    WriteLog(LL_Debug, "resuming Save Data Mount Enabler");
+    if (m_SaveDataMountEnabler)
+    {
+        if (!m_SaveDataMountEnabler->OnResume())
+            WriteLog(LL_Error, "Save Data Mount Enabler resume failed");
     }
 
     // Iterate through all of the plugins
