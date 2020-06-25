@@ -70,7 +70,7 @@ bool PluginManager::OnLoad()
         }
 
         // Initialize the syscall guard
-        /*m_SyscallGuard = new Mira::Plugins::SyscallGuard();
+       /* m_SyscallGuard = new Mira::Plugins::SyscallGuard();
         if (m_SyscallGuard == nullptr)
         {
             WriteLog(LL_Error, "could not allocate syscall guard.");
@@ -91,8 +91,7 @@ bool PluginManager::OnLoad()
             WriteLog(LL_Error, "could not load logmanager");
 
         // Initialize Logger (Console)
-        char consolePath[] = "/dev/console";
-        m_LoggerConsole = new Mira::Plugins::LogManagerExtent::LogManager(9997, consolePath);
+        m_LoggerConsole = new Mira::Plugins::LogManagerExtent::LogManager(9997);
         if (m_LoggerConsole == nullptr)
         {
             WriteLog(LL_Error, "could not allocate log manager.(Console)");
@@ -205,6 +204,12 @@ bool PluginManager::OnLoad()
         if (!m_Debugger->OnLoad())
             WriteLog(LL_Error, "could not load debugger.");
     }
+    
+    /*if (m_SyscallGuard)
+    {
+        if (!m_SyscallGuard->OnLoad())
+            WriteLog(LL_Error, "could not load Syscall Guard.");
+    }*/
 
     if (m_FileManager)
     {
@@ -355,16 +360,6 @@ bool PluginManager::OnUnload()
         m_EmuRegistry = nullptr;
     }
 
-    if (m_SyscallGuard)
-    {
-        WriteLog(LL_Debug, "unloading syscall guard");
-        if (!m_SyscallGuard->OnUnload())
-            WriteLog(LL_Error, "syscall guard could not unload");
-
-        delete m_SyscallGuard;
-        m_SyscallGuard = nullptr;
-    }
-
     // Delete the log server
     if (m_Logger)
     {
@@ -485,6 +480,18 @@ bool PluginManager::OnUnload()
         delete m_Debugger;
         m_Debugger = nullptr;
     }
+    
+    // Delete the m_SyscallGuard
+    // NOTE: Don't unload before the Syscall Guard for catch error if something wrong
+    /*if (m_SyscallGuard)
+    {
+        WriteLog(LL_Debug, "unloading syscall guard");
+        if (!m_SyscallGuard->OnUnload())
+            WriteLog(LL_Error, "syscall guard could not unload");
+
+        delete m_SyscallGuard;
+        m_SyscallGuard = nullptr;
+    }*/
 
     WriteLog(LL_Debug, "All Plugins Unloaded %s.", s_AllUnloadSuccess ? "successfully" : "un-successfully");
     return s_AllUnloadSuccess;
@@ -599,6 +606,11 @@ bool PluginManager::OnSuspend()
         if (!m_Debugger->OnSuspend())
             WriteLog(LL_Error, "debugger suspend failed");
     }
+    /*if (m_SyscallGuard)
+    {
+        if (!m_SyscallGuard->OnSuspend())
+            WriteLog(LL_Error, "Syscall Guard suspend failed");
+    }*/
 
     // Return final status
     return s_AllSuccess;
@@ -617,6 +629,13 @@ bool PluginManager::OnResume()
         if (!m_Debugger->OnResume())
             WriteLog(LL_Error, "debugger resume failed");
     }
+    
+    /*WriteLog(LL_Debug, "resuming Syscall Guard");
+    if (m_SyscallGuard)
+    {
+        if (!m_SyscallGuard->OnResume())
+            WriteLog(LL_Error, "Syscall Guard resume failed");
+    }*/
 
     WriteLog(LL_Debug, "resuming log manager");
     if (m_Logger)
