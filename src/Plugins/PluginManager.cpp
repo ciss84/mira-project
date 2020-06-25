@@ -89,9 +89,10 @@ bool PluginManager::OnLoad()
         }
         if (!m_Logger->OnLoad())
             WriteLog(LL_Error, "could not load logmanager");
-
-        // Initialize Logger (Console)
-        m_LoggerConsole = new Mira::Plugins::LogManagerExtent::LogManager(9997);
+            
+        // Initialize Logger Console
+        char consolePath[] = "/dev/console";
+        m_LoggerConsole = new Mira::Plugins::LogManagerExtent::LogManager(9997, consolePath);
         if (m_LoggerConsole == nullptr)
         {
             WriteLog(LL_Error, "could not allocate log manager.(Console)");
