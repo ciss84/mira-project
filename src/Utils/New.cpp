@@ -43,6 +43,7 @@ void * operator new[] (unsigned long int p_Size)
 // Delete
 void operator delete(void* p_Pointer) noexcept
 {
+
 	if (p_Pointer == nullptr)
 		return;
 	

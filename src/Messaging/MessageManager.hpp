@@ -1,5 +1,9 @@
 #pragma once
+#include <Utils/Vector.hpp>
+
+#include "MessageCategory.hpp"
 #include "MessageListener.hpp"
+#include "Message.hpp"
 
 extern "C"
 {

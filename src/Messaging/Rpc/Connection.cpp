@@ -4,6 +4,7 @@
 #include "Connection.hpp"
 #include "Server.hpp"
 
+#include <Messaging/Message.hpp>
 #include <Messaging/MessageManager.hpp>
 
 #include <Utils/Kdlsym.hpp>

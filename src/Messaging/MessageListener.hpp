@@ -1,4 +1,6 @@
 #pragma once
+#include "MessageCategory.hpp"
+#include "Message.hpp"
 #include "Rpc/rpc.pb-c.h"
 
 namespace Mira

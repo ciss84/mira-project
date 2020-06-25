@@ -2,7 +2,9 @@
 // PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
 
 #include "MessageManager.hpp"
+#include "MessageCategory.hpp"
 #include "MessageListener.hpp"
+#include "Message.hpp"
 
 #include <Utils/Kdlsym.hpp>
 #include <Utils/SysWrappers.hpp>

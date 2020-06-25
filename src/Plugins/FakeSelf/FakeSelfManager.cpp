@@ -4,7 +4,6 @@
 /*
     Implemented from: https://github.com/xvortex/ps4-hen-vtx
     Ported by: kiwidog (@kd_tech_)
-
     Bugfixes: SiSTRo (https://github.com/SiSTR0), SocraticBliss (https://github.com/SocraticBliss)
 */
 
@@ -91,28 +90,24 @@ FakeSelfManager::~FakeSelfManager()
         delete m_SceSblServiceMailboxHook;
         m_SceSblServiceMailboxHook = nullptr;
     }
-
     if (m_SceSblAuthMgrVerifyHeaderHook != nullptr)
     {
         (void)m_SceSblAuthMgrVerifyHeaderHook->Disable();
         delete m_SceSblAuthMgrVerifyHeaderHook;
         m_SceSblAuthMgrVerifyHeaderHook = nullptr;
     }
-
     if (m_SceSblAuthMgrIsLoadable2Hook != nullptr)
     {
         (void)m_SceSblAuthMgrIsLoadable2Hook->Disable();
         delete m_SceSblAuthMgrIsLoadable2Hook;
         m_SceSblAuthMgrIsLoadable2Hook = nullptr;
     }
-
     if (m__SceSblAuthMgrSmLoadSelfBlockHook != nullptr)
     {
         (void)m__SceSblAuthMgrSmLoadSelfBlockHook->Disable();
         delete m__SceSblAuthMgrSmLoadSelfBlockHook;
         m__SceSblAuthMgrSmLoadSelfBlockHook = nullptr;
     }
-
     if (m__SceSblAuthMgrSmLoadSelfSegmentHook!= nullptr)
     {
         (void)m__SceSblAuthMgrSmLoadSelfSegmentHook->Disable();
@@ -143,14 +138,12 @@ int FakeSelfManager::OnSceSblAuthMgrIsLoadable2(SelfContext* p_Context, SelfAuth
 /*int FakeSelfManager::OnSceSblServiceMailbox(uint32_t p_ServiceId, void* p_Request, void* p_Response)
 {
     auto sceSblServiceMailbox = (int(*)(uint32_t p_ServiceId, void* p_Request, void* p_Response))kdlsym(sceSblServiceMailbox);
-
     auto s_Request = static_cast<MailboxMessage*>(p_Request);
     if (s_Request == nullptr)
     {
         WriteLog(LL_Error, "invalid request");
         return sceSblServiceMailbox(p_ServiceId, p_Request, p_Response);
     }
-
     // Only hook on the needed service id
     if (p_ServiceId != 0)
         return sceSblServiceMailbox(p_ServiceId, p_Request, p_Response);
@@ -512,16 +505,13 @@ int FakeSelfManager::SceSblAuthMgrSmLoadSelfBlock_Mailbox(uint64_t p_ServiceId, 
 int FakeSelfManager::SceSblAuthMgrIsLoadable_sceSblACMgrGetPathId(const char* path) {
     /*auto strstr = (char *(*)(const char *haystack, const char *needle) )kdlsym(strstr);
     auto sceSblACMgrGetPathId = (int(*)(const char* path))kdlsym(sceSblACMgrGetPathId);
-
     static const char* s_SelfDirPrefix = "/data/self/";
     const char* p;
-
     if (path) {
         p = strstr(path, s_SelfDirPrefix);
         if (p)
             path = p + strlen(s_SelfDirPrefix) - 1;
     }
-
     return sceSblACMgrGetPathId(path);*/
     return 0;
 }
@@ -539,7 +529,6 @@ bool FakeSelfManager::OnLoad()
     
     if (m_SceSblServiceMailboxHook != nullptr)
         (void)m_SceSblServiceMailboxHook->Enable();
-
     if (m__SceSblAuthMgrSmLoadSelfBlockHook != nullptr)
         (void)m__SceSblAuthMgrSmLoadSelfBlockHook->Enable();
     
@@ -560,7 +549,6 @@ bool FakeSelfManager::OnUnload()
     
     if (m_SceSblServiceMailboxHook != nullptr)
         (void)m_SceSblServiceMailboxHook->Disable();
-
     if (m__SceSblAuthMgrSmLoadSelfBlockHook != nullptr)
         (void)m__SceSblAuthMgrSmLoadSelfBlockHook->Disable();
     
