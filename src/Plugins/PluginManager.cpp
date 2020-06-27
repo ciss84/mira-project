@@ -17,6 +17,7 @@
 #include <Plugins/RemotePkgEnabler/RemotePkgEnabler.hpp>
 #include <Plugins/DebugTrophyEnabler/DebugTrophyEnabler.hpp>
 #include <Plugins/SaveDataMountEnabler/SaveDataMountEnabler.hpp>
+#include <Plugins/FullDbSettingEnabler/FullDbSettingEnabler.hpp>
 #include <Plugins/SyscallGuard/SyscallGuardPlugin.hpp>
 
 // Utility functions
@@ -197,6 +198,14 @@ bool PluginManager::OnLoad()
             s_Success = false;
             break;
         }
+        // Initialize FullDbSettingEnabler
+        m_FullDbSettingEnabler = new Mira::Plugins::FullDbSettingEnabler();
+        if (m_FullDbSettingEnabler == nullptr)
+        {
+            WriteLog(LL_Error, "could not allocate Full Debug Setting Enabler.");
+            s_Success = false;
+            break;
+        }
 
     } while (false);
 
@@ -274,6 +283,11 @@ bool PluginManager::OnLoad()
     {
         if (!m_SaveDataMountEnabler->OnLoad())
             WriteLog(LL_Error, "could not load Save Data Mount Enabler.");
+    }
+    if (m_FullDbSettingEnabler)
+    {
+        if (!m_FullDbSettingEnabler->OnLoad())
+            WriteLog(LL_Error, "could not load Full Debug Setting Enabler.");
     }
 
     return s_Success;
@@ -468,6 +482,17 @@ bool PluginManager::OnUnload()
         delete m_SaveDataMountEnabler;
         m_SaveDataMountEnabler = nullptr;
     }
+    // Delete FullDbSettingEnabler
+    if (m_FullDbSettingEnabler)
+    {
+        WriteLog(LL_Debug, "unloading Full Debug Setting Enabler");
+        if (!m_FullDbSettingEnabler->OnUnload())
+            WriteLog(LL_Error, "Full Debug Setting Enabler could not unload");
+
+        // Free FullDbSettingEnabler
+        delete m_FullDbSettingEnabler;
+        m_FullDbSettingEnabler = nullptr;
+    }
 
     // Delete the debugger
     // NOTE: Don't unload before the debugger for catch error if something wrong
@@ -600,6 +625,12 @@ bool PluginManager::OnSuspend()
         if (!m_SaveDataMountEnabler->OnSuspend())
             WriteLog(LL_Error, "Save Data Mount Enabler suspend failed");
     }
+    // Suspend FullDbSettingEnabler (does nothing)
+    if (m_FullDbSettingEnabler)
+    {
+        if (!m_FullDbSettingEnabler->OnSuspend())
+            WriteLog(LL_Error, "Full Debug Setting Enabler suspend failed");
+    }
     
     // Nota: Don't suspend before the debugger for catch error if something when wrong
     if (m_Debugger)
@@ -704,6 +735,12 @@ bool PluginManager::OnResume()
     {
         if (!m_SaveDataMountEnabler->OnResume())
             WriteLog(LL_Error, "Save Data Mount Enabler resume failed");
+    }
+    WriteLog(LL_Debug, "resuming Save Data Mount Enabler");
+    if (m_FullDbSettingEnabler)
+    {
+        if (!m_FullDbSettingEnabler->OnResume())
+            WriteLog(LL_Error, "Full Debug Setting Enabler resume failed");
     }
 
     // Iterate through all of the plugins

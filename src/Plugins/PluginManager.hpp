@@ -39,12 +39,16 @@ namespace Mira
             Mira::Utils::IModule* m_RemotePlayEnabler;
             Mira::Utils::IModule* m_RemotePkgEnabler; 
             Mira::Utils::IModule* m_DebugTrophyEnabler;
-            Mira::Utils::IModule* m_SaveDataMountEnabler;           
+            Mira::Utils::IModule* m_SaveDataMountEnabler;
+            Mira::Utils::IModule* m_FullDbSettingEnabler;                       
             Mira::Utils::IModule* m_SyscallGuard;
 
         public:
+            Mira::Utils::IModule* GetLogger() { return m_Logger; }
+            Mira::Utils::IModule* GetLoggerConsole() { return m_LoggerConsole; }
             Mira::Utils::IModule* GetDebugger() { return m_Debugger; }
             Mira::Utils::IModule* GetFakeSelfManager() { return m_FakeSelfManager; }
+            Mira::Utils::IModule* GetFakePkgManager() { return m_FakePkgManager; }
             Mira::Utils::IModule* GetEmulatedRegistry() { return m_EmuRegistry; }
             Mira::Utils::IModule* GetSubstitute() { return m_Substitute; }
             Mira::Utils::IModule* GetBrowserActivator() { return m_BrowserActivator; }
@@ -53,6 +57,7 @@ namespace Mira
             Mira::Utils::IModule* GetRemotePkgEnabler() { return m_RemotePkgEnabler; }
             Mira::Utils::IModule* GetDebugTrophyEnabler() { return m_DebugTrophyEnabler; }
             Mira::Utils::IModule* GetSaveDataMountEnabler() { return m_SaveDataMountEnabler; }
+            Mira::Utils::IModule* GetFullDbSettingEnabler() { return m_FullDbSettingEnabler; }            
             Mira::Utils::IModule* GetSyscallGuard() { return m_SyscallGuard; }
         };
     }

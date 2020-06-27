@@ -1,145 +1,170 @@
-/*
- * CDDL HEADER START
- *
- * The contents of this file are subject to the terms of the
- * Common Development and Distribution License (the "License").
- * You may not use this file except in compliance with the License.
- *
- * You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
- * or http://www.opensolaris.org/os/licensing.
- * See the License for the specific language governing permissions
- * and limitations under the License.
- *
- * When distributing Covered Code, include this CDDL HEADER in each
- * file and include the License file at usr/src/OPENSOLARIS.LICENSE.
- * If applicable, add the following below this CDDL HEADER, with the
- * fields enclosed by brackets "[]" replaced with your own identifying
- * information: Portions Copyright [yyyy] [name of copyright owner]
- *
- * CDDL HEADER END
- */
-/*
- * Copyright 2010 Sun Microsystems, Inc.  All rights reserved.
- * Use is subject to license terms.
- */
+// golden
+// 6/12/2018
+//
 
-/*	Copyright (c) 1984, 1986, 1987, 1988, 1989 AT&T	*/
-/*	  All Rights Reserved	*/
+#ifndef _DEBUG_H
+#define _DEBUG_H
 
-#ifndef _SYS_DEBUG_H
-#define	_SYS_DEBUG_H
+#include <ps4.h>
+#include "protocol.h"
+#include "net.h"
+#include "ptrace.h"
 
-#include <sys/types.h>
-#include <sys/note.h>
+struct __reg64 {
+    uint64_t r_r15;
+    uint64_t r_r14;
+    uint64_t r_r13;
+    uint64_t r_r12;
+    uint64_t r_r11;
+    uint64_t r_r10;
+    uint64_t r_r9;
+    uint64_t r_r8;
+    uint64_t r_rdi;
+    uint64_t r_rsi;
+    uint64_t r_rbp;
+    uint64_t r_rbx;
+    uint64_t r_rdx;
+    uint64_t r_rcx;
+    uint64_t r_rax;
+    uint32_t r_trapno;
+    uint16_t r_fs;
+    uint16_t r_gs;
+    uint32_t r_err;
+    uint16_t r_es;
+    uint16_t r_ds;
+    uint64_t r_rip;
+    uint64_t r_cs;
+    uint64_t r_rflags;
+    uint64_t r_rsp;
+    uint64_t r_ss;
+};
 
-#ifdef	__cplusplus
-extern "C" {
+/* Contents of each x87 floating point accumulator */
+struct fpacc87 {
+    uint8_t fp_bytes[10];
+};
+
+/* Contents of each SSE extended accumulator */
+struct xmmacc {
+    uint8_t xmm_bytes[16];
+};
+
+/* Contents of the upper 16 bytes of each AVX extended accumulator */
+struct ymmacc {
+    uint8_t ymm_bytes[16];
+};
+
+struct envxmm {
+    uint16_t en_cw; /* control word (16bits) */
+    uint16_t en_sw; /* status word (16bits) */
+    uint8_t en_tw; /* tag word (8bits) */
+    uint8_t en_zero;
+    uint16_t en_opcode; /* opcode last executed (11 bits ) */
+    uint64_t en_rip; /* floating point instruction pointer */
+    uint64_t en_rdp; /* floating operand pointer */
+    uint32_t en_mxcsr; /* SSE sontorol/status register */
+    uint32_t en_mxcsr_mask; /* valid bits in mxcsr */
+};
+
+struct savefpu {
+    struct envxmm sv_env;
+    struct {
+        struct fpacc87 fp_acc;
+        uint8_t fp_pad[6]; /* padding */
+    } sv_fp[8];
+    struct xmmacc sv_xmm[16];
+    uint8_t sv_pad[96];
+} __attribute__((aligned(16)));
+
+struct xstate_hdr {
+    uint64_t xstate_bv;
+    uint8_t xstate_rsrv0[16];
+    uint8_t xstate_rsrv[40];
+};
+
+struct savefpu_xstate {
+    struct xstate_hdr sx_hd;
+    struct ymmacc sx_ymm[16];
+};
+
+struct savefpu_ymm {
+    struct envxmm sv_env;
+    struct {
+        struct fpacc87 fp_acc;
+        int8_t fp_pad[6];   /* padding */
+    } sv_fp[8];
+    struct xmmacc sv_xmm[16];
+    uint8_t sv_pad[96];
+    struct savefpu_xstate sv_xstate;
+} __attribute__((aligned(64)));
+
+struct __dbreg64 {
+    uint64_t dr[16];	/* debug registers */
+    /* Index 0-3: debug address registers */
+    /* Index 4-5: reserved */
+    /* Index 6: debug status */
+    /* Index 7: debug control */
+    /* Index 8-15: reserved */
+};
+
+struct debug_interrupt_packet {
+    uint32_t lwpid;
+    uint32_t status;
+    char tdname[40];
+    struct __reg64 reg64;
+    struct savefpu_ymm savefpu;
+    struct __dbreg64 dbreg64;
+} __attribute__((packed));
+#define DEBUG_INTERRUPT_PACKET_SIZE         0x4A0
+
+#define	DBREG_DR7_DISABLE       0x00
+#define	DBREG_DR7_LOCAL_ENABLE  0x01
+#define	DBREG_DR7_GLOBAL_ENABLE 0x02
+
+#define	DBREG_DR7_LEN_1     0x00	/* 1 byte length */
+#define	DBREG_DR7_LEN_2     0x01
+#define	DBREG_DR7_LEN_4     0x03
+#define	DBREG_DR7_LEN_8     0x02
+
+#define	DBREG_DR7_EXEC      0x00	/* break on execute       */
+#define	DBREG_DR7_WRONLY    0x01	/* break on write         */
+#define	DBREG_DR7_RDWR      0x03	/* break on read or write */
+
+#define	DBREG_DR7_MASK(i) ((uint64_t)(0xf) << ((i) * 4 + 16) | 0x3 << (i) * 2)
+#define	DBREG_DR7_SET(i, len, access, enable) ((uint64_t)((len) << 2 | (access)) << ((i) * 4 + 16) | (enable) << (i) * 2)
+#define	DBREG_DR7_GD        0x2000
+#define	DBREG_DR7_ENABLED(d, i)	(((d) & 0x3 << (i) * 2) != 0)
+#define	DBREG_DR7_ACCESS(d, i)	((d) >> ((i) * 4 + 16) & 0x3)
+#define	DBREG_DR7_LEN(d, i)	((d) >> ((i) * 4 + 18) & 0x3)
+
+#define	DBREG_DRX(d,x) ((d)->dr[(x)]) /* reference dr0 - dr7 by register number */
+
+#define DEBUG_PORT 755
+
+extern int g_debugging;
+extern struct server_client *curdbgcli;
+extern struct debug_context *curdbgctx;
+
+int debug_attach_handle(int fd, struct cmd_packet *packet);
+int debug_detach_handle(int fd, struct cmd_packet *packet);
+int debug_breakpt_handle(int fd, struct cmd_packet *packet);
+int debug_watchpt_handle(int fd, struct cmd_packet *packet);
+int debug_threads_handle(int fd, struct cmd_packet *packet);
+int debug_stopthr_handle(int fd, struct cmd_packet *packet);
+int debug_resumethr_handle(int fd, struct cmd_packet *packet);
+int debug_getregs_handle(int fd, struct cmd_packet *packet);
+int debug_setregs_handle(int fd, struct cmd_packet *packet);
+int debug_getfpregs_handle(int fd, struct cmd_packet *packet);
+int debug_setfpregs_handle(int fd, struct cmd_packet *packet);
+int debug_getdbregs_handle(int fd, struct cmd_packet *packet);
+int debug_setdbregs_handle(int fd, struct cmd_packet *packet);
+int debug_stopgo_handle(int fd, struct cmd_packet *packet);
+int debug_thrinfo_handle(int fd, struct cmd_packet *packet);
+int debug_singlestep_handle(int fd, struct cmd_packet *packet);
+
+int connect_debugger(struct debug_context *dbgctx, struct sockaddr_in *client);
+void debug_cleanup(struct debug_context *dbgctx);
+
+int debug_handle(int fd, struct cmd_packet *packet);
+
 #endif
-
-/*
- * ASSERT(ex) causes a panic or debugger entry if expression ex is not
- * true.  ASSERT() is included only for debugging, and is a no-op in
- * production kernels.  VERIFY(ex), on the other hand, behaves like
- * ASSERT and is evaluated on both debug and non-debug kernels.
- */
-
-#if defined(__STDC__)
-extern int assfail(const char *, const char *, int);
-#define	VERIFY(EX) ((void)((EX) || assfail(#EX, __FILE__, __LINE__)))
-#ifdef DEBUG
-#define	ASSERT(EX) ((void)((EX) || assfail(#EX, __FILE__, __LINE__)))
-#else
-#define	ASSERT(x)  ((void)0)
-#endif
-#else	/* defined(__STDC__) */
-extern int assfail();
-#define	VERIFY(EX) ((void)((EX) || assfail("EX", __FILE__, __LINE__)))
-#ifdef DEBUG
-#define	ASSERT(EX) ((void)((EX) || assfail("EX", __FILE__, __LINE__)))
-#else
-#define	ASSERT(x)  ((void)0)
-#endif
-#endif	/* defined(__STDC__) */
-
-/*
- * Assertion variants sensitive to the compilation data model
- */
-#if defined(_LP64)
-#define	ASSERT64(x)	ASSERT(x)
-#define	ASSERT32(x)
-#else
-#define	ASSERT64(x)
-#define	ASSERT32(x)	ASSERT(x)
-#endif
-
-/*
- * IMPLY and EQUIV are assertions of the form:
- *
- *	if (a) then (b)
- * and
- *	if (a) then (b) *AND* if (b) then (a)
- */
-#ifdef DEBUG
-#define	IMPLY(A, B) \
-	((void)(((!(A)) || (B)) || \
-	    assfail("(" #A ") implies (" #B ")", __FILE__, __LINE__)))
-#define	EQUIV(A, B) \
-	((void)((!!(A) == !!(B)) || \
-	    assfail("(" #A ") is equivalent to (" #B ")", __FILE__, __LINE__)))
-#else
-#define	IMPLY(A, B) ((void)0)
-#define	EQUIV(A, B) ((void)0)
-#endif
-
-/*
- * ASSERT3() behaves like ASSERT() except that it is an explicit conditional,
- * and prints out the values of the left and right hand expressions as part of
- * the panic message to ease debugging.  The three variants imply the type
- * of their arguments.  ASSERT3S() is for signed data types, ASSERT3U() is
- * for unsigned, and ASSERT3P() is for pointers.  The VERIFY3*() macros
- * have the same relationship as above.
- */
-extern void assfail3(const char *, uintmax_t, const char *, uintmax_t,
-    const char *, int);
-#define	VERIFY3_IMPL(LEFT, OP, RIGHT, TYPE) do { \
-	const TYPE __left = (TYPE)(LEFT); \
-	const TYPE __right = (TYPE)(RIGHT); \
-	if (!(__left OP __right)) \
-		assfail3(#LEFT " " #OP " " #RIGHT, \
-			(uintmax_t)__left, #OP, (uintmax_t)__right, \
-			__FILE__, __LINE__); \
-_NOTE(CONSTCOND) } while (0)
-
-#define	VERIFY3S(x, y, z)	VERIFY3_IMPL(x, y, z, int64_t)
-#define	VERIFY3U(x, y, z)	VERIFY3_IMPL(x, y, z, uint64_t)
-#define	VERIFY3P(x, y, z)	VERIFY3_IMPL(x, y, z, uintptr_t)
-#ifdef DEBUG
-#define	ASSERT3S(x, y, z)	VERIFY3_IMPL(x, y, z, int64_t)
-#define	ASSERT3U(x, y, z)	VERIFY3_IMPL(x, y, z, uint64_t)
-#define	ASSERT3P(x, y, z)	VERIFY3_IMPL(x, y, z, uintptr_t)
-#else
-#define	ASSERT3S(x, y, z)	((void)0)
-#define	ASSERT3U(x, y, z)	((void)0)
-#define	ASSERT3P(x, y, z)	((void)0)
-#endif
-
-#ifdef	_KERNEL
-
-extern void abort_sequence_enter(char *);
-extern void debug_enter(char *);
-
-#endif	/* _KERNEL */
-
-#if defined(DEBUG) && !defined(__sun)
-/* CSTYLED */
-#define	STATIC
-#else
-/* CSTYLED */
-#define	STATIC static
-#endif
-
-#ifdef	__cplusplus
-}
-#endif
-
-#endif	/* _SYS_DEBUG_H */

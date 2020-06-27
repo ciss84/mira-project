@@ -48,10 +48,6 @@ typedef Elf32_Word	Elf32_Hashelt;
 typedef Elf32_Word	Elf32_Size;
 typedef Elf32_Sword	Elf32_Ssize;
 
-/*
- * ELF header.
- */
-
 typedef struct {
 	unsigned char	e_ident[EI_NIDENT];	/* File identification. */
 	Elf32_Half	e_type;		/* File type. */

@@ -295,60 +295,19 @@ bool FakePkgManager::ShellCorePatch()
     }
 #endif
 
-
-
-#if MIRA_PLATFORM==MIRA_PLATFORM_ORBIS_BSD_505 
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + kdlsym_addr_sceRegMgrGetInt), 1, (void*)  "\1", nullptr, true);
-    if (s_Ret < 0)
-      {
-        WriteLog(LL_Error, "kdlsym_addr_sceRegMgrGetInt");
-        return false;
-    }
-#endif
-
     s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_disable_screenshot_patch), sizeof(xor__eix_eax), xor__eix_eax, nullptr, true);
     if (s_Ret < 0)
       {
         WriteLog(LL_Error, "ssc_disable_screenshot_patch");
         return false;
     }
-    
-#if MIRA_PLATFORM==MIRA_PLATFORM_ORBIS_BSD_505     
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_Patch_debug_settingA), 1, (void*) "\x14", nullptr, true);
+      
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + kdlsym_addr_sceRegMgrGetInt), 1, (void*)  "\1", nullptr, true);
     if (s_Ret < 0)
       {
-        WriteLog(LL_Error, "ssc_Patch_debug_settingA");
+        WriteLog(LL_Error, "kdlsym_addr_sceRegMgrGetInt");
         return false;
     }
-#endif
-
-#if MIRA_PLATFORM==MIRA_PLATFORM_ORBIS_BSD_505    
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_Patch_debug_settingB), 1, (void*) "\3", nullptr, true);
-    if (s_Ret < 0)
-      {
-        WriteLog(LL_Error, "ssc_Patch_debug_settingB");
-        return false;
-    }
-#endif
-
-#if MIRA_PLATFORM==MIRA_PLATFORM_ORBIS_BSD_505 
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_Patch_debug_settingC), 1, (void*) "\1", nullptr, true);
-    if (s_Ret < 0)
-      {
-        WriteLog(LL_Error, "ssc_Patch_debug_settingC");
-        return false;
-    } 
-#endif
-
-#if MIRA_PLATFORM==MIRA_PLATFORM_ORBIS_BSD_505    
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_Patch_debug_settingD), 1, (void*) "\1", nullptr, true);
-    if (s_Ret < 0)
-      {
-        WriteLog(LL_Error, "ssc_Patch_debug_settingD");
-        return false;
-    }
-#endif
-        
     /*Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_1_1_OFFSET), sizeof(xor__ehx_eax), xor__ehx_eax, nullptr, true);
     Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_1_2_OFFSET), sizeof(xor__ehx_eax), xor__ehx_eax, nullptr, true);
     Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_1_3_OFFSET), sizeof(xor__ehx_eax), xor__ehx_eax, nullptr, true);
