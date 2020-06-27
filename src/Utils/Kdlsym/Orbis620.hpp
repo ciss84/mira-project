@@ -248,6 +248,9 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define ssc_Patch_debug_settingB                            0x0
 #define ssc_Patch_debug_settingC                            0x0
 #define ssc_Patch_debug_settingD                            0x0
+#define ssc_Patch_debug_settingE                            0x0
+#define ssc_Patch_debug_settingF                            0x0
+#define ssc_Patch_debug_settingG                            0x0
 
 // SceShellUI - remote play related patching
 #define ssu_CreateUserForIDU_patch                          0x0
