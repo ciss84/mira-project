@@ -252,7 +252,7 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define ssc_Patch_debug_settingB                            0x01CD06A9
 #define ssc_Patch_debug_settingC                            0x01CD06AA
 #define ssc_Patch_debug_settingD                            0x01CD06C8
-#define ssc_Patch_debug_settingE                            0x0
+#define ssc_Patch_debug_settingE                            0x00798B3F
 #define ssc_Patch_debug_settingF                            0x00449365
 #define ssc_Patch_debug_settingG                            0x00100854
  
