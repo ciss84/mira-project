@@ -31,7 +31,7 @@ It works differently to the custom firmware experience on Playstation 3, where C
   - Spoof 7.51 PSVR (Thanks @Leeful74) (5.05)
   - debug trophies on retail Enabler (5.01,5.05)(Thanks systro)
   - Update freebsd-include v3 (Thanks specter) 
-   
+ 
 You can also:
   - Mount and decrypt local gamesaves (Thanks ChendoChap) (WIP)
   - Transfer files to and from the harddrive
