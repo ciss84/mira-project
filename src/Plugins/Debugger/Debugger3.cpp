@@ -1,7 +1,7 @@
 // This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
 
-#include "FullDbSettingEnabler.hpp"
+#include "Debugger3.hpp"
 #include <Utils/Kdlsym.hpp>
 #include <Utils/Logger.hpp>
 
@@ -15,17 +15,17 @@ extern "C"
 	#include <sys/mman.h>
 };
 
-FullDbSettingEnabler::FullDbSettingEnabler()
+Debugger3::Debugger3()
 {
 
 }
 
-FullDbSettingEnabler::~FullDbSettingEnabler()
+Debugger3::~Debugger3()
 {
 
 }
 
-bool FullDbSettingEnabler::OnLoad()
+bool Debugger3::OnLoad()
 {
 	WriteLog(LL_Debug, "patching SceShellCore");
 
@@ -124,17 +124,17 @@ bool FullDbSettingEnabler::OnLoad()
 	return true;
 }
 
-bool FullDbSettingEnabler::OnUnload()
+bool Debugger3::OnUnload()
 {
 	return true;
 }
 
-bool FullDbSettingEnabler::OnSuspend()
+bool Debugger3::OnSuspend()
 {
 	return true;
 }
 
-bool FullDbSettingEnabler::OnResume()
+bool Debugger3::OnResume()
 {
 	return true;
 }

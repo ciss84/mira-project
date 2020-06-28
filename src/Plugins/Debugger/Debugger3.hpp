@@ -6,13 +6,13 @@ namespace Mira
 {
 		namespace Plugins
 		{
-				class FullDbSettingEnabler : public Mira::Utils::IModule
+				class Debugger3 : public Mira::Utils::IModule
 				{
 				public:
-						FullDbSettingEnabler();
-						virtual ~FullDbSettingEnabler();
+						Debugger3();
+						virtual ~Debugger3();
 
-						virtual const char* GetName() override { return "FullDbSettingEnabler"; }
+						virtual const char* GetName() override { return "Debugger3"; }
 						virtual bool OnLoad() override;
 						virtual bool OnUnload() override;
 						virtual bool OnSuspend() override;
