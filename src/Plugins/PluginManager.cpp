@@ -5,7 +5,7 @@
 
 // Built in plugins
 #include <Plugins/Debugger/Debugger2.hpp>
-#include <Plugins/Debugger/Debugger3.hpp>
+#include <Plugins/Debugger3/Debugger3.hpp>
 #include <Plugins/LogServer/LogManager.hpp>
 #include <Plugins/FileManager/FileManager.hpp>
 #include <Plugins/FakeSelf/FakeSelfManager.hpp>
@@ -64,6 +64,13 @@ bool PluginManager::OnLoad()
         // Initialize debugger
         m_Debugger = new Mira::Plugins::Debugger2();
         if (m_Debugger == nullptr)
+        {
+            WriteLog(LL_Error, "could not allocate debugger.");
+            s_Success = false;
+            break;
+        }
+        m_Debugger3 = new Mira::Plugins::Debugger3();
+        if (m_Debugger3 == nullptr)
         {
             WriteLog(LL_Error, "could not allocate debugger.");
             s_Success = false;
@@ -204,6 +211,12 @@ bool PluginManager::OnLoad()
     if (m_Debugger)
     {
         if (!m_Debugger->OnLoad())
+            WriteLog(LL_Error, "could not load debugger.");
+    }
+    
+    if (m_Debugger3)
+    {
+        if (!m_Debugger3->OnLoad())
             WriteLog(LL_Error, "could not load debugger.");
     }
     
@@ -483,6 +496,19 @@ bool PluginManager::OnUnload()
         m_Debugger = nullptr;
     }
     
+    // Delete the debugger
+    // NOTE: Don't unload before the debugger for catch error if something wrong
+    if (m_Debugger3)
+    {
+        WriteLog(LL_Debug, "unloading debugger");
+        if (!m_Debugger3->OnUnload())
+            WriteLog(LL_Error, "debugger could not unload");
+
+        // Free the debugger
+        delete m_Debugger3;
+        m_Debugger3 = nullptr;
+    }
+    
     // Delete the m_SyscallGuard
     // NOTE: Don't unload before the Syscall Guard for catch error if something wrong
     /*if (m_SyscallGuard)
@@ -608,6 +634,11 @@ bool PluginManager::OnSuspend()
         if (!m_Debugger->OnSuspend())
             WriteLog(LL_Error, "debugger suspend failed");
     }
+    if (m_Debugger3)
+    {
+        if (!m_Debugger3->OnSuspend())
+            WriteLog(LL_Error, "debugger suspend failed");
+    }
     /*if (m_SyscallGuard)
     {
         if (!m_SyscallGuard->OnSuspend())
@@ -629,6 +660,12 @@ bool PluginManager::OnResume()
     if (m_Debugger)
     {
         if (!m_Debugger->OnResume())
+            WriteLog(LL_Error, "debugger resume failed");
+    }
+    WriteLog(LL_Debug, "resuming debugger");
+    if (m_Debugger3)
+    {
+        if (!m_Debugger3->OnResume())
             WriteLog(LL_Error, "debugger resume failed");
     }
     

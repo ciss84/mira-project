@@ -29,6 +29,7 @@ namespace Mira
             Mira::Utils::IModule* m_Logger;
             Mira::Utils::IModule* m_LoggerConsole;
             Mira::Utils::IModule* m_Debugger;
+            Mira::Utils::IModule* m_Debugger3;                       
             Mira::Utils::IModule* m_FileManager;
             Mira::Utils::IModule* m_FakeSelfManager;
             Mira::Utils::IModule* m_FakePkgManager;
@@ -46,6 +47,7 @@ namespace Mira
             Mira::Utils::IModule* GetLogger() { return m_Logger; }
             Mira::Utils::IModule* GetLoggerConsole() { return m_LoggerConsole; }
             Mira::Utils::IModule* GetDebugger() { return m_Debugger; }
+            Mira::Utils::IModule* GetDebugger3() { return m_Debugger3; }            
             Mira::Utils::IModule* GetFakeSelfManager() { return m_FakeSelfManager; }
             Mira::Utils::IModule* GetFakePkgManager() { return m_FakePkgManager; }
             Mira::Utils::IModule* GetEmulatedRegistry() { return m_EmuRegistry; }
