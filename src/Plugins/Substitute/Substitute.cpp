@@ -31,8 +31,6 @@ extern "C"
     #include <sys/fcntl.h>
     #include <sys/mman.h>
     #include <sys/mount.h>
-    #include <sys/sysproto.h>
-    #include <sys/sysent.h>
     #include <sys/syscall.h>
     #include <sys/syslimits.h>
     #include <sys/param.h>

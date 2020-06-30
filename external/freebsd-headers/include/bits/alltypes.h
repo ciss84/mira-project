@@ -3,7 +3,7 @@
 #define _Reg long
 
 #define __BYTE_ORDER 1234
-#define __LONG_MAX 0x7fffffffffffffffL
+#define __LONG_MAX      0x7fffffffffffffff      /* max for a long */
 
 #ifndef __cplusplus
 #if defined(__NEED_wchar_t) && !defined(__DEFINED_wchar_t)

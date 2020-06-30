@@ -137,8 +137,9 @@ int FakeSelfManager::OnSceSblAuthMgrIsLoadable2(SelfContext* p_Context, SelfAuth
 
 /*int FakeSelfManager::OnSceSblServiceMailbox(uint32_t p_ServiceId, void* p_Request, void* p_Response)
 {
-    auto sceSblServiceMailbox = (int(*)(uint32_t p_ServiceId, void* p_Request, void* p_Response))kdlsym(sceSblServiceMailbox);
-    auto s_Request = static_cast<MailboxMessage*>(p_Request);
+        auto sceSblServiceMailbox = (int(*)(uint32_t p_ServiceId, void* p_Request, void* p_Response))kdlsym(sceSblServiceMailbox);
+        return sceSblServiceMailbox(p_ServiceId, p_Request, p_Response);
+        auto s_Request = static_cast<MailboxMessage*>(p_Request);
     if (s_Request == nullptr)
     {
         WriteLog(LL_Error, "invalid request");
@@ -151,9 +152,9 @@ int FakeSelfManager::OnSceSblAuthMgrIsLoadable2(SelfContext* p_Context, SelfAuth
     switch (s_Request->funcId)
     {
     case LoadSelfSegment:
-        return SceSblAuthMgrSmLoadSelfSegment_Mailbox(p_ServiceId, p_Request, p_Response);
+        return SceSblAuthMgrSmLoadSelfSegment_Mailbox(p_ServiceId, void * p_Request, void * p_Response);   
     case LoadSelfBlock:
-        return SceSblAuthMgrSmLoadSelfBlock_Mailbox(p_ServiceId, p_Request, p_Response);
+        return SceSblAuthMgrSmLoadSelfBlock_Mailbox(p_ServiceId, void * p_Request, void * p_Response);          
     default:
         return sceSblServiceMailbox(p_ServiceId, p_Request, p_Response);
     }
@@ -423,10 +424,15 @@ int FakeSelfManager::SceSblAuthMgrSmLoadSelfSegment_Mailbox(uint64_t p_ServiceId
 {
     auto sceSblServiceMailbox = (int(*)(uint32_t p_ServiceId, void* p_Request, void* p_Response))kdlsym(sceSblServiceMailbox);
 
-	// self_context is first param of caller. 0x08 = sizeof(struct self_context*)
-	uint8_t* frame = (uint8_t*)__builtin_frame_address(1);
-	SelfContext* s_Context = *(SelfContext**)(frame - 0x08);
+#if MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_501 || MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_505
+	  uint8_t* frame = (uint8_t*)__builtin_frame_address(1);
+	  SelfContext* s_Context = *(SelfContext**)(frame - 0x08);
+#endif
 
+#if MIRA_PLATFORM >= MIRA_PLATFORM_ORBIS_BSD_620 || MIRA_PLATFORM >= MIRA_PLATFORM_ORBIS_BSD_650
+    uint8_t* frame = (uint8_t*)__builtin_frame_address(1);
+    SelfContext* s_Context = *(SelfContext**)(frame - 0x100);
+#endif
     auto s_RequestMessage = static_cast<MailboxMessage*>(p_Request);
     if (s_RequestMessage == nullptr)
     {
@@ -453,10 +459,16 @@ int FakeSelfManager::SceSblAuthMgrSmLoadSelfSegment_Mailbox(uint64_t p_ServiceId
 
 int FakeSelfManager::SceSblAuthMgrSmLoadSelfBlock_Mailbox(uint64_t p_ServiceId, uint8_t* p_Request, void* p_Response)
 {
-    // self_context is first param of caller. 0x08 = sizeof(struct self_context*)
+  #if MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_501 || MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_505 
     uint8_t* frame = (uint8_t*)__builtin_frame_address(1);
-    SelfContext* p_Context = *(SelfContext**)(frame - 0x08);
-
+	  SelfContext* p_Context = *(SelfContext**)(frame - 0x08);
+  #endif
+  
+  #if MIRA_PLATFORM >= MIRA_PLATFORM_ORBIS_BSD_620 || MIRA_PLATFORM >= MIRA_PLATFORM_ORBIS_BSD_650
+	uint8_t* frame = (uint8_t*)__builtin_frame_address(1);
+	SelfContext* s_Context = *(SelfContext**)(frame - 0x1B8);
+  #endif
+  
     bool s_IsUnsigned = p_Context && (p_Context->format == SelfFormat::Elf || IsFakeSelf((SelfContext*)p_Context));
 
     if (!s_IsUnsigned) {
@@ -497,13 +509,12 @@ int FakeSelfManager::SceSblAuthMgrSmLoadSelfBlock_Mailbox(uint64_t p_ServiceId, 
 
         /* setting error field to zero, thus we have no errors */
         *(int*)(p_Request + 0x04) = 0;
-
         return 0;
     }
 }
 
 int FakeSelfManager::SceSblAuthMgrIsLoadable_sceSblACMgrGetPathId(const char* path) {
-    /*auto strstr = (char *(*)(const char *haystack, const char *needle) )kdlsym(strstr);
+    auto strstr = (char *(*)(const char *haystack, const char *needle) )kdlsym(strstr);
     auto sceSblACMgrGetPathId = (int(*)(const char* path))kdlsym(sceSblACMgrGetPathId);
     static const char* s_SelfDirPrefix = "/data/self/";
     const char* p;
@@ -512,7 +523,7 @@ int FakeSelfManager::SceSblAuthMgrIsLoadable_sceSblACMgrGetPathId(const char* pa
         if (p)
             path = p + strlen(s_SelfDirPrefix) - 1;
     }
-    return sceSblACMgrGetPathId(path);*/
+    return sceSblACMgrGetPathId(path);
     return 0;
 }
 

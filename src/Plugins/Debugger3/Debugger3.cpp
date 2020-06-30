@@ -121,6 +121,42 @@ bool Debugger3::OnLoad()
         WriteLog(LL_Error, "ssc_Patch_debug_settingG");
         return false;
     }
+    
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_Fully_enable_Debug_SettingsA), 1, (void*) "\0", nullptr, true);
+    if (s_Ret < 0)
+      {
+        WriteLog(LL_Error, "ssc_Fully_enable_Debug_SettingsA");
+        return false;
+    }
+    
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_Fully_enable_Debug_SettingsB), 1, (void*) "\0", nullptr, true);
+    if (s_Ret < 0)
+      {
+        WriteLog(LL_Error, "ssc_Fully_enable_Debug_SettingsB");
+        return false;
+    }
+    
+    /*s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_Fully_enable_Debug_SettingsC), 2, (void*) "\x81\x01", nullptr, true);
+    if (s_Ret < 0)
+      {
+        WriteLog(LL_Error, "ssc_Fully_enable_Debug_SettingsC");
+        return false;
+    }*/
+    
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_Fully_enable_Debug_SettingsD), 2, (void*) "\x90\x90", nullptr, true);
+    if (s_Ret < 0)
+      {
+        WriteLog(LL_Error, "ssc_Fully_enable_Debug_SettingsD");
+        return false;
+    }
+    
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_Fully_enable_Debug_SettingsE), 2, (void*) "\x90\x90", nullptr, true);
+    if (s_Ret < 0)
+      {
+        WriteLog(LL_Error, "ssc_Fully_enable_Debug_SettingsE");
+        return false;
+    }
+    
 	return true;
 }
 

@@ -9,7 +9,7 @@
 
 void prefault(void *address, size_t size);
 void *pfmalloc(size_t size);
-void hexdump(void *data, size_t size);
+void hexdump(const void *ptr, int length, const char *hdr, int flags);
 
 // custom syscall 107
 struct proc_list_entry {

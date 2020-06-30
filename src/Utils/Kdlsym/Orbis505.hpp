@@ -10,6 +10,8 @@ The reason we do not hardcode offsets here, is due to the different platforms th
 for the platforms that do enable kernel ASLR (Address Space Layout Randomization?)
 */
 
+#define PS4_UPDATE_FULL_PATH "/update/PS4UPDATE.PUP"
+#define PS4_UPDATE_TEMP_PATH "/update/PS4UPDATE.PUP.net.temp"
 #define kdlsym_addr__mtx_lock_flags                        0x00401CD0
 #define kdlsym_addr__mtx_lock_sleep                        0x00401D70
 #define kdlsym_addr__mtx_lock_spin_flags                   0x00402100
@@ -99,6 +101,10 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define kdlsym_addr_pause                                  0x003FB920
 #define kdlsym_addr_pfind                                  0x004034E0
 #define kdlsym_addr_pmap_activate                          0x002EAFD0
+#define kdlsym_addr_pmap_PROTECT	                         0x002E3090
+#define kdlsym_addr_pmap_PROTECT_P	                       0x002E30D4
+#define kdlsym_addr_pmap_STORE		                         0x022CB570
+#define kdlsym_addr_DT_HASH_SEGMENT		                     0x00B5EF30
 #define kdlsym_addr_printf                                 0x00436040
 #define kdlsym_addr_prison0                                0x010986A0
 #define kdlsym_addr_proc0                                  0x01AA4600
@@ -253,7 +259,11 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define ssc_Patch_debug_settingE                            0x00798B3F
 #define ssc_Patch_debug_settingF                            0x00449365
 #define ssc_Patch_debug_settingG                            0x00100854
- 
+#define ssc_Fully_enable_Debug_SettingsA                    0x00520AD7
+#define ssc_Fully_enable_Debug_SettingsB                    0x005CAC53
+#define ssc_Fully_enable_Debug_SettingsD                    0x0028F5BA
+#define ssc_Fully_enable_Debug_SettingsE                    0x0028F9DA
+
 // SceShellUI - remote play related patching
 #define ssu_CreateUserForIDU_patch                          0x001A8FA0
 #define ssu_remote_play_menu_patch                          0x00EE638E

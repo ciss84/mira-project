@@ -394,7 +394,16 @@ int Mira::Framework::OnIoctl(struct thread* p_Thread, struct ioctl_args* p_Uap)
 			return 0;
 		}
 	}
-
+	switch (p_Uap->com)
+	{
+		case 0xFFFFFFFF40048807:
+		case 0x40048807:
+		{
+			((int*)p_Uap->data)[0] = 1;
+			p_Thread->td_retval[0] = 0;
+			return 0;
+		}
+	}
 	return ((int(*)(struct thread* td, void* uap))gIoctl)(p_Thread, p_Uap);
 }
 
