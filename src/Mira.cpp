@@ -152,7 +152,19 @@ extern "C" void mira_entry(void* args)
 
 		if (curthread->td_ucred->cr_prison)
 			curthread->td_ucred->cr_prison = *(struct prison**)kdlsym(prison0);
-
+	  
+	  // sceSblACMgrIsSystemUcred
+	  uint64_t *sonyCred = (uint64_t *)(((char *)curthread->td_ucred) + 96);
+	  *sonyCred = 0xffffffffffffffff;
+	      
+	  // sceSblACMgrGetDeviceAccessType
+	  uint64_t *sceProcType = (uint64_t *)(((char *)curthread->td_ucred) + 88);
+	  *sceProcType = 0x3801000000000013; // Max access
+	
+		// sceSblACMgrHasSceProcessCapability
+	  uint64_t *sceProcCap = (uint64_t *)(((char *)curthread->td_ucred) + 104);
+	  *sceProcCap = 0xffffffffffffffff; // Sce Process
+	      
 		if (curthread->td_proc->p_fd)
 			curthread->td_proc->p_fd->fd_rdir = curthread->td_proc->p_fd->fd_jdir = *(struct vnode**)kdlsym(rootvnode);
 		

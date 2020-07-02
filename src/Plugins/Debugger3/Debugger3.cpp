@@ -157,6 +157,20 @@ bool Debugger3::OnLoad()
         return false;
     }
     
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + kdlsym_addr_pmap_PROTECT_P), 1, (void*) "\xEB", nullptr, true);
+    if (s_Ret < 0)
+      {
+        WriteLog(LL_Error, "kdlsym_addr_pmap_PROTECT_P");
+        return false;
+    }
+    
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + kdlsym_addr_pmap_PROTECT_P), 1, (void*) "\x75", nullptr, true);
+    if (s_Ret < 0)
+      {
+        WriteLog(LL_Error, "kdlsym_addr_pmap_PROTECT_P");
+        return false;
+    }
+    
 	return true;
 }
 

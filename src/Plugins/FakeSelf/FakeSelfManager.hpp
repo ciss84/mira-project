@@ -38,15 +38,15 @@ namespace Mira
                 AuthInfoSize = 136,
             };
 
-            //Utils::Hook* m_SceSblACMgrGetPathIdHook;
-            //Utils::Hook* m_SceSblServiceMailboxHook;
-            //Utils::Hook* m_SceSblAuthMgrVerifyHeaderHook;
-            //Utils::Hook* m_SceSblAuthMgrIsLoadable2Hook;
+            Utils::Hook* m_SceSblACMgrGetPathIdHook;
+            Utils::Hook* m_SceSblServiceMailboxHook;
+            Utils::Hook* m_SceSblAuthMgrVerifyHeaderHook;
+            Utils::Hook* m_SceSblAuthMgrIsLoadable2Hook;
 
-            //Utils::Hook* m__SceSblAuthMgrSmLoadSelfSegmentHook;
-            //Utils::Hook* m__SceSblAuthMgrSmLoadSelfBlockHook;
+            Utils::Hook* m__SceSblAuthMgrSmLoadSelfSegmentHook;
+            Utils::Hook* m__SceSblAuthMgrSmLoadSelfBlockHook;
 
-            //static SelfContext* m_LastContext;
+            //static OrbisOS::SelfContext* m_LastContext;
 
             static const uint8_t c_ExecAuthInfo[AuthInfoSize];
             static const uint8_t c_DynlibAuthInfo[AuthInfoSize];
@@ -65,7 +65,7 @@ namespace Mira
             // Helper Functions
             static int AuthSelfHeader(OrbisOS::SelfContext* p_Context);
             static int SceSblAuthMgrSmLoadSelfBlock_Mailbox(uint64_t p_ServiceId, uint8_t* p_Request, void* p_Response);
-            static int SceSblAuthMgrSmLoadSelfSegment_Mailbox(uint64_t service_id, void* p_Request, void* p_Response);
+            static int SceSblAuthMgrSmLoadSelfSegment_Mailbox(uint64_t p_ServiceId, void* p_Request, void* p_Response);
             static OrbisOS::SblMapListEntry* SceSblDriverFindMappedPageListByGpuVa(vm_offset_t p_GpuVa);
             static vm_offset_t SceSblDriverGpuVaToCpuVa(vm_offset_t p_GpuVa, size_t* p_NumPageGroups);
             static bool IsFakeSelf(OrbisOS::SelfContext* p_Context);
@@ -98,8 +98,8 @@ namespace Mira
             static int OnSceSblAuthMgrVerifyHeader(OrbisOS::SelfContext* p_Context);
             static int OnSceSblAuthMgrIsLoadable2(OrbisOS::SelfContext* p_Context, OrbisOS::SelfAuthInfo* p_OldAuthInfo, int32_t p_PathId, OrbisOS::SelfAuthInfo* p_NewAuthInfo);
 
-            static int On_SceSblAuthMgrSmLoadSelfBlock(OrbisOS::SelfContext* p_Context, uint32_t p_SegmentIndex, uint32_t p_BlockIndex, uint8_t* p_Data, size_t p_Size, int(*p_ReadCallback)(uint64_t /*p_Offset*/, uint8_t* /*p_Data*/, size_t /*p_Size*/), void* p_CallbackArg, void* unk0, void* unk1, void* unk2, void* unk3);
-            static int On_SceSblAuthMgrSmLoadSelfSegment(OrbisOS::SelfContext *p_Context, uint32_t p_SegmentIndex, bool p_IsBlockTable, uint8_t* p_Data, size_t p_Size, int(*p_ReadCallback)(uint64_t /*p_Offset*/, uint8_t* /*p_Data*/, size_t /*p_Size*/), void* p_CallbackArg, void* unk0, void* unk1);
+            static int OnSceSblAuthMgrSmLoadSelfBlock(OrbisOS::SelfContext* p_Context, uint32_t p_SegmentIndex, uint32_t p_BlockIndex, uint8_t* p_Data, size_t p_Size, int(*p_ReadCallback)(uint64_t /*p_Offset*/, uint8_t* /*p_Data*/, size_t /*p_Size*/), void* p_CallbackArg, void* unk0, void* unk1, void* unk2, void* unk3);
+            static int OnSceSblAuthMgrSmLoadSelfSegment(OrbisOS::SelfContext *p_Context, uint32_t p_SegmentIndex, bool p_IsBlockTable, uint8_t* p_Data, size_t p_Size, int(*p_ReadCallback)(uint64_t /*p_Offset*/, uint8_t* /*p_Data*/, size_t /*p_Size*/), void* p_CallbackArg, void* unk0, void* unk1);
         };
     }
 }

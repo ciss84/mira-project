@@ -10,8 +10,6 @@ The reason we do not hardcode offsets here, is due to the different platforms th
 for the platforms that do enable kernel ASLR (Address Space Layout Randomization?)
 */
 
-#define PS4_UPDATE_FULL_PATH "/update/PS4UPDATE.PUP"
-#define PS4_UPDATE_TEMP_PATH "/update/PS4UPDATE.PUP.net.temp"
 #define kdlsym_addr__mtx_lock_flags                        0x00401CD0
 #define kdlsym_addr__mtx_lock_sleep                        0x00401D70
 #define kdlsym_addr__mtx_lock_spin_flags                   0x00402100
@@ -130,6 +128,7 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define kdlsym_addr_sceSblKeymgrSetKeyForPfs               0x0062D780
 #define kdlsym_addr_sceSblKeymgrSetKeyStorage              0x00623FC0
 #define kdlsym_addr_sceSblKeymgrSmCallfunc                 0x0062E2A0
+#define kdlsym_addr_sceSblPfsKeymgrGenKeys                 0x0062D480
 #define kdlsym_addr_sceSblPfsSetKeys                       0x0061EFA0
 #define kdlsym_addr_sceSblRngGetRandomNumber               0x00647A50
 #define kdlsym_addr_sceSblServiceMailbox                   0x00632540
@@ -186,6 +185,9 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define kdlsym_addr_wakeup                                 0x003FB940
 #define kdlsym_addr_Xfast_syscall                          0x000001C0
 #define kdlsym_addr_setidt                                 0x00233030
+#define kdlsym_addr_sceSblAuthMgrSmLoadSelfBlock           0x00A6E3E6
+#define kdlsym_addr_sceSblAuthMgrSmLoadSelfSegment         0x00A6E52B
+#define kdlsym_addr_sceSblAuthMgrSmdecryptSelfBlock        0x00A6E620
 
 // Kernel Hooks
 #define kdlsym_addr_printf_hook                            0x019FC168
@@ -214,9 +216,6 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define ssc_sceKernelIsGenuineCEX_patchE                    0x006ABE39
 #define ssc_sceKernelIsGenuineCEX_patchF                    0x00319A53
 
-// flatz allow sys_dynlib_dlsym in all processes 5.05
-#define kdlsym_addr_sys_dynlib_dlsym_patch                  0x00237F3A
-
 // enable savedata mounting
 #define ssc_sceKernelIsGenuineCEX_patchG                    0x00D42843
 #define ssc_sceKernelIsGenuineCEX_patchH                    0x007E4DC0
@@ -236,14 +235,11 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 
 #define ssc_enable_fakepkg_patch                            0x003E0602
 
-// SceShellCore patches - use free prefix instead fake
+// this offset corresponds to "fake\0" string in the Shellcore's memory
 #define ssc_fake_to_free_patch                              0x00EA96A7
 
 // SceShellCore patches - enable VR without spoof
 #define ssc_enable_vr                                       0x00C791A0
-
-// flatz allow sys_dynlib_dlsym in all processes
-#define kdlsym_addr_sys_dynlib_dlsym_patch                  0x00237F3A
 
 // make pkgs installer working with external hdd
 #define ssc_make_pkgs_installer_working_with_external_hdd   0x009312A1
@@ -271,9 +267,6 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 // SceRemotePlay - enabler patches
 #define srp_enabler_patch1                                  0x0003C33F
 #define srp_enabler_patch2                                  0x0003C35A
-
-// disable screenshot block
-#define ssc_disable_screenshot_patch                        0x000CB8C6
 
 // SceShellUI patches - debug patches
 #define ssu_sceSblRcMgrIsAllowDebugMenuForSettings_patch    0x0001BD90

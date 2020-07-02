@@ -7,6 +7,8 @@
     Bugfixes: SiSTRo (https://github.com/SiSTR0), SocraticBliss (https://github.com/SocraticBliss)
 */
 
+#define PS4_UPDATE_FULL_PATH "/update/PS4UPDATE.PUP"
+#define PS4_UPDATE_TEMP_PATH "/update/PS4UPDATE.PUP.net.temp"
 #include "FakePkgManager.hpp"
 #include <Utils/Kernel.hpp>
 #include <Utils/Kdlsym.hpp>
@@ -187,9 +189,8 @@ bool FakePkgManager::ShellCorePatch()
     delete [] s_Entries;
     s_Entries = nullptr;
 
-    uint8_t xor__eax_eax[5] = { 0x31, 0xC0, 0x90, 0x90, 0x90 };
-    uint8_t xor__eix_eax[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 };      
-    
+    uint8_t xor__eax_eax[5] = { 0x31, 0xC0, 0x90, 0x90, 0x90 };      
+
     /*s_Ret = kptrace_t(PT_ATTACH, s_Process->p_pid, 0, 0, s_TextStart);
     if (s_Ret < 0)
     {
@@ -260,21 +261,12 @@ bool FakePkgManager::ShellCorePatch()
 		    return false;
 	  }
 
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_fake_to_free_patch), 4, (void*)"free", nullptr, true);
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_fake_to_free_patch), 5, (void*)"free\0", nullptr, true);
     if (s_Ret < 0)
     {
         WriteLog(LL_Error, "ssc_fake_to_free_patch");
         return false;
     }
-    
-#if MIRA_PLATFORM==MIRA_PLATFORM_ORBIS_BSD_505 
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + kdlsym_addr_sys_dynlib_dlsym_patch), 8, (void*)"\x8B\x48\x90\x00\x00\x01\xC1\xE9", nullptr, true);
-    if (s_Ret < 0)
-      {
-        WriteLog(LL_Error, "kdlsym_addr_sys_dynlib_dlsym_patch");
-        return false;
-    }
-#endif
 
     s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_make_pkgs_installer_working_with_external_hdd), 1, (void*) "\0", nullptr, true);
     if (s_Ret < 0)
@@ -289,15 +281,6 @@ bool FakePkgManager::ShellCorePatch()
         WriteLog(LL_Error, "ssc_enable_support_external_hdd");
         return false;
     }
-
-#if MIRA_PLATFORM==MIRA_PLATFORM_ORBIS_BSD_505
-    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_disable_screenshot_patch), sizeof(xor__eix_eax), xor__eix_eax, nullptr, true);
-    if (s_Ret < 0)
-      {
-        WriteLog(LL_Error, "ssc_disable_screenshot_patch");
-        return false;
-    }
-#endif
 
 #if MIRA_PLATFORM==MIRA_PLATFORM_ORBIS_BSD_505   
     s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + kdlsym_addr_sceRegMgrGetInt), 1, (void*)  "\1", nullptr, true);
