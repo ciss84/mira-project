@@ -264,6 +264,12 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define ssu_CreateUserForIDU_patch                          0x001A8FA0
 #define ssu_remote_play_menu_patch                          0x00EE638E
 
+// flatz allow sys_dynlib_dlsym in all processes
+#define kdlsym_addr_sys_dynlib_dlsym_patch                  0x00237F3A
+
+// disable screenshot block
+#define ssc_disable_screenshot_patch                        0x000CB8C6
+
 // SceRemotePlay - enabler patches
 #define srp_enabler_patch1                                  0x0003C33F
 #define srp_enabler_patch2                                  0x0003C35A

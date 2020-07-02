@@ -420,7 +420,7 @@ int FakeSelfManager::SceSblAuthMgrGetSelfAuthInfoFake(SelfContext* p_Context, Se
     return -EALREADY;
 }
 
-int FakeSelfManager::SceSblAuthMgrSmLoadSelfSegment_Mailbox(uint64_t p_ServiceId, void* p_Request, void* p_Response)
+int FakeSelfManager::SceSblAuthMgrSmLoadSelfSegment_Mailbox(uint32_t p_ServiceId, void* p_Request, void* p_Response)
 {
     auto sceSblServiceMailbox = (int(*)(uint32_t p_ServiceId, void* p_Request, void* p_Response))kdlsym(sceSblServiceMailbox);
 
@@ -457,7 +457,7 @@ int FakeSelfManager::SceSblAuthMgrSmLoadSelfSegment_Mailbox(uint64_t p_ServiceId
     return sceSblServiceMailbox(p_ServiceId, p_Request, p_Response);
 }
 
-int FakeSelfManager::SceSblAuthMgrSmLoadSelfBlock_Mailbox(uint64_t p_ServiceId, uint8_t* p_Request, void* p_Response)
+int FakeSelfManager::SceSblAuthMgrSmLoadSelfBlock_Mailbox(uint32_t p_ServiceId, uint8_t* p_Request, void* p_Response)
 {  
   #if MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_501 || MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_505 
     uint8_t* frame = (uint8_t*)__builtin_frame_address(1);

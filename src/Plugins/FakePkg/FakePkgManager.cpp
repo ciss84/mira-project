@@ -190,7 +190,8 @@ bool FakePkgManager::ShellCorePatch()
     s_Entries = nullptr;
 
     uint8_t xor__eax_eax[5] = { 0x31, 0xC0, 0x90, 0x90, 0x90 };      
-
+    uint8_t xor__ebx_eax[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 };
+    
     /*s_Ret = kptrace_t(PT_ATTACH, s_Process->p_pid, 0, 0, s_TextStart);
     if (s_Ret < 0)
     {
@@ -290,7 +291,24 @@ bool FakePkgManager::ShellCorePatch()
         return false;
     }
 #endif
+  #if MIRA_PLATFORM==MIRA_PLATFORM_ORBIS_BSD_505
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_disable_screenshot_patch), sizeof(xor__ebx_eax), xor__ebx_eax, nullptr, true);
+    if (s_Ret < 0)
+      {
+        WriteLog(LL_Error, "ssc_disable_screenshot_patch");
+        return false;
+    }
+#endif
   
+#if MIRA_PLATFORM==MIRA_PLATFORM_ORBIS_BSD_505 
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + kdlsym_addr_sys_dynlib_dlsym_patch), 8, (void*)"\x8B\x48\x90\x00\x00\x01\xC1\xE9", nullptr, true);
+    if (s_Ret < 0)
+      {
+        WriteLog(LL_Error, "kdlsym_addr_sys_dynlib_dlsym_patch");
+        return false;
+    }
+#endif
+
     /*Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_1_1_OFFSET), sizeof(xor__ehx_eax), xor__ehx_eax, nullptr, true);
     Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_1_2_OFFSET), sizeof(xor__ehx_eax), xor__ehx_eax, nullptr, true);
     Utilities::PtraceIO(s_Process->p_pid, PIOD_WRITE_I, (void*)(s_TextStart + SHELLCORE_ENABLE_DEBUG_PKG_PATCH_1_3_OFFSET), sizeof(xor__ehx_eax), xor__ehx_eax, nullptr, true);

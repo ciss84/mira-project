@@ -64,8 +64,8 @@ namespace Mira
             //
             // Helper Functions
             static int AuthSelfHeader(OrbisOS::SelfContext* p_Context);
-            static int SceSblAuthMgrSmLoadSelfBlock_Mailbox(uint64_t p_ServiceId, uint8_t* p_Request, void* p_Response);
-            static int SceSblAuthMgrSmLoadSelfSegment_Mailbox(uint64_t p_ServiceId, void* p_Request, void* p_Response);
+            static int SceSblAuthMgrSmLoadSelfBlock_Mailbox(uint32_t p_ServiceId, uint8_t* p_Request, void* p_Response);
+            static int SceSblAuthMgrSmLoadSelfSegment_Mailbox(uint32_t p_ServiceId, void* p_Request, void* p_Response);
             static OrbisOS::SblMapListEntry* SceSblDriverFindMappedPageListByGpuVa(vm_offset_t p_GpuVa);
             static vm_offset_t SceSblDriverGpuVaToCpuVa(vm_offset_t p_GpuVa, size_t* p_NumPageGroups);
             static bool IsFakeSelf(OrbisOS::SelfContext* p_Context);
