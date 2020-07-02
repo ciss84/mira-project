@@ -46,7 +46,7 @@ namespace Mira
             Utils::Hook* m__SceSblAuthMgrSmLoadSelfSegmentHook;
             Utils::Hook* m__SceSblAuthMgrSmLoadSelfBlockHook;
 
-            //static OrbisOS::SelfContext* m_LastContext;
+            static OrbisOS::SelfContext* m_LastContext;
 
             static const uint8_t c_ExecAuthInfo[AuthInfoSize];
             static const uint8_t c_DynlibAuthInfo[AuthInfoSize];

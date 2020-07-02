@@ -27,7 +27,7 @@ extern "C"
 using namespace Mira::Plugins;
 using namespace Mira::OrbisOS;
 
-//SelfContext* FakeSelfManager::m_LastContext = nullptr;
+SelfContext* FakeSelfManager::m_LastContext = nullptr;
 
 const uint8_t FakeSelfManager::c_ExecAuthInfo[] =
 {
@@ -543,7 +543,7 @@ bool FakeSelfManager::OnLoad()
         (void)m__SceSblAuthMgrSmLoadSelfSegmentHook->Enable();
 
     // Clear out any stale contexts
-    //m_LastContext = nullptr;
+    m_LastContext = nullptr;
        
     WriteLog(LL_Debug, "FakeSelfManager loaded...");
     return true;
@@ -566,7 +566,7 @@ bool FakeSelfManager::OnUnload()
         (void)m__SceSblAuthMgrSmLoadSelfSegmentHook->Disable();
     
     // Clear out any stale contexts
-    //m_LastContext = nullptr;
+    m_LastContext = nullptr;
     
     WriteLog(LL_Debug, "FakeSelfManager unloaded...");
     return true;
