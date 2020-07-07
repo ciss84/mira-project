@@ -9,7 +9,6 @@ These are all offsets into the base of the kernel. They expect all standard Free
 The reason we do not hardcode offsets here, is due to the different platforms that are supported, and
 for the platforms that do enable kernel ASLR (Address Space Layout Randomization?)
 */
-
 #define kdlsym_addr__mtx_lock_flags                        0x00401CD0
 #define kdlsym_addr__mtx_lock_sleep                        0x00401D70
 #define kdlsym_addr__mtx_lock_spin_flags                   0x00402100
@@ -185,9 +184,9 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define kdlsym_addr_wakeup                                 0x003FB940
 #define kdlsym_addr_Xfast_syscall                          0x000001C0
 #define kdlsym_addr_setidt                                 0x00233030
-#define kdlsym_addr_sceSblAuthMgrSmLoadSelfBlock           0x00A6E3E6
-#define kdlsym_addr_sceSblAuthMgrSmLoadSelfSegment         0x00A6E52B
-#define kdlsym_addr_sceSblAuthMgrSmdecryptSelfBlock        0x00A6E620
+#define kdlsym_addr__sceSblAuthMgrSmLoadSelfBlock          0x00A6E3E6
+#define kdlsym_addr__sceSblAuthMgrSmLoadSelfSegment         0x00A6E52B
+#define kdlsym_addr__sceSblAuthMgrSmdecryptSelfBlock        0x00A6E620
 
 // Kernel Hooks
 #define kdlsym_addr_printf_hook                            0x019FC168

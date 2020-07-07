@@ -79,8 +79,8 @@ FakeSelfManager::FakeSelfManager()
     //m_SceSblAuthMgrVerifyHeaderHook = new Utils::Hook(kdlsym(sceSblAuthMgrVerifyHeader), reinterpret_cast<void*>(OnSceSblAuthMgrVerifyHeader));
     //m_SceSblAuthMgrIsLoadable2Hook = new Utils::Hook(kdlsym(sceSblAuthMgrIsLoadable2), reinterpret_cast<void*>(OnSceSblAuthMgrIsLoadable2));
 
-    //m__SceSblAuthMgrSmLoadSelfBlockHook = new Utils::Hook(kdlsym(sceSblAuthMgrSmLoadSelfBlock), reinterpret_cast<void*>(OnSceSblAuthMgrSmLoadSelfBlock));
-    //m__SceSblAuthMgrSmLoadSelfSegmentHook = new Utils::Hook(kdlsym(sceSblAuthMgrSmLoadSelfSegment), reinterpret_cast<void*>(OnSceSblAuthMgrSmLoadSelfSegment));
+    //m__SceSblAuthMgrSmLoadSelfBlockHook = new Utils::Hook(kdlsym(sceSblAuthMgrSmLoadSelfBlock), reinterpret_cast<void*>(On_SceSblAuthMgrSmLoadSelfBlock));
+    //m__SceSblAuthMgrSmLoadSelfSegmentHook = new Utils::Hook(kdlsym(sceSblAuthMgrSmLoadSelfSegment), reinterpret_cast<void*>(On_SceSblAuthMgrSmLoadSelfSegment));
 }
 
 FakeSelfManager::~FakeSelfManager()
@@ -136,7 +136,7 @@ int FakeSelfManager::OnSceSblAuthMgrIsLoadable2(SelfContext* p_Context, SelfAuth
         return sceSblAuthMgrIsLoadable2(p_Context, p_OldAuthInfo, p_PathId, p_NewAuthInfo);
 }
 
-/*int FakeSelfManager::OnSceSblServiceMailbox(uint32_t p_ServiceId, void* p_Request, void* p_Response)
+int FakeSelfManager::OnSceSblServiceMailbox(uint32_t p_ServiceId, void* p_Request, void* p_Response)
 {
     auto sceSblServiceMailbox = (int(*)(uint32_t p_ServiceId, void* p_Request, void* p_Response))kdlsym(sceSblServiceMailbox);
     auto s_Request = static_cast<MailboxMessage*>(p_Request);
@@ -144,21 +144,20 @@ int FakeSelfManager::OnSceSblAuthMgrIsLoadable2(SelfContext* p_Context, SelfAuth
     {
         WriteLog(LL_Error, "invalid request");
         return sceSblServiceMailbox(p_ServiceId, p_Request, p_Response);
-    }
     // Only hook on the needed service id
     if (p_ServiceId != 0)
         return sceSblServiceMailbox(p_ServiceId, p_Request, p_Response);
-    
+    }   
     switch (s_Request->funcId)
     {
     case LoadSelfSegment:
         return SceSblAuthMgrSmLoadSelfSegment_Mailbox(p_ServiceId, p_Request, p_Response);
-    case LoadSelfBlock:
-        return SceSblAuthMgrSmLoadSelfBlock_Mailbox(p_ServiceId, p_Request, p_Response);
+    /*case LoadSelfBlock:
+        return SceSblAuthMgrSmLoadSelfBlock_Mailbox(p_ServiceId, p_Request, p_Response);*/
     default:
         return sceSblServiceMailbox(p_ServiceId, p_Request, p_Response);
     }
-}*/
+}
 
 int FakeSelfManager::AuthSelfHeader(SelfContext* p_Context)
 {    
@@ -424,7 +423,7 @@ int FakeSelfManager::SceSblAuthMgrSmLoadSelfSegment_Mailbox(uint32_t p_ServiceId
 {
     auto sceSblServiceMailbox = (int(*)(uint32_t p_ServiceId, void* p_Request, void* p_Response))kdlsym(sceSblServiceMailbox);
 
-#if MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_501 || MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_505
+#if MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_501 || MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_503 || MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_505
 	  uint8_t* frame = (uint8_t*)__builtin_frame_address(1);
 	  SelfContext* s_Context = *(SelfContext**)(frame - 0x08);
 #endif
@@ -458,8 +457,8 @@ int FakeSelfManager::SceSblAuthMgrSmLoadSelfSegment_Mailbox(uint32_t p_ServiceId
 }
 
 int FakeSelfManager::SceSblAuthMgrSmLoadSelfBlock_Mailbox(uint32_t p_ServiceId, uint8_t* p_Request, void* p_Response)
-{  
-  #if MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_501 || MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_505 
+{
+  #if MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_501 || MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_503 || MIRA_PLATFORM == MIRA_PLATFORM_ORBIS_BSD_505 
     uint8_t* frame = (uint8_t*)__builtin_frame_address(1);
 	  SelfContext* p_Context = *(SelfContext**)(frame - 0x08);
   #endif
@@ -468,15 +467,32 @@ int FakeSelfManager::SceSblAuthMgrSmLoadSelfBlock_Mailbox(uint32_t p_ServiceId, 
 	uint8_t* frame = (uint8_t*)__builtin_frame_address(1);
 	SelfContext* p_Context = *(SelfContext**)(frame - 0x1B8);
   #endif
+    auto sceSblServiceMailbox = (int(*)(uint32_t p_ServiceId, void* p_Request, void* p_Response))kdlsym(sceSblServiceMailbox);
 
+    /*auto s_RequestMessage = static_cast<MailboxMessage*>(p_Request);
+    if (s_RequestMessage == nullptr)
+    {
+        WriteLog(LL_Error, "invalid request message");
+        return sceSblServiceMailbox(p_ServiceId, p_Request, p_Response);
+    }
+    
+    // Disgusting hack, we hook the caller of this, save the context, then continue as normal
+    // Then we pick up the context later
+    //SelfContext* s_Context = FakeSelfManager::m_LastContext;
+    // Check our context
+    if (p_Context == nullptr)
+    {
+        WriteLog(LL_Error, "could not load self BLOCK, could not get the self context");
+        return SceSblServiceMailbox(p_ServiceId, p_Request, p_Response);
+    }*/
+    
     bool s_IsUnsigned = p_Context && (p_Context->format == SelfFormat::Elf || IsFakeSelf((SelfContext*)p_Context));
     if (!s_IsUnsigned) {
-        //WriteLog(LL_Debug, "signed (s)elf detected");
+        WriteLog(LL_Debug, "signed (s)elf detected");
 
-        auto sceSblServiceMailbox = (int(*)(uint32_t p_ServiceId, void* p_Request, void* p_Response))kdlsym(sceSblServiceMailbox);
         return sceSblServiceMailbox(p_ServiceId, p_Request, p_Response);
     } else {
-        //WriteLog(LL_Debug, "unsigned/fake (s)elf detected");
+        WriteLog(LL_Debug, "unsigned/fake (s)elf detected");
 
         vm_offset_t s_SegmentDataGpuVa = *(uint64_t*)(p_Request + 0x08);
         vm_offset_t s_CurrentDataGpuVa = *(uint64_t*)(p_Request + 0x50);
@@ -508,6 +524,7 @@ int FakeSelfManager::SceSblAuthMgrSmLoadSelfBlock_Mailbox(uint32_t p_ServiceId, 
 
         /* setting error field to zero, thus we have no errors */
         *(int*)(p_Request + 0x04) = 0;
+        //s_RequestMessage->retVal = 0;
         return 0;
     }
 }

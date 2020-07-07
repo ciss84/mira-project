@@ -29,6 +29,8 @@ extern "C" {
     #include "Kdlsym/Orbis620.hpp"
     #elif MIRA_PLATFORM==MIRA_PLATFORM_ORBIS_BSD_650
     #include "Kdlsym/Orbis650.hpp"
+    #elif MIRA_PLATFORM==MIRA_PLATFORM_ORBIS_BSD_672
+    #include "Kdlsym/Orbis672.hpp"
     #elif MIRA_PLATFORM==MIRA_PLATFORM_RASPI_ZERO
     #include "Kdlsym/RaspberryPiZero.hpp"
     #elif MIRA_PLATFORM==MIRA_PLATFORM_STEAM_LINK2

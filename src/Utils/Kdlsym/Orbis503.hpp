@@ -98,6 +98,9 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define kdlsym_addr_pause                                  0x003FB8E0
 #define kdlsym_addr_pfind                                  0x004034A0
 #define kdlsym_addr_pmap_activate                          0x002EAFD0
+#define kdlsym_addr_pmap_PROTECT	                         0x0
+#define kdlsym_addr_pmap_PROTECT_P	                       0x0
+#define kdlsym_addr_pmap_STORE		                         0x0
 #define kdlsym_addr_printf                                 0x00436000
 #define kdlsym_addr_prison0                                0x010986A0
 #define kdlsym_addr_proc0                                  0x01AA4600
@@ -179,6 +182,9 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define kdlsym_addr_wakeup                                 0x003FB940
 #define kdlsym_addr_Xfast_syscall                          0x000001C0
 #define kdlsym_addr_setidt                                 0x0
+#define kdlsym_addr__sceSblAuthMgrSmLoadSelfBlock          0x0
+#define kdlsym_addr__sceSblAuthMgrSmLoadSelfSegment        0x0
+#define kdlsym_addr__sceSblAuthMgrSmdecryptSelfBlock       0x0
 
 // Kernel Hooks
 #define kdlsym_addr_printf_hook                            0x019FC168
@@ -251,6 +257,10 @@ for the platforms that do enable kernel ASLR (Address Space Layout Randomization
 #define ssc_Patch_debug_settingE                            0x0
 #define ssc_Patch_debug_settingF                            0x0
 #define ssc_Patch_debug_settingG                            0x0
+#define ssc_Fully_enable_Debug_SettingsA                    0x0
+#define ssc_Fully_enable_Debug_SettingsB                    0x0
+#define ssc_Fully_enable_Debug_SettingsD                    0x0
+#define ssc_Fully_enable_Debug_SettingsE                    0x0
 
 // SceShellUI - remote play related patching
 #define ssu_CreateUserForIDU_patch                          0x0

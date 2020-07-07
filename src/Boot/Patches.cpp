@@ -1,7 +1,7 @@
 // This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
 
-#include <Boot/Patches.hpp>
+#include "Patches.hpp"
 
 using namespace Mira::Boot;
 
@@ -39,6 +39,9 @@ void Patches::install_prePatches()
 		case MIRA_PLATFORM_ORBIS_BSD_650:
 			install_prerunPatches_650();
 			break;
+	  case MIRA_PLATFORM_ORBIS_BSD_672:
+			install_prerunPatches_672();
+			break;	
 		case MIRA_PLATFORM_STEAM_LINK:
 		case MIRA_PLATFORM_STEAM_LINK2:
 			install_prerunPatches_SteamLink2();
