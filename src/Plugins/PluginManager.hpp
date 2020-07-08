@@ -39,7 +39,9 @@ namespace Mira
             Mira::Utils::IModule* m_MorpheusEnabler;
             Mira::Utils::IModule* m_RemotePlayEnabler;
             Mira::Utils::IModule* m_RemotePkgEnabler; 
-            Mira::Utils::IModule* m_DebugTrophyEnabler;                      
+            Mira::Utils::IModule* m_DebugTrophyEnabler; 
+            Mira::Utils::IModule* m_SaveDataMountEnabler;
+            Mira::Utils::IModule* m_ExtHddSuportEnabler;             
             Mira::Utils::IModule* m_SyscallGuard;
 
         public:
@@ -55,7 +57,9 @@ namespace Mira
             Mira::Utils::IModule* GetMorpheusEnabler() { return m_MorpheusEnabler; }
             Mira::Utils::IModule* GetRemotePlayEnabler() { return m_RemotePlayEnabler; }
             Mira::Utils::IModule* GetRemotePkgEnabler() { return m_RemotePkgEnabler; }
-            Mira::Utils::IModule* GetDebugTrophyEnabler() { return m_DebugTrophyEnabler; }            
+            Mira::Utils::IModule* GetDebugTrophyEnabler() { return m_DebugTrophyEnabler; }
+            Mira::Utils::IModule* GetSaveDataMountEnabler() { return m_SaveDataMountEnabler; }
+            Mira::Utils::IModule* GetExtHddSuportEnabler() { return m_ExtHddSuportEnabler; }                                   
             Mira::Utils::IModule* GetSyscallGuard() { return m_SyscallGuard; }
         };
     }
