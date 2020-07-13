@@ -291,7 +291,7 @@
 #define ssc_Fully_enable_Debug_SettingsE                   0x0
 
 // SceShellCore patches - enable VR without spoof
-#define ssc_enable_vr                                      0x0
+#define ssc_enable_vr                                      0x00DDDD70
 
 // flatz allow sys_dynlib_dlsym in all processes
 #define kdlsym_addr_sys_dynlib_dlsym_patch                 0x0
