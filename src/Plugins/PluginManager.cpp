@@ -17,8 +17,8 @@
 #include <Plugins/RemotePlayEnabler/RemotePlayEnabler.hpp>
 #include <Plugins/RemotePkgEnabler/RemotePkgEnabler.hpp>
 #include <Plugins/DebugTrophyEnabler/DebugTrophyEnabler.hpp>
-#include <Plugins/ExtHddSuportEnabler/ExtHddSuportEnabler.hpp>
 #include <Plugins/SyscallGuard/SyscallGuardPlugin.hpp>
+#include <Plugins/TTYRedirector/TTYRedirector.hpp>
 
 // Utility functions
 #include <Utils/Logger.hpp>
@@ -197,12 +197,12 @@ bool PluginManager::OnLoad()
             s_Success = false;
             break;
         }
-
-        // Initialize ExtHddSuportEnabler
-        m_ExtHddSuportEnabler = new Mira::Plugins::ExtHddSuportEnabler();
-        if (m_ExtHddSuportEnabler == nullptr)
+        
+        // Initialize TTYRedirector
+        m_TTYRedirector = new Mira::Plugins::TTYRedirector();
+        if (m_TTYRedirector == nullptr)
         {
-            WriteLog(LL_Error, "could not allocate Ext Hdd Suport Enabler.");
+            WriteLog(LL_Error, "could not allocate tty redirector.");
             s_Success = false;
             break;
         }
@@ -287,12 +287,12 @@ bool PluginManager::OnLoad()
             WriteLog(LL_Error, "could not load Debug Trophy Enabler.");
     }
     
-    if (m_ExtHddSuportEnabler)
+    if (m_TTYRedirector)
     {
-        if (!m_ExtHddSuportEnabler->OnLoad())
-            WriteLog(LL_Error, "could not load Ext Hdd Suport Enabler.");
+        if (!m_TTYRedirector->OnLoad())
+            WriteLog(LL_Error, "could not load tty redirector.");
     }
-
+    
     return s_Success;
 }
 
@@ -501,18 +501,6 @@ bool PluginManager::OnUnload()
         m_Debugger3 = nullptr;
     }
     
-    // Delete ExtHddSuportEnabler
-    if (m_ExtHddSuportEnabler)
-    {
-        WriteLog(LL_Debug, "unloading Ext Hdd Suport Enabler");
-        if (!m_ExtHddSuportEnabler->OnUnload())
-            WriteLog(LL_Error, "Ext Hdd Suport Enabler could not unload");
-
-        // Free ExtHddSuportEnabler
-        delete m_ExtHddSuportEnabler;
-        m_ExtHddSuportEnabler = nullptr;
-    }
-    
     // Delete the m_SyscallGuard
     // NOTE: Don't unload before the Syscall Guard for catch error if something wrong
     /*if (m_SyscallGuard)
@@ -524,7 +512,19 @@ bool PluginManager::OnUnload()
         delete m_SyscallGuard;
         m_SyscallGuard = nullptr;
     }*/
+    
+    // Unload TTY Redirector
+    if (m_TTYRedirector)
+    {
+        WriteLog(LL_Debug, "unloading tty redirector");
+        if (!m_TTYRedirector->OnUnload())
+            WriteLog(LL_Error, "tty redirector could not unload");
 
+        // Free TTYRedirector
+        delete m_TTYRedirector;
+        m_TTYRedirector = nullptr;
+    }
+    
     WriteLog(LL_Debug, "All Plugins Unloaded %s.", s_AllUnloadSuccess ? "successfully" : "un-successfully");
     return s_AllUnloadSuccess;
 }
@@ -627,13 +627,6 @@ bool PluginManager::OnSuspend()
             WriteLog(LL_Error, "Debug Trophy Enabler suspend failed");
     }
     
-    // Suspend ExtHddSuportEnabler (does nothing)
-    if (m_ExtHddSuportEnabler)
-    {
-        if (!m_ExtHddSuportEnabler->OnSuspend())
-            WriteLog(LL_Error, "Ext Hdd Suport Enabler suspend failed");
-    }
-    
     // Nota: Don't suspend before the debugger for catch error if something when wrong
     if (m_Debugger)
     {
@@ -652,7 +645,14 @@ bool PluginManager::OnSuspend()
         if (!m_SyscallGuard->OnSuspend())
             WriteLog(LL_Error, "Syscall Guard suspend failed");
     }*/
-
+    
+    // Suspend TTYRedirector (does nothing)
+    if (m_TTYRedirector)
+    {
+        if (!m_TTYRedirector->OnSuspend())
+            WriteLog(LL_Error, "tty redirector suspend failed");
+    }
+    
     // Return final status
     return s_AllSuccess;
 }
@@ -747,11 +747,11 @@ bool PluginManager::OnResume()
             WriteLog(LL_Error, "Debug Trophy Enabler resume failed");
     }
     
-    WriteLog(LL_Debug, "resuming Ext Hdd Suport Enabler");
-    if (m_ExtHddSuportEnabler)
+    WriteLog(LL_Debug, "resuming tty redirector");
+    if (m_TTYRedirector)
     {
-        if (!m_ExtHddSuportEnabler->OnResume())
-            WriteLog(LL_Error, "Ext Hdd Suport Enabler resume failed");
+        if (!m_TTYRedirector->OnResume())
+            WriteLog(LL_Error, "tty redirector resume failed");
     }
 
     // Iterate through all of the plugins

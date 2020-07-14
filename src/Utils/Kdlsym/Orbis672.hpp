@@ -203,6 +203,14 @@
 #define kdlsym_addr_pmap_PROTECT_P	                       0x0
 #define kdlsym_addr_pmap_STORE		                         0x0
 #define kdlsym_addr_sceSblACMgrGetPathId                   0x0
+#define kdlsym_addr_console_cdev                           0x0
+#define kdlsym_addr_cloneuio                               0x0
+#define kdlsym_addr_console_write                          0x0
+#define kdlsym_addr_deci_tty_write                         0x0
+#define kdlsym_addr_M_IOV                                  0x0
+
+// Kernel Hooks
+#define kdlsym_addr_printf_hook                            0x0
 
 // self function patches
 #define kdlsym_addr_sceSblAuthMgrVerifyHeader_hookA                    0x00659AC6
@@ -265,17 +273,6 @@
 
 // SceShellCore patches - use free prefix instead fake
 #define ssc_fake_to_free_patch                             0x00FD2BF1
-
-// enable savedata mounting
-#define ssc_sceKernelIsGenuineCEX_patchG                   0x0
-#define ssc_sceKernelIsGenuineCEX_patchH                   0x0
-#define ssc_sceKernelIsGenuineCEX_patchI                   0x0
-#define ssc_sceKernelIsGenuineCEX_patchJ                   0x0
-#define ssc_sceKernelIsGenuineCEX_patchK                   0x0
-#define ssc_sceKernelIsGenuineCEX_patchL                   0x0
-#define ssc_sceKernelIsGenuineCEX_patchM                   0x0
-#define ssc_sceKernelIsGenuineCEX_patchN                   0x0
-#define ssc_sceKernelIsGenuineCEX_patchO                   0x0
 
 // Patch debug setting             
 #define ssc_Patch_debug_settingA                           0x0

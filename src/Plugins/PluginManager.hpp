@@ -40,9 +40,9 @@ namespace Mira
             Mira::Utils::IModule* m_RemotePlayEnabler;
             Mira::Utils::IModule* m_RemotePkgEnabler; 
             Mira::Utils::IModule* m_DebugTrophyEnabler; 
-            Mira::Utils::IModule* m_SaveDataMountEnabler;
-            Mira::Utils::IModule* m_ExtHddSuportEnabler;             
+            Mira::Utils::IModule* m_SaveDataMountEnabler;            
             Mira::Utils::IModule* m_SyscallGuard;
+            Mira::Utils::IModule* m_TTYRedirector;
 
         public:
             Mira::Utils::IModule* GetLogger() { return m_Logger; }
@@ -58,9 +58,9 @@ namespace Mira
             Mira::Utils::IModule* GetRemotePlayEnabler() { return m_RemotePlayEnabler; }
             Mira::Utils::IModule* GetRemotePkgEnabler() { return m_RemotePkgEnabler; }
             Mira::Utils::IModule* GetDebugTrophyEnabler() { return m_DebugTrophyEnabler; }
-            Mira::Utils::IModule* GetSaveDataMountEnabler() { return m_SaveDataMountEnabler; }
-            Mira::Utils::IModule* GetExtHddSuportEnabler() { return m_ExtHddSuportEnabler; }                                   
+            Mira::Utils::IModule* GetSaveDataMountEnabler() { return m_SaveDataMountEnabler; }                                   
             Mira::Utils::IModule* GetSyscallGuard() { return m_SyscallGuard; }
+            Mira::Utils::IModule* GetTTYRedirector() { return m_TTYRedirector; }
         };
     }
 }

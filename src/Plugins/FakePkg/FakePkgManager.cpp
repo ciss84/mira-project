@@ -254,12 +254,12 @@ bool FakePkgManager::ShellCorePatch()
         WriteLog(LL_Error, "ssc_nidf_libSceDipsw_patchD");
         return false;
     }
-    
+
 	  s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_enable_fakepkg_patch), 8, (void*)"\xE9\x96\x00\x00\x00\x90\x90\x90", nullptr, true);
 	  if (s_Ret < 0)
 	  {
-		    WriteLog(LL_Error, "ssc_enable_fakepkg_patch");
-		    return false;
+		WriteLog(LL_Error, "ssc_enable_fakepkg_patch");
+		return false;
 	  }
 
     s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_fake_to_free_patch), 5, (void*)"free\0", nullptr, true);
@@ -287,6 +287,20 @@ bool FakePkgManager::ShellCorePatch()
     if (s_Ret < 0)
       {
         WriteLog(LL_Error, "kdlsym_addr_sys_dynlib_dlsym_patch");
+        return false;
+    }
+    
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_make_pkgs_installer_working_with_external_hdd), 1, (void*) "\0", nullptr, true);
+    if (s_Ret < 0)
+      {
+        WriteLog(LL_Error, "ssc_make_pkgs_installer_working_with_external_hdd ");
+        return false;
+    }
+     
+    s_Ret = Utilities::ProcessReadWriteMemory(s_Process, (void*)(s_TextStart + ssc_enable_support_external_hdd), 1, (void*) "\xEB", nullptr, true);
+    if (s_Ret < 0)
+      {
+        WriteLog(LL_Error, "ssc_enable_support_external_hdd");
         return false;
     }
 
