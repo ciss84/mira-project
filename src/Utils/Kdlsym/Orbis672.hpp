@@ -203,14 +203,14 @@
 #define kdlsym_addr_pmap_PROTECT_P	                       0x0
 #define kdlsym_addr_pmap_STORE		                         0x0
 #define kdlsym_addr_sceSblACMgrGetPathId                   0x0
-#define kdlsym_addr_console_cdev                           0x0
-#define kdlsym_addr_cloneuio                               0x0
-#define kdlsym_addr_console_write                          0x0
-#define kdlsym_addr_deci_tty_write                         0x0
-#define kdlsym_addr_M_IOV                                  0x0
+#define kdlsym_addr_cloneuio                                           (0x002D3060)
+#define kdlsym_addr_console_cdev                                       (0x022C0CD8)
+#define kdlsym_addr_console_write                                      (0x003F8710)
+#define kdlsym_addr_deci_tty_write                                     (0x004A97E0)
+#define kdlsym_addr_M_IOV                                              (0x01A87AD0)
 
 // Kernel Hooks
-#define kdlsym_addr_printf_hook                            0x0
+#define kdlsym_addr_printf_hook                                        (0x01A9FE98)
 
 // self function patches
 #define kdlsym_addr_sceSblAuthMgrVerifyHeader_hookA                    0x00659AC6
