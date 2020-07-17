@@ -258,10 +258,10 @@
 #define ssc_sceKernelIsGenuineCEX_patchB                   0x00835642
 #define ssc_sceKernelIsGenuineCEX_patchC                   0x00880492
 #define ssc_sceKernelIsGenuineCEX_patchD                   0x00A12B92
-#define ssc_sceKernelIsGenuineCEX_patchE                   0x0
+#define ssc_sceKernelIsGenuineCEX_patchE                   0x0068C709
 
 // SceShellCore patches - call RemotePackages
-#define ssc_sceKernelIsGenuineCEX_patchF                   0x0
+#define ssc_sceKernelIsGenuineCEX_patchF                   0x00319EAB
 
 // SceShellCore patches - call nidf_libSceDipsw
 #define ssc_nidf_libSceDipsw_patchA                        0x00189630
@@ -269,7 +269,7 @@
 #define ssc_nidf_libSceDipsw_patchC                        0x00835670
 #define ssc_nidf_libSceDipsw_patchD                        0x00A12BC0
 
-#define ssc_enable_fakepkg_patch                           0x0
+#define ssc_enable_fakepkg_patch                           0x0048F353
 
 // SceShellCore patches - use free prefix instead fake
 #define ssc_fake_to_free_patch                             0x00FD2BF1
